@@ -1,0 +1,25 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../tools/impeller.gni")
+
+impeller_component("stator_unittests") {
+  testonly = true
+
+  target_type = "executable"
+
+  sources = [ "stator_unittests.cc" ]
+
+  deps = [
+    "../fixtures",
+    "../playground:playground_test",
+    "//flutter/testing",
+  ]
+}
+
+group("stator") {
+  testonly = true
+
+  deps = [ ":stator_unittests" ]
+}
