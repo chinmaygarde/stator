@@ -2,7 +2,12 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//flutter/testing/testing.gni")
 import("../tools/impeller.gni")
+
+test_fixtures("stator_dart_fixtures") {
+  dart_main = "stator_main.dart"
+}
 
 impeller_component("stator_unittests") {
   testonly = true
@@ -12,7 +17,7 @@ impeller_component("stator_unittests") {
   sources = [ "stator_unittests.cc" ]
 
   deps = [
-    "../fixtures",
+    ":stator_dart_fixtures",
     "../playground:playground_test",
     "//flutter/testing",
   ]

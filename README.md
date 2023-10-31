@@ -5,5 +5,5 @@
 
 ## Build Instructions
 
-* This repo lives in //flutter/impeller/stator.
-* This repo needs to live in the `stator` branch of github.com/chinmaygarde/flutter_engine
+* This repo lives in `//flutter/impeller/stator`.
+* This repo needs to live in the `stator` branch of `github.com/chinmaygarde/flutter_engine`.
