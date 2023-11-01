@@ -3,12 +3,11 @@
 // found in the LICENSE file.
 
 #include "impeller/playground/playground_test.h"
+#include "impeller/stator/stator_test.h"
 
 namespace impeller {
 namespace stator {
 namespace testing {
-
-using StatorTest = PlaygroundTest;
 
 TEST_P(StatorTest, CanSetupPlayground) {}
 

@@ -14,12 +14,18 @@ impeller_component("stator_unittests") {
 
   target_type = "executable"
 
-  sources = [ "stator_unittests.cc" ]
+  sources = [
+    "stator_test.cc",
+    "stator_test.h",
+    "stator_unittests.cc",
+  ]
 
   deps = [
     ":stator_dart_fixtures",
     "../playground:playground_test",
     "//flutter/testing",
+    "//flutter/testing:dart",
+    "//flutter/testing:fixture_test",
   ]
 }
 

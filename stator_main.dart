@@ -3,5 +3,5 @@
 // found in the LICENSE file.
 
 void main() {
-  print("Hello from Stator!");
+  print("Hello from Stator");
 }
