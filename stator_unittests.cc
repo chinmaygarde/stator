@@ -9,7 +9,9 @@ namespace impeller {
 namespace stator {
 namespace testing {
 
-TEST_P(StatorTest, CanSetupPlayground) {}
+TEST_P(StatorTest, CanSetupPlayground) {
+  OpenPlaygroundHere([](const RenderPass& pass) { return true; });
+}
 
 INSTANTIATE_TEST_SUITE_P(
     Stator,
