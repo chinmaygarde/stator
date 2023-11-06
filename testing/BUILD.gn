@@ -1,0 +1,31 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//flutter/testing/testing.gni")
+import("../../tools/impeller.gni")
+
+test_fixtures("dart_fixtures") {
+  dart_main = "stator_main.dart"
+}
+
+impeller_component("stator_unittests") {
+  testonly = true
+
+  target_type = "executable"
+
+  sources = [
+    "stator_test.cc",
+    "stator_test.h",
+    "stator_unittests.cc",
+  ]
+
+  deps = [
+    ":dart_fixtures",
+    "../../playground:playground_test",
+    "../renderer",
+    "//flutter/testing",
+    "//flutter/testing:dart",
+    "//flutter/testing:fixture_test",
+  ]
+}

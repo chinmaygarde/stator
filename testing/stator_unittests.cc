@@ -3,11 +3,9 @@
 // found in the LICENSE file.
 
 #include "impeller/playground/playground_test.h"
-#include "impeller/stator/stator_test.h"
+#include "impeller/stator/testing/stator_test.h"
 
-namespace impeller {
-namespace stator {
-namespace testing {
+namespace impeller::stator::testing {
 
 TEST_P(StatorTest, CanSetupPlayground) {
   OpenPlaygroundHere([](const RenderPass& pass) { return true; });
@@ -21,6 +19,4 @@ INSTANTIATE_TEST_SUITE_P(
       return PlaygroundBackendToString(info.param);
     });
 
-}  // namespace testing
-}  // namespace stator
-}  // namespace impeller
+}  // namespace impeller::stator::testing

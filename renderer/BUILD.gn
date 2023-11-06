@@ -2,8 +2,13 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-group("stator") {
-  testonly = true
+import("../../tools/impeller.gni")
 
-  deps = [ "testing/:stator_unittests" ]
+impeller_component("renderer") {
+  sources = [
+    "context.cc",
+    "context.h",
+    "swapchain.cc",
+    "swapchain.h",
+  ]
 }
