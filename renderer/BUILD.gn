@@ -11,4 +11,5 @@ impeller_component("renderer") {
     "swapchain.cc",
     "swapchain.h",
   ]
+  deps = [ "../../renderer" ]
 }

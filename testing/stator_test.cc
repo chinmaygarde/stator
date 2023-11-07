@@ -86,4 +86,18 @@ StatorTest::~StatorTest() {
   latch.Wait();
 }
 
+void StatorTest::SetUp() {
+  PlaygroundTest::SetUp();
+  context_ = Context::Make(GetContext());
+}
+
+void StatorTest::TearDown() {
+  context_.reset();
+  PlaygroundTest::TearDown();
+}
+
+const std::shared_ptr<Context>& StatorTest::GetStatorContext() const {
+  return context_;
+}
+
 }  // namespace impeller::stator::testing
