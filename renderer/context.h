@@ -26,6 +26,8 @@ class Context final : public std::enable_shared_from_this<Context> {
 
   const std::shared_ptr<Swapchain> GetSwapchain() const;
 
+  const std::shared_ptr<impeller::Context>& GetImpellerContext() const;
+
  private:
   std::shared_ptr<impeller::Context> context_;
   std::shared_ptr<Swapchain> swapchain_;

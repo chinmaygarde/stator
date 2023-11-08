@@ -41,12 +41,17 @@ void Context::Setup(std::shared_ptr<impeller::Context> context) {
     VALIDATION_LOG << "Impeller context was null.";
     return;
   }
+
   auto swapchain = std::make_shared<Swapchain>(shared_from_this());
   if (!swapchain->IsValid()) {
     VALIDATION_LOG << "Could not create Stator swapchain.";
     return;
   }
   is_valid_ = true;
+}
+
+const std::shared_ptr<impeller::Context>& Context::GetImpellerContext() const {
+  return context_;
 }
 
 }  // namespace impeller::stator
