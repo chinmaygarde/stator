@@ -34,23 +34,31 @@ void Swapchain::Shutdown() {
   not_full_cv_.NotifyAll();
 }
 
-std::shared_ptr<Texture> Swapchain::AcquireNextPresentable() {
+std::shared_ptr<Texture> Swapchain::AcquireNextPresentable(
+    std::chrono::nanoseconds timeout) {
   std::shared_ptr<Texture> result;
+  bool did_pop = false;
   {
     Lock lock(mutex_);
-    not_empty_cv_.Wait(mutex_, [&]() IPLR_REQUIRES(mutex_) {
-      if (shutdown_) {
-        return true;
-      }
-      if (!presentable_drawables_.empty()) {
-        return true;
-      }
-      return false;
-    });
-    result = presentable_drawables_.front();
-    presentable_drawables_.pop_front();
+    const auto has_presentable =
+        not_empty_cv_.WaitFor(mutex_, timeout, [&]() IPLR_REQUIRES(mutex_) {
+          if (shutdown_) {
+            return true;
+          }
+          if (!presentable_drawables_.empty()) {
+            return true;
+          }
+          return false;
+        });
+    if (has_presentable) {
+      result = presentable_drawables_.front();
+      presentable_drawables_.pop_front();
+      did_pop = true;
+    }
   }
-  not_full_cv_.NotifyOne();
+  if (did_pop) {
+    not_full_cv_.NotifyOne();
+  }
   return result;
 }
 

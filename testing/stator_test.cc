@@ -5,6 +5,7 @@
 #include "impeller/stator/testing/stator_test.h"
 
 #include "flutter/runtime/isolate_configuration.h"
+#include "impeller/stator/renderer/compositor.h"
 
 namespace impeller::stator::testing {
 
@@ -98,6 +99,16 @@ void StatorTest::TearDown() {
 
 const std::shared_ptr<Context>& StatorTest::GetStatorContext() const {
   return context_;
+}
+
+bool StatorTest::OpenStatorPlaygroundHere(const StatorCallback& callback) {
+  if (!callback) {
+    return false;
+  }
+
+  return OpenPlaygroundHere([&](RenderPass& pass) {
+    return callback() && context_->GetCompositor()->Composite(pass);
+  });
 }
 
 }  // namespace impeller::stator::testing

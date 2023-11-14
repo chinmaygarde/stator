@@ -37,13 +37,18 @@ class Swapchain {
 
   void Shutdown();
 
+  // Application callable.
   std::shared_ptr<Texture> AcquireNextDrawable();
 
-  void RecycleDrawable(std::shared_ptr<Texture> texture);
-
-  std::shared_ptr<Texture> AcquireNextPresentable();
-
+  // Application callable.
   bool PresentDrawable(std::shared_ptr<Texture> texture);
+
+  // Compositor callback.
+  std::shared_ptr<Texture> AcquireNextPresentable(
+      std::chrono::nanoseconds timeout = std::chrono::nanoseconds{0u});
+
+  // Compositor callback.
+  void RecycleDrawable(std::shared_ptr<Texture> texture);
 
  private:
   struct Recyclable {

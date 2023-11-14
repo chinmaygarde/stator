@@ -7,9 +7,11 @@
 #include <memory>
 
 #include "impeller/renderer/context.h"
-#include "impeller/stator/renderer/swapchain.h"
 
 namespace impeller::stator {
+
+class Swapchain;
+class Compositor;
 
 class Context final : public std::enable_shared_from_this<Context> {
  public:
@@ -24,13 +26,17 @@ class Context final : public std::enable_shared_from_this<Context> {
 
   Context& operator=(const Context&) = delete;
 
-  const std::shared_ptr<Swapchain> GetSwapchain() const;
+  const std::shared_ptr<Swapchain>& GetSwapchain() const;
+
+  const std::shared_ptr<Compositor>& GetCompositor() const;
 
   const std::shared_ptr<impeller::Context>& GetImpellerContext() const;
 
  private:
   std::shared_ptr<impeller::Context> context_;
   std::shared_ptr<Swapchain> swapchain_;
+  std::shared_ptr<Compositor> compositor_;
+
   bool is_valid_ = false;
 
   Context();

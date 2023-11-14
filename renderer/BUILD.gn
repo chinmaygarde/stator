@@ -6,6 +6,8 @@ import("../../tools/impeller.gni")
 
 impeller_component("renderer") {
   sources = [
+    "compositor.cc",
+    "compositor.h",
     "context.cc",
     "context.h",
     "swapchain.cc",

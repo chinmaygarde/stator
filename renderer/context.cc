@@ -5,6 +5,8 @@
 #include "impeller/stator/renderer/context.h"
 
 #include "impeller/base/validation.h"
+#include "impeller/stator/renderer/compositor.h"
+#include "impeller/stator/renderer/swapchain.h"
 
 namespace impeller::stator {
 
@@ -25,14 +27,22 @@ std::shared_ptr<Context> Context::Make(
 
 Context::Context() = default;
 
-Context::~Context() = default;
+Context::~Context() {
+  if (swapchain_) {
+    swapchain_->Shutdown();
+  }
+}
 
 bool Context::IsValid() const {
   return is_valid_;
 }
 
-const std::shared_ptr<Swapchain> Context::GetSwapchain() const {
+const std::shared_ptr<Swapchain>& Context::GetSwapchain() const {
   return swapchain_;
+}
+
+const std::shared_ptr<Compositor>& Context::GetCompositor() const {
+  return compositor_;
 }
 
 void Context::Setup(std::shared_ptr<impeller::Context> context) {
@@ -47,6 +57,15 @@ void Context::Setup(std::shared_ptr<impeller::Context> context) {
     VALIDATION_LOG << "Could not create Stator swapchain.";
     return;
   }
+
+  auto compositor = std::make_shared<Compositor>(context_, swapchain);
+  if (!compositor->IsValid()) {
+    VALIDATION_LOG << "Could not create compositor.";
+    return;
+  }
+
+  swapchain_ = std::move(swapchain);
+  compositor_ = std::move(compositor);
   is_valid_ = true;
 }
 

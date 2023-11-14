@@ -8,7 +8,7 @@
 namespace impeller::stator::testing {
 
 TEST_P(StatorTest, CanSetupPlayground) {
-  OpenPlaygroundHere([](const RenderPass& pass) { return true; });
+  OpenStatorPlaygroundHere([]() { return true; });
 }
 
 INSTANTIATE_TEST_SUITE_P(

@@ -28,6 +28,9 @@ class StatorTest : public PlaygroundTest, public flutter::testing::DartFixture {
 
   const std::shared_ptr<Context>& GetStatorContext() const;
 
+  using StatorCallback = std::function<bool(void)>;
+  bool OpenStatorPlaygroundHere(const StatorCallback& callback);
+
  private:
   fml::Thread ui_thread_;
   fml::Thread io_thread_;
