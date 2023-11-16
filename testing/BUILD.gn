@@ -7,6 +7,15 @@ import("../../tools/impeller.gni")
 
 test_fixtures("dart_fixtures") {
   dart_main = "stator_main.dart"
+  fixtures = [
+    "fixtures/epoxy/error1_1.epoxy",
+    "fixtures/epoxy/error3_1.epoxy",
+    "fixtures/epoxy/error3_3.epoxy",
+    "fixtures/epoxy/error51_12.epoxy",
+    "fixtures/epoxy/error84_24.epoxy",
+    "fixtures/epoxy/error_pretty.epoxy",
+    "fixtures/epoxy/hello.txt",
+  ]
 }
 
 impeller_component("stator_unittests") {
@@ -23,6 +32,7 @@ impeller_component("stator_unittests") {
   deps = [
     ":dart_fixtures",
     "../../playground:playground_test",
+    "../epoxy:epoxy_unittests",
     "../renderer",
     "//flutter/testing",
     "//flutter/testing:dart",

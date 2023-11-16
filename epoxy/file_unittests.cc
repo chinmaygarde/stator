@@ -5,13 +5,14 @@
 #include <string>
 
 #include "file.h"
-#include "fixture.h"
+#include "flutter/testing/testing.h"
 
 namespace epoxy {
 namespace testing {
 
 TEST(FileTest, CanReadFileAsString) {
-  auto string = ReadFileAsString(EPOXY_FIXTURES_LOCATION "hello.txt");
+  auto string = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/hello.txt");
   ASSERT_TRUE(string.has_value());
   ASSERT_NE(string.value().find("hello"), std::string::npos);
 }

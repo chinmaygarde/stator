@@ -1,14 +1,12 @@
 // This source file is part of Epoxy licensed under the MIT License.
 // See LICENSE.md file for details.
 
-#include <gtest/gtest.h>
+#include <sstream>
+#include <string>
 
 #include "driver.h"
 #include "file.h"
-#include "fixture.h"
-
-#include <sstream>
-#include <string>
+#include "flutter/testing/testing.h"
 
 namespace epoxy {
 namespace testing {
@@ -116,7 +114,7 @@ TEST(DriverTest, CanParseFunctions) {
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[0].GetName(), "hello");
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[0].GetArguments().size(),
-            3);
+            3u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetFunctions()[0]
                 .GetArguments()[0]
@@ -169,10 +167,10 @@ TEST(DriverTest, CanParseFunctionsVariations) {
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions().size(), 2u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[0].GetName(), "hello");
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[0].GetArguments().size(),
-            1);
+            1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[1].GetName(), "world");
   ASSERT_EQ(driver.GetNamespaces()[0].GetFunctions()[1].GetArguments().size(),
-            0);
+            0u);
 }
 
 TEST(DriverTest, CanParseStruct) {
@@ -194,7 +192,8 @@ TEST(DriverTest, CanParseStruct) {
   ASSERT_EQ(driver.GetNamespaces().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetName(), "Foo");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(), 3);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(),
+            3u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetStructs()[0]
                 .GetVariables()[0]
@@ -252,11 +251,14 @@ TEST(DriverTest, CanParseStructVariants) {
   ASSERT_EQ(driver.GetNamespaces().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs().size(), 3u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetName(), "Foo");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(), 1);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(),
+            1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[1].GetName(), "Bar");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[1].GetVariables().size(), 0);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[1].GetVariables().size(),
+            0u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[2].GetName(), "Baz");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[2].GetVariables().size(), 2);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[2].GetVariables().size(),
+            2u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetStructs()[0]
                 .GetVariables()[0]
@@ -313,7 +315,8 @@ TEST(DriverTest, CanParseAllPrimitives) {
   ASSERT_EQ(driver.GetNamespaces().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetName(), "Foo");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(), 8);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(),
+            8u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetStructs()[0]
                 .GetVariables()[0]
@@ -415,7 +418,8 @@ TEST(DriverTest, CanParsePointers) {
   ASSERT_EQ(driver.GetNamespaces().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetName(), "Foo");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(), 1);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(),
+            1u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetStructs()[0]
                 .GetVariables()[0]
@@ -481,7 +485,8 @@ TEST(DriverTest, CanParseVoidAndVoidPointer) {
   ASSERT_EQ(driver.GetNamespaces().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs().size(), 1u);
   ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetName(), "Foo");
-  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(), 2);
+  ASSERT_EQ(driver.GetNamespaces()[0].GetStructs()[0].GetVariables().size(),
+            2u);
   ASSERT_EQ(driver.GetNamespaces()[0]
                 .GetStructs()[0]
                 .GetVariables()[0]
@@ -822,7 +827,8 @@ TEST(DriverTest, ErrorLocationsAreCorrect) {
 TEST(DriverTest, ErrorLocationsAreCorrectFile1_1) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error1_1.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error1_1.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
 
@@ -837,7 +843,8 @@ TEST(DriverTest, ErrorLocationsAreCorrectFile1_1) {
 TEST(DriverTest, ErrorLocationsAreCorrectFile3_3) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error3_3.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error3_3.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
 
@@ -852,7 +859,8 @@ TEST(DriverTest, ErrorLocationsAreCorrectFile3_3) {
 TEST(DriverTest, ErrorLocationsAreCorrectFile3_1) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error3_1.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error3_1.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
 
@@ -867,7 +875,8 @@ TEST(DriverTest, ErrorLocationsAreCorrectFile3_1) {
 TEST(DriverTest, ErrorLocationsAreCorrectFile51_12) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error51_12.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error51_12.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
 
@@ -882,7 +891,8 @@ TEST(DriverTest, ErrorLocationsAreCorrectFile51_12) {
 TEST(DriverTest, ErrorLocationsAreCorrectFile84_24) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error84_24.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error84_24.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
 
@@ -897,7 +907,8 @@ TEST(DriverTest, ErrorLocationsAreCorrectFile84_24) {
 TEST(DriverTest, ErrorLocationsAreCorrectFilePretty) {
   Driver driver;
 
-  auto source = ReadFileAsString(EPOXY_FIXTURES_LOCATION "error_pretty.epoxy");
+  auto source = ReadFileAsString(
+      std::string{flutter::testing::GetFixturesPath()} + "/error_pretty.epoxy");
   ASSERT_TRUE(source.has_value());
   auto result = driver.Parse(source.value());
   driver.PrettyPrintErrors(std::cerr, source.value());

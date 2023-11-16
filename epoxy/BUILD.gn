@@ -20,9 +20,7 @@ epoxy_lexer("lexer") {
   ]
 }
 
-impeller_component("epoxy") {
-  target_type = "executable"
-
+impeller_component("epoxy_lib") {
   sources = [
     "code_gen.cc",
     "code_gen.h",
@@ -30,7 +28,6 @@ impeller_component("epoxy") {
     "command_line.h",
     "driver.cc",
     "driver.h",
-    "epoxy_main.cc",
     "file.cc",
     "file.h",
     "macros.h",
@@ -43,11 +40,35 @@ impeller_component("epoxy") {
     "version.h",
   ]
 
-  deps = [
+  public_deps = [
     ":lexer",
     ":parser",
     "//flutter/fml",
     "//third_party/inja",
     "//third_party/json",
+  ]
+}
+
+impeller_component("epoxy") {
+  target_type = "executable"
+
+  sources = [ "epoxy_main.cc" ]
+
+  deps = [ ":epoxy_lib" ]
+}
+
+impeller_component("epoxy_unittests") {
+  testonly = true
+
+  sources = [
+    "code_gen_unittests.cc",
+    "driver_unittests.cc",
+    "file_unittests.cc",
+    "sema_unittests.cc",
+  ]
+
+  deps = [
+    ":epoxy_lib",
+    "//flutter/testing",
   ]
 }
