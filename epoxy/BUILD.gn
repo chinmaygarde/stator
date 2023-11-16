@@ -4,17 +4,9 @@
 
 import("../../tools/impeller.gni")
 
-impeller_component("renderer") {
+impeller_component("epoxy") {
   sources = [
-    "compositor.cc",
-    "compositor.h",
-    "context.cc",
-    "context.h",
-    "swapchain.cc",
-    "swapchain.h",
-  ]
-  deps = [
-    "../../renderer",
-    "../epoxy",
+    "epoxy.cc",
+    "epoxy.h",
   ]
 }

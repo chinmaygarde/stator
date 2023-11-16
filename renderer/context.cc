@@ -74,3 +74,15 @@ const std::shared_ptr<impeller::Context>& Context::GetImpellerContext() const {
 }
 
 }  // namespace impeller::stator
+
+impeller::stator::Context* GetGlobalContext() {
+  FML_LOG(ERROR) << "Got global context.";
+  return nullptr;
+}
+
+STATOR_EXPORT void ReleaseContext(impeller::stator::Context* context) {
+  FML_LOG(ERROR) << "Released context";
+  if (context == nullptr) {
+    return;
+  }
+}

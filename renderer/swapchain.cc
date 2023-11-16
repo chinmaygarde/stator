@@ -40,17 +40,16 @@ std::shared_ptr<Texture> Swapchain::AcquireNextPresentable(
   bool did_pop = false;
   {
     Lock lock(mutex_);
-    const auto has_presentable =
-        not_empty_cv_.WaitFor(mutex_, timeout, [&]() IPLR_REQUIRES(mutex_) {
-          if (shutdown_) {
-            return true;
-          }
-          if (!presentable_drawables_.empty()) {
-            return true;
-          }
-          return false;
-        });
-    if (has_presentable) {
+    not_empty_cv_.WaitFor(mutex_, timeout, [&]() IPLR_REQUIRES(mutex_) {
+      if (shutdown_) {
+        return true;
+      }
+      if (!presentable_drawables_.empty()) {
+        return true;
+      }
+      return false;
+    });
+    if (!presentable_drawables_.empty()) {
       result = presentable_drawables_.front();
       presentable_drawables_.pop_front();
       did_pop = true;
