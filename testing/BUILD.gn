@@ -15,6 +15,7 @@ test_fixtures("dart_fixtures") {
     "fixtures/epoxy/error84_24.epoxy",
     "fixtures/epoxy/error_pretty.epoxy",
     "fixtures/epoxy/hello.txt",
+    "fixtures/epoxy/example.epoxy",
   ]
 }
 
