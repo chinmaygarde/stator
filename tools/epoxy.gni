@@ -1,0 +1,63 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../../tools/impeller.gni")
+
+template("epoxy") {
+  assert(defined(invoker.input), "The epoxy source file must be specified.")
+  assert(defined(invoker.output), "The output path must be specified.")
+  assert(defined(invoker.templ), "The template path must be specified.")
+
+  compiled_action(target_name) {
+    tool = "//flutter/impeller/stator/epoxy:epoxy"
+    inputs = [
+      invoker.input,
+      invoker.templ,
+    ]
+    outputs = [ invoker.output ]
+    args = [
+      "--output",
+      rebase_path(invoker.output, root_out_dir),
+      "--idl",
+      rebase_path(invoker.input, root_out_dir),
+      "--template-file",
+      rebase_path(invoker.templ, root_out_dir),
+    ]
+  }
+}
+
+template("epoxy_cxx") {
+  assert(defined(invoker.source), "The epoxy source file must be specified.")
+
+  source_file_name = get_path_info(invoker.source, "name")
+
+  hdr_path = "$target_gen_dir/$source_file_name.h"
+  src_path = "$target_gen_dir/$source_file_name.cc"
+
+  hdr_templ = "../epoxy/templates/cxx_interface.template.epoxy"
+  src_templ = "../epoxy/templates/cxx_impl.template.epoxy"
+
+  hdr_target_name = "hdr_$target_name"
+  epoxy(hdr_target_name) {
+    input = invoker.source
+    output = hdr_path
+    templ = hdr_templ
+  }
+
+  src_target_name = "src_$target_name"
+  epoxy(src_target_name) {
+    input = invoker.source
+    output = src_path
+    templ = src_templ
+  }
+
+  impeller_component(target_name) {
+    sources = get_target_outputs(":$hdr_target_name") +
+              get_target_outputs(":$src_target_name")
+    deps = [
+      ":$hdr_target_name",
+      ":$src_target_name",
+    ]
+  }
+}

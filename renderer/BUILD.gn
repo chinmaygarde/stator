@@ -3,6 +3,11 @@
 # found in the LICENSE file.
 
 import("../../tools/impeller.gni")
+import("../tools/epoxy.gni")
+
+epoxy_cxx("renderer_epoxy") {
+  source = "renderer.epoxy"
+}
 
 impeller_component("renderer") {
   sources = [
@@ -14,6 +19,7 @@ impeller_component("renderer") {
     "swapchain.h",
   ]
   deps = [
+    ":renderer_epoxy",
     "../../entity",
     "../../renderer",
     "../../typographer/backends/skia:typographer_skia_backend",
