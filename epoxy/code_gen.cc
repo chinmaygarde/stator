@@ -4,7 +4,7 @@
 #include "code_gen.h"
 #include "version.h"
 
-#include <inja.hpp>
+#include <inja/inja.hpp>
 #include <sstream>
 
 namespace epoxy {
@@ -118,13 +118,10 @@ CodeGen::RenderResult CodeGen::Render(
   env.add_callback("dart_type", 1u, [](inja::Arguments& args) {
     return TypeToDartType(args.at(0u)->get<std::string>());
   });
-  try {
-    auto render =
-        env.render(template_data_.data(), CreateJSONTemplateData(namespaces));
-    return {render, std::nullopt};
-  } catch (std::exception e) {
-    return {std::nullopt, e.what()};
-  }
+
+  auto render =
+      env.render(template_data_.data(), CreateJSONTemplateData(namespaces));
+  return {render, std::nullopt};
 }
 
 std::string CodeGen::GenerateTemplateDataJSON(

@@ -3,6 +3,22 @@
 # found in the LICENSE file.
 
 import("../../tools/impeller.gni")
+import("../tools/epoxy.gni")
+
+epoxy_parser("parser") {
+  name = "epoxy"
+  source = "epoxy.y"
+  deps = [ "//third_party/json" ]
+}
+
+epoxy_lexer("lexer") {
+  name = "epoxy"
+  source = "epoxy.l"
+  deps = [
+    ":parser",
+    "//third_party/json",
+  ]
+}
 
 impeller_component("epoxy") {
   sources = [
@@ -24,5 +40,13 @@ impeller_component("epoxy") {
     "types.cc",
     "types.h",
     "version.h",
+  ]
+
+  deps = [
+    ":lexer",
+    ":parser",
+    "//flutter/fml",
+    "//third_party/inja",
+    "//third_party/json",
   ]
 }

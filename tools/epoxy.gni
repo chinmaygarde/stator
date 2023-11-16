@@ -1,0 +1,100 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//flutter/impeller/tools/impeller.gni")
+
+template("epoxy_lexer") {
+  assert(defined(invoker.name), "The name of the lexer must be specified.")
+  assert(defined(invoker.source), "The source file must be specified.")
+
+  invoker_name = invoker.name
+  out_directory = "$target_gen_dir/lexer/$invoker_name"
+
+  gen_lexer_target_name = "gen_lexer_$target_name"
+  action(gen_lexer_target_name) {
+    script = "//flutter/impeller/stator/tools/epoxy_lexer.py"
+
+    inputs = [ invoker.source ]
+
+    outputs = [
+      "$out_directory/lexer.h",
+      "$out_directory/lexer.cc",
+    ]
+
+    args = [
+      "--source",
+      rebase_path(invoker.source, root_out_dir),
+      "--outdir",
+      rebase_path(out_directory, root_out_dir),
+    ]
+  }
+
+  lexer_config_target_name = "lexer_config_$target_name"
+  config(lexer_config_target_name) {
+    include_dirs = [ out_directory ]
+  }
+
+  lexer_source_set_target_name = "lexer_source_set_$target_name"
+  impeller_component(lexer_source_set_target_name) {
+    public_configs = [ ":$lexer_config_target_name" ]
+    sources = get_target_outputs(":$gen_lexer_target_name")
+    deps = [ ":$gen_lexer_target_name" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+  }
+
+  group(target_name) {
+    public_deps = [ ":$lexer_source_set_target_name" ]
+  }
+}
+
+template("epoxy_parser") {
+  assert(defined(invoker.name), "The name of the parser must be specified.")
+  assert(defined(invoker.source), "The source file must be specified.")
+
+  invoker_name = invoker.name
+  out_directory = "$target_gen_dir/parser/$invoker_name"
+
+  gen_parser_target_name = "gen_parser_$target_name"
+  action(gen_parser_target_name) {
+    script = "//flutter/impeller/stator/tools/epoxy_parser.py"
+
+    inputs = [ invoker.source ]
+
+    outputs = [
+      "$out_directory/location.hh",
+      "$out_directory/parser.cc",
+      "$out_directory/parser.h",
+      "$out_directory/position.hh",
+      "$out_directory/stack.hh",
+    ]
+
+    args = [
+      "--source",
+      rebase_path(invoker.source, root_out_dir),
+      "--outdir",
+      rebase_path(out_directory, root_out_dir),
+    ]
+  }
+
+  parser_config_target_name = "parser_config_$target_name"
+  config(parser_config_target_name) {
+    include_dirs = [ out_directory ]
+  }
+
+  parser_source_set_target_name = "parser_source_set_$target_name"
+  impeller_component(parser_source_set_target_name) {
+    public_configs = [ ":$parser_config_target_name" ]
+    sources = get_target_outputs(":$gen_parser_target_name")
+    deps = [ ":$gen_parser_target_name" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+  }
+
+  group(target_name) {
+    public_deps = [ ":$parser_source_set_target_name" ]
+  }
+}

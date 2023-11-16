@@ -14,7 +14,9 @@ impeller_component("renderer") {
     "swapchain.h",
   ]
   deps = [
+    "../../entity",
     "../../renderer",
+    "../../typographer/backends/skia:typographer_skia_backend",
     "../epoxy",
   ]
 }

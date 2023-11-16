@@ -15,7 +15,6 @@
 %define parse.trace
 %define parse.error verbose
 %define api.token.prefix {epoxy_TOKEN_}
-%define parse.assert
 
 %param { epoxy::Driver& driver }
 %param { void *scanner }
@@ -28,12 +27,12 @@
 };
 
 %code requires {
-#include "driver.h"
-#include "types.h"
+#include "impeller/stator/epoxy/driver.h"
+#include "impeller/stator/epoxy/types.h"
 }
 
 %code {
-#include "decls.h"
+#include "impeller/stator/epoxy/decls.h"
 }
 
 %token

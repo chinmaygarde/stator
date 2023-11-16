@@ -11,8 +11,8 @@
 #include <string>
 
 #include "parser.h"
-#include "types.h"
-#include "decls.h"
+#include "impeller/stator/epoxy/types.h"
+#include "impeller/stator/epoxy/decls.h"
 
 #define CURRENT_LOC driver.GetCurrentLocation()
 
