@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "impeller/renderer/context.h"
-#include "impeller/stator/epoxy/epoxy.h"
 
 namespace impeller::stator {
 
@@ -46,11 +45,3 @@ class Context final : public std::enable_shared_from_this<Context> {
 };
 
 }  // namespace impeller::stator
-
-STATOR_EXTERN_C_BEGIN
-
-STATOR_EXPORT impeller::stator::Context* GetGlobalContext();
-
-STATOR_EXPORT void ReleaseContext(impeller::stator::Context*);
-
-STATOR_EXTERN_C_END

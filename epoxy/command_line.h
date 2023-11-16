@@ -15,7 +15,7 @@ class CommandLine {
  public:
   CommandLine(int argc, const char* argv[]);
 
-  CommandLine(std::vector<std::string> args);
+  explicit CommandLine(std::vector<std::string> args);
 
   ~CommandLine();
 

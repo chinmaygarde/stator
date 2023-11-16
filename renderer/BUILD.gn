@@ -17,6 +17,5 @@ impeller_component("renderer") {
     "../../entity",
     "../../renderer",
     "../../typographer/backends/skia:typographer_skia_backend",
-    "../epoxy",
   ]
 }

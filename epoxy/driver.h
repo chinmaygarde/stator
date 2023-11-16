@@ -19,7 +19,7 @@ class Driver {
     kOutOfMemory,
   };
 
-  Driver(std::string advisory_file_name = "main.epoxy");
+  explicit Driver(std::string advisory_file_name = "main.epoxy");
 
   ~Driver();
 

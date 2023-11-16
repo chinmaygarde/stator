@@ -14,7 +14,7 @@ namespace epoxy {
 
 class CodeGen {
  public:
-  CodeGen(std::string template_data);
+  explicit CodeGen(std::string template_data);
 
   virtual ~CodeGen();
 

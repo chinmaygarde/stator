@@ -21,6 +21,8 @@ epoxy_lexer("lexer") {
 }
 
 impeller_component("epoxy") {
+  target_type = "executable"
+
   sources = [
     "code_gen.cc",
     "code_gen.h",
@@ -28,8 +30,7 @@ impeller_component("epoxy") {
     "command_line.h",
     "driver.cc",
     "driver.h",
-    "epoxy.cc",
-    "epoxy.h",
+    "epoxy_main.cc",
     "file.cc",
     "file.h",
     "macros.h",
