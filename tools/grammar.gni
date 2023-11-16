@@ -24,9 +24,9 @@ template("gen_lexer") {
 
     args = [
       "--source",
-      rebase_path(invoker.source, root_out_dir),
+      rebase_path(invoker.source),
       "--outdir",
-      rebase_path(out_directory, root_out_dir),
+      rebase_path(out_directory),
     ]
   }
 
@@ -73,9 +73,9 @@ template("gen_parser") {
 
     args = [
       "--source",
-      rebase_path(invoker.source, root_out_dir),
+      rebase_path(invoker.source),
       "--outdir",
-      rebase_path(out_directory, root_out_dir),
+      rebase_path(out_directory),
     ]
   }
 

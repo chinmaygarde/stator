@@ -40,7 +40,7 @@ def main():
   command = [
     'flex',
     '--noline',
-    os.path.abspath(args.source)
+    args.source
   ]
 
   subprocess.check_output(command, cwd=args.outdir)

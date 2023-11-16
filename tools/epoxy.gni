@@ -32,11 +32,11 @@ template("epoxy_cxx") {
 
   source_file_name = get_path_info(invoker.source, "name")
 
-  hdr_path = "$target_gen_dir/$source_file_name.h"
-  src_path = "$target_gen_dir/$source_file_name.cc"
+  hdr_path = "$target_gen_dir/$source_file_name.epoxy.h"
+  src_path = "$target_gen_dir/$source_file_name.epoxy.cc"
 
-  hdr_templ = "../epoxy/templates/cxx_interface.template.epoxy"
-  src_templ = "../epoxy/templates/cxx_impl.template.epoxy"
+  hdr_templ = "../epoxy/templates/cxx_hdr.template.epoxy"
+  src_templ = "../epoxy/templates/cxx_src.template.epoxy"
 
   hdr_target_name = "hdr_$target_name"
   epoxy(hdr_target_name) {
