@@ -6,7 +6,23 @@ import("../../tools/impeller.gni")
 
 impeller_component("epoxy") {
   sources = [
+    "code_gen.cc",
+    "code_gen.h",
+    "command_line.cc",
+    "command_line.h",
+    "driver.cc",
+    "driver.h",
     "epoxy.cc",
     "epoxy.h",
+    "file.cc",
+    "file.h",
+    "macros.h",
+    "scanner.cc",
+    "scanner.h",
+    "sema.cc",
+    "sema.h",
+    "types.cc",
+    "types.h",
+    "version.h",
   ]
 }
