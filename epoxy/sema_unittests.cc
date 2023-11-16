@@ -1,10 +1,9 @@
 // This source file is part of Epoxy licensed under the MIT License.
 // See LICENSE.md file for details.
 
-#include <gtest/gtest.h>
-
-#include "driver.h"
-#include "sema.h"
+#include "flutter/testing/testing.h"
+#include "impeller/stator/epoxy/driver.h"
+#include "impeller/stator/epoxy/sema.h"
 
 namespace epoxy {
 namespace testing {

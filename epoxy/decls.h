@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "driver.h"
+#include "impeller/stator/epoxy/driver.h"
 #include "parser.h"
 
 #define YY_DECL \

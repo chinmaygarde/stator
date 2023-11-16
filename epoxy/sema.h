@@ -6,7 +6,7 @@
 #include <sstream>
 #include <vector>
 
-#include "types.h"
+#include "impeller/stator/epoxy/types.h"
 
 namespace epoxy {
 

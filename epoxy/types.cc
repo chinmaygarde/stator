@@ -1,7 +1,7 @@
 // This source file is part of Epoxy licensed under the MIT License.
 // See LICENSE.md file for details.
 
-#include "types.h"
+#include "impeller/stator/epoxy/types.h"
 
 #include <algorithm>
 #include <iterator>

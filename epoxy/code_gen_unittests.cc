@@ -4,11 +4,10 @@
 #include <iostream>
 #include <string>
 
-#include <gtest/gtest.h>
-
-#include "code_gen.h"
-#include "driver.h"
-#include "sema.h"
+#include "flutter/testing/testing.h"
+#include "impeller/stator/epoxy/code_gen.h"
+#include "impeller/stator/epoxy/driver.h"
+#include "impeller/stator/epoxy/sema.h"
 
 namespace epoxy {
 namespace testing {

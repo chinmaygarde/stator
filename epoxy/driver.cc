@@ -1,15 +1,15 @@
 // This source file is part of Epoxy licensed under the MIT License.
 // See LICENSE.md file for details.
 
-#include "driver.h"
-
-#include "file.h"
-#include "scanner.h"
+#include "impeller/stator/epoxy/driver.h"
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include "impeller/stator/epoxy/file.h"
+#include "impeller/stator/epoxy/scanner.h"
 
 namespace epoxy {
 

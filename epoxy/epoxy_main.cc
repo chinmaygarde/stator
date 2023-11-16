@@ -3,12 +3,12 @@
 
 #include <iostream>
 
-#include "code_gen.h"
-#include "command_line.h"
-#include "driver.h"
-#include "file.h"
-#include "sema.h"
-#include "version.h"
+#include "impeller/stator/epoxy/code_gen.h"
+#include "impeller/stator/epoxy/command_line.h"
+#include "impeller/stator/epoxy/driver.h"
+#include "impeller/stator/epoxy/file.h"
+#include "impeller/stator/epoxy/sema.h"
+#include "impeller/stator/epoxy/version.h"
 
 namespace epoxy {
 

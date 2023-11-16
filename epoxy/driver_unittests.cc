@@ -4,9 +4,9 @@
 #include <sstream>
 #include <string>
 
-#include "driver.h"
-#include "file.h"
 #include "flutter/testing/testing.h"
+#include "impeller/stator/epoxy/driver.h"
+#include "impeller/stator/epoxy/file.h"
 
 namespace epoxy {
 namespace testing {

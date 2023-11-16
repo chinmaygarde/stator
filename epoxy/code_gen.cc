@@ -1,11 +1,12 @@
 // This source file is part of Epoxy licensed under the MIT License.
 // See LICENSE.md file for details.
 
-#include "code_gen.h"
-#include "version.h"
+#include "impeller/stator/epoxy/code_gen.h"
 
 #include <inja/inja.hpp>
 #include <sstream>
+
+#include "impeller/stator/epoxy/version.h"
 
 namespace epoxy {
 

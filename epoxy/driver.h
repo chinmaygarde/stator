@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include "location.hh"
-#include "types.h"
-
 #include <vector>
+
+#include "impeller/stator/epoxy/types.h"
+#include "location.hh"
 
 namespace epoxy {
 

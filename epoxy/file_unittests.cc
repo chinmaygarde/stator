@@ -4,8 +4,8 @@
 #include <gtest/gtest.h>
 #include <string>
 
-#include "file.h"
 #include "flutter/testing/testing.h"
+#include "impeller/stator/epoxy/file.h"
 
 namespace epoxy {
 namespace testing {
