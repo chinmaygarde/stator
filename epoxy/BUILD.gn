@@ -3,15 +3,15 @@
 # found in the LICENSE file.
 
 import("../../tools/impeller.gni")
-import("../tools/epoxy.gni")
+import("../tools/grammar.gni")
 
-epoxy_parser("parser") {
+gen_parser("parser") {
   name = "epoxy"
   source = "epoxy.y"
   deps = [ "//third_party/json" ]
 }
 
-epoxy_lexer("lexer") {
+gen_lexer("lexer") {
   name = "epoxy"
   source = "epoxy.l"
   deps = [

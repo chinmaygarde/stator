@@ -4,7 +4,7 @@
 
 import("//flutter/impeller/tools/impeller.gni")
 
-template("epoxy_lexer") {
+template("gen_lexer") {
   assert(defined(invoker.name), "The name of the lexer must be specified.")
   assert(defined(invoker.source), "The source file must be specified.")
 
@@ -13,7 +13,7 @@ template("epoxy_lexer") {
 
   gen_lexer_target_name = "gen_lexer_$target_name"
   action(gen_lexer_target_name) {
-    script = "//flutter/impeller/stator/tools/epoxy_lexer.py"
+    script = "//flutter/impeller/stator/tools/gen_lexer.py"
 
     inputs = [ invoker.source ]
 
@@ -50,7 +50,7 @@ template("epoxy_lexer") {
   }
 }
 
-template("epoxy_parser") {
+template("gen_parser") {
   assert(defined(invoker.name), "The name of the parser must be specified.")
   assert(defined(invoker.source), "The source file must be specified.")
 
@@ -59,7 +59,7 @@ template("epoxy_parser") {
 
   gen_parser_target_name = "gen_parser_$target_name"
   action(gen_parser_target_name) {
-    script = "//flutter/impeller/stator/tools/epoxy_parser.py"
+    script = "//flutter/impeller/stator/tools/gen_parser.py"
 
     inputs = [ invoker.source ]
 
