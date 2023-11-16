@@ -23,6 +23,10 @@ class Driver {
 
   ~Driver();
 
+  Driver(const Driver&) = delete;
+
+  Driver& operator=(const Driver&) = delete;
+
   ParserResult Parse(const std::string& text);
 
   const std::vector<Namespace>& GetNamespaces() const;
@@ -48,8 +52,6 @@ class Driver {
   std::vector<Error> errors_;
   std::string advisory_file_name_;
   location location_;
-
-  EPOXY_DISALLOW_COPY_AND_ASSIGN(Driver);
 };
 
 }  // namespace epoxy

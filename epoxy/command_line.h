@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "macros.h"
-
 namespace epoxy {
 
 class CommandLine {
@@ -19,6 +17,10 @@ class CommandLine {
 
   ~CommandLine();
 
+  CommandLine(const CommandLine&) = delete;
+
+  CommandLine& operator=(const CommandLine&) = delete;
+
   std::optional<std::string> GetString(const std::string& key) const;
 
   std::optional<bool> GetOption(const std::string& key) const;
@@ -27,8 +29,6 @@ class CommandLine {
 
  private:
   std::vector<std::string> args_;
-
-  EPOXY_DISALLOW_COPY_AND_ASSIGN(CommandLine);
 };
 
 }  // namespace epoxy

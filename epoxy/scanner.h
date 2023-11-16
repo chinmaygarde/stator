@@ -5,15 +5,18 @@
 
 #include "decls.h"
 #include "lexer.h"
-#include "macros.h"
 
 namespace epoxy {
 
 class Scanner {
  public:
-  Scanner(const std::string& text);
+  explicit Scanner(const std::string& text);
 
   ~Scanner();
+
+  Scanner(const Scanner&) = delete;
+
+  Scanner& operator=(const Scanner&) = delete;
 
   bool IsValid() const;
 
@@ -23,8 +26,6 @@ class Scanner {
   yyscan_t scanner_ = {};
   YY_BUFFER_STATE buffer_ = {};
   bool is_valid_ = false;
-
-  EPOXY_DISALLOW_COPY_AND_ASSIGN(Scanner);
 };
 
 }  // namespace epoxy

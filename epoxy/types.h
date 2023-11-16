@@ -10,8 +10,6 @@
 #include <variant>
 #include <vector>
 
-#include "macros.h"
-
 namespace epoxy {
 
 class Namespace;

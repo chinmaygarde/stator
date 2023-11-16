@@ -6,7 +6,6 @@
 #include <sstream>
 #include <vector>
 
-#include "macros.h"
 #include "types.h"
 
 namespace epoxy {
@@ -22,6 +21,10 @@ class Sema {
 
   ~Sema();
 
+  Sema(const Sema&) = delete;
+
+  Sema& operator=(const Sema&) = delete;
+
   Result Perform(std::vector<Namespace> namespaces);
 
   void PrettyPrintErrors(std::ostream& stream);
@@ -31,8 +34,6 @@ class Sema {
  private:
   std::stringstream errors_;
   std::vector<Namespace> namespaces_;
-
-  EPOXY_DISALLOW_COPY_AND_ASSIGN(Sema);
 };
 
 }  // namespace epoxy

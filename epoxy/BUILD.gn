@@ -30,7 +30,6 @@ impeller_component("epoxy_lib") {
     "driver.h",
     "file.cc",
     "file.h",
-    "macros.h",
     "scanner.cc",
     "scanner.h",
     "sema.cc",

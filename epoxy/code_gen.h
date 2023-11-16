@@ -7,8 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "macros.h"
-#include "types.h"
+#include "impeller/stator/epoxy/types.h"
 
 namespace epoxy {
 
@@ -17,6 +16,10 @@ class CodeGen {
   explicit CodeGen(std::string template_data);
 
   virtual ~CodeGen();
+
+  CodeGen(const CodeGen&) = delete;
+
+  CodeGen& operator=(const CodeGen&) = delete;
 
   struct RenderResult {
     std::optional<std::string> result;
@@ -30,8 +33,6 @@ class CodeGen {
 
  private:
   std::string template_data_;
-
-  EPOXY_DISALLOW_COPY_AND_ASSIGN(CodeGen);
 };
 
 }  // namespace epoxy
