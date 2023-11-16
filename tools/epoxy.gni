@@ -32,7 +32,7 @@ template("epoxy_lexer") {
 
   lexer_config_target_name = "lexer_config_$target_name"
   config(lexer_config_target_name) {
-    include_dirs = [ out_directory ]
+    include_dirs = [ target_gen_dir ]
   }
 
   lexer_source_set_target_name = "lexer_source_set_$target_name"
@@ -81,7 +81,7 @@ template("epoxy_parser") {
 
   parser_config_target_name = "parser_config_$target_name"
   config(parser_config_target_name) {
-    include_dirs = [ out_directory ]
+    include_dirs = [ target_gen_dir ]
   }
 
   parser_source_set_target_name = "parser_source_set_$target_name"

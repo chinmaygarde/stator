@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <string>
 
-#include "parser.h"
+#include "parser/epoxy/parser.h"
 #include "impeller/stator/epoxy/types.h"
 #include "impeller/stator/epoxy/decls.h"
 

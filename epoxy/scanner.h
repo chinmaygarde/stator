@@ -4,7 +4,7 @@
 #pragma once
 
 #include "impeller/stator/epoxy/decls.h"
-#include "lexer.h"
+#include "lexer/epoxy/lexer.h"
 
 namespace epoxy {
 

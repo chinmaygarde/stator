@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "impeller/stator/epoxy/types.h"
-#include "location.hh"
+#include "parser/epoxy/location.hh"
 
 namespace epoxy {
 
