@@ -24,7 +24,7 @@
       <key>name</key>
       <string>keyword.other.epoxy</string>
       <key>match</key>
-      <string>enum|struct|namespace|function</string>
+      <string>enum|struct|opaque|namespace|function</string>
     </dict>
     <dict>
       <key>name</key>

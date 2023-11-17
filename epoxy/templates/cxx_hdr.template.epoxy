@@ -4,7 +4,7 @@
 #include <cstdint>
 {% for ns in namespaces %}
 
-namespace impeller::stator::{{ ns.name }}::epoxy {
+namespace impeller::stator::{{ ns.name }} {
 
 // {{ length(ns.enums) }} enum definition(s).
 
@@ -36,6 +36,11 @@ struct {{ struct.name }} {
 }; //  {{ struct.name }}
 {% endfor %}
 
+// {{ length(ns.opaques) }} opaque struct forward declaration(s).
+
+{% for opaque in ns.opaques %}
+class {{ opaque.name }};
+{% endfor %}
 
 // {{ length(ns.functions) }} function declarations.
 
@@ -48,6 +53,6 @@ struct {{ struct.name }} {
 );
 
 {% endfor %}
-} //  namespace impeller::stator::{{ ns.name }}::epoxy
+} //  namespace impeller::stator::{{ ns.name }}
 
 {% endfor %}

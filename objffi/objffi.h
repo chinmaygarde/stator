@@ -4,5 +4,4 @@
 
 #pragma once
 
-namespace impeller::stator::objffi::epoxy {
-}  // namespace impeller::stator::objffi::epoxy
+namespace impeller::stator::objffi {}  // namespace impeller::stator::objffi

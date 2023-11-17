@@ -10,6 +10,10 @@
 
 namespace epoxy {
 
+//------------------------------------------------------------------------------
+// Variable
+//------------------------------------------------------------------------------
+
 Variable::Variable() = default;
 
 Variable::Variable(Primitive primitive, std::string identifier, bool is_pointer)
@@ -139,6 +143,10 @@ nlohmann::json::object_t Variable::GetJSONObject(const Namespace& ns) const {
   return var;
 }
 
+//------------------------------------------------------------------------------
+// Function
+//------------------------------------------------------------------------------
+
 Function::Function() = default;
 
 Function::Function(std::string name,
@@ -180,12 +188,12 @@ bool Function::PassesSema(const Namespace& ns,
     // If the user defined type is a struct, it must be a pointer. Otherwise, it
     // must be an enum.
     if (ReturnsPointer()) {
-      if (!ns.HasStructNamed(ret.value())) {
+      if (!ns.HasStructNamed(ret.value()) && !ns.HasOpaqueNamed(ret.value())) {
         stream << "Function " << name_ << " in namespace " << ns.GetName()
                << " specifies a return type " << ret.value() << "."
                << std::endl;
-        stream << "However, " << ret.value() << " is not a known struct name."
-               << std::endl;
+        stream << "However, " << ret.value()
+               << " is not a known struct or opaque name." << std::endl;
         if (ns.HasEnumNamed(ret.value())) {
           stream << "There is an enum named " << ret.value()
                  << ". But enums may only be returned by value. Drop the "
@@ -241,11 +249,13 @@ nlohmann::json::object_t Function::GetJSONObject(const Namespace& ns) const {
   if (auto ret = GetPrimitiveReturn(); ret.has_value()) {
     fun["return_type"] = PrimitiveToTypeString(ret.value());
     fun["returns_struct"] = false;
+    fun["returns_opaque"] = false;
     fun["returns_enum"] = false;
     fun["returns_primitive"] = true;
   } else if (auto ret = GetUserDefinedReturn(); ret.has_value()) {
     fun["return_type"] = ret.value();
     fun["returns_struct"] = ns.HasStructNamed(ret.value());
+    fun["returns_opaque"] = ns.HasOpaqueNamed(ret.value());
     fun["returns_enum"] = ns.HasEnumNamed(ret.value());
     fun["returns_primitive"] = false;
   }
@@ -254,6 +264,10 @@ nlohmann::json::object_t Function::GetJSONObject(const Namespace& ns) const {
 
   return fun;
 }
+
+//------------------------------------------------------------------------------
+// Namespace
+//------------------------------------------------------------------------------
 
 Namespace::Namespace() = default;
 
@@ -270,6 +284,10 @@ Namespace::Namespace(std::string name, NamespaceItems items)
 
     if (auto enum_item = std::get_if<Enum>(&item)) {
       enums_.push_back(*enum_item);
+    }
+
+    if (auto opaque_item = std::get_if<Opaque>(&item)) {
+      opaques_.push_back(*opaque_item);
     }
   }
 }
@@ -292,6 +310,10 @@ const std::vector<Struct>& Namespace::GetStructs() const {
   return structs_;
 }
 
+const std::vector<Opaque>& Namespace::GetOpaques() const {
+  return opaques_;
+}
+
 const std::vector<Enum>& Namespace::GetEnums() const {
   return enums_;
 }
@@ -308,6 +330,13 @@ bool Namespace::HasStructNamed(const std::string& name) const {
          }) != structs_.end();
 }
 
+bool Namespace::HasOpaqueNamed(const std::string& name) const {
+  return std::find_if(opaques_.begin(), opaques_.end(),
+                      [&](const auto& opaque) {
+                        return opaque.GetName() == name;
+                      }) != opaques_.end();
+}
+
 void Namespace::AddFunctions(const std::vector<Function>& functions) {
   std::copy(functions.cbegin(), functions.cend(),
             std::back_inserter(functions_));
@@ -315,6 +344,10 @@ void Namespace::AddFunctions(const std::vector<Function>& functions) {
 
 void Namespace::AddStructs(const std::vector<Struct>& structs) {
   std::copy(structs.cbegin(), structs.cend(), std::back_inserter(structs_));
+}
+
+void Namespace::AddOpaques(const std::vector<Opaque>& opaques) {
+  std::copy(opaques.cbegin(), opaques.cend(), std::back_inserter(opaques_));
 }
 
 void Namespace::AddEnums(const std::vector<Enum>& enums) {
@@ -369,6 +402,12 @@ bool Namespace::PassesSema(std::stringstream& stream) const {
     }
   }
 
+  for (const auto& opaque : opaques_) {
+    if (!opaque.PassesSema(*this, stream)) {
+      return false;
+    }
+  }
+
   for (const auto& func : functions_) {
     if (!func.PassesSema(*this, stream)) {
       return false;
@@ -390,9 +429,14 @@ nlohmann::json::object_t Namespace::GetJSONObject() const {
   auto structs = nlohmann::json::array_t{};
   auto funcs = nlohmann::json::array_t{};
   auto enums = nlohmann::json::array_t{};
+  auto opaques = nlohmann::json::array_t{};
 
   for (const auto& str : structs_) {
     structs.emplace_back(str.GetJSONObject(*this));
+  }
+
+  for (const auto& opaque : opaques_) {
+    opaques.emplace_back(opaque.GetJSONObject(*this));
   }
 
   for (const auto& fun : functions_) {
@@ -406,10 +450,15 @@ nlohmann::json::object_t Namespace::GetJSONObject() const {
   ns["name"] = name_;
   ns["functions"] = std::move(funcs);
   ns["structs"] = std::move(structs);
+  ns["opaques"] = std::move(opaques);
   ns["enums"] = std::move(enums);
 
   return ns;
 }
+
+//------------------------------------------------------------------------------
+// Struct
+//------------------------------------------------------------------------------
 
 Struct::Struct() = default;
 
@@ -456,6 +505,44 @@ nlohmann::json::object_t Struct::GetJSONObject(const Namespace& ns) const {
   strut["variables"] = std::move(vars);
   return strut;
 }
+
+//------------------------------------------------------------------------------
+// Opaque
+//------------------------------------------------------------------------------
+
+Opaque::Opaque() = default;
+
+Opaque::Opaque(std::string name) : name_(std::move(name)) {}
+
+Opaque::~Opaque() = default;
+
+const std::string& Opaque::GetName() const {
+  return name_;
+}
+
+bool Opaque::PassesSema(const Namespace& ns, std::stringstream& stream) const {
+  size_t found_count = 0u;
+  for (const auto& opaque : ns.GetOpaques()) {
+    if (opaque.GetName() == name_) {
+      found_count++;
+    }
+  }
+  if (found_count != 1) {
+    stream << "Multiple definition of opaque '" << name_ << "'." << std::endl;
+    return false;
+  }
+  return true;
+}
+
+nlohmann::json::object_t Opaque::GetJSONObject(const Namespace& ns) const {
+  nlohmann::json::object_t opaque;
+  opaque["name"] = name_;
+  return opaque;
+}
+
+//------------------------------------------------------------------------------
+// Enum
+//------------------------------------------------------------------------------
 
 Enum::Enum() = default;
 

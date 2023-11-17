@@ -24,7 +24,7 @@ class Object {
     }
   }
 
-  // Only used in tests. Will lead to TOCTOU in non-test cases.
+  // Only used in tests.
   size_t GetRefCount() const { return ref_count_; }
 
  protected:

@@ -114,6 +114,24 @@ class Struct {
   std::vector<Variable> variables_;
 };
 
+class Opaque {
+ public:
+  Opaque();
+
+  Opaque(std::string name);
+
+  ~Opaque();
+
+  const std::string& GetName() const;
+
+  bool PassesSema(const Namespace& ns, std::stringstream& stream) const;
+
+  nlohmann::json::object_t GetJSONObject(const Namespace& ns) const;
+
+ private:
+  std::string name_;
+};
+
 class Enum {
  public:
   Enum();
@@ -135,7 +153,7 @@ class Enum {
   std::vector<std::string> members_;
 };
 
-using NamespaceItem = std::variant<Function, Struct, Enum>;
+using NamespaceItem = std::variant<Function, Struct, Opaque, Enum>;
 using NamespaceItems = std::vector<NamespaceItem>;
 
 class Namespace {
@@ -154,15 +172,21 @@ class Namespace {
 
   const std::vector<Struct>& GetStructs() const;
 
+  const std::vector<Opaque>& GetOpaques() const;
+
   const std::vector<Enum>& GetEnums() const;
 
   bool HasEnumNamed(const std::string& name) const;
 
   bool HasStructNamed(const std::string& name) const;
 
+  bool HasOpaqueNamed(const std::string& name) const;
+
   void AddFunctions(const std::vector<Function>& functions);
 
   void AddStructs(const std::vector<Struct>& structs);
+
+  void AddOpaques(const std::vector<Opaque>& opaque);
 
   void AddEnums(const std::vector<Enum>& enums);
 
@@ -174,6 +198,7 @@ class Namespace {
   std::string name_;
   std::vector<Function> functions_;
   std::vector<Struct> structs_;
+  std::vector<Opaque> opaques_;
   std::vector<Enum> enums_;
 
   bool CheckDuplicateFunctions(std::stringstream& stream) const;

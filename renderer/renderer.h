@@ -5,10 +5,20 @@
 #pragma once
 
 #include "impeller/stator/objffi/scoped_object.h"
+#include "impeller/stator/renderer/context.h"
 #include "renderer.epoxy.h"
 
 namespace impeller::stator::renderer {
 
-// void SetGlobalContext(objffi::ScopedObject<epoxy::Context> context);
+class FFIContext final : public objffi::Object {
+ public:
+  explicit FFIContext(std::shared_ptr<Context> context)
+      : context_(std::move(context)) {}
+
+ private:
+  std::shared_ptr<Context> context_;
+};
+
+void SetGlobalContext(objffi::ScopedObject<FFIContext> context);
 
 }  // namespace impeller::stator::renderer

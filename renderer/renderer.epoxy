@@ -4,11 +4,10 @@
 
 namespace renderer {
 
-struct Context { }
-struct Swapchain { }
-struct Texture { }
+opaque FFIContext
+opaque FFISwapchain
 
-// function GetGlobalContext() -> Context*
+function GetGlobalContext() -> FFIContext*
 
 // function ContextGetSwapchain() -> Swapchain*
 

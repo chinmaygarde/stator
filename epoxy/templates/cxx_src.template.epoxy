@@ -19,8 +19,8 @@ extern "C" {
 {% for func in ns.functions%}
 
 EPOXY_EXPORT
-{% if func.returns_enum or func.returns_struct %}
-impeller::stator::{{ns.name}}::epoxy
+{% if func.returns_enum or func.returns_struct or func.returns_opaque %}
+impeller::stator::{{ns.name}}::
 {% endif %}
 {{func.return_type}} {% if func.pointer_return %}*{% endif %}
  EPOXY_BIND_{{func.name}}(
@@ -28,17 +28,17 @@ impeller::stator::{{ns.name}}::epoxy
 {% if arg.is_enum %}
 uint64_t
 {% else if arg.is_struct %}
-impeller::stator::{{ns.name}}::epoxy {{arg.type}}*
+impeller::stator::{{ns.name}} {{arg.type}}*
 {% else %}
 {{arg.type}}{% if arg.is_pointer %}*{% endif %}
 {% endif %}
  {{ arg.identifier }}{% if not loop.is_last %}, {% endif %}
 {% endfor %}
 ) {
-  return impeller::stator::{{ns.name}}::epoxy::{{func.name}}(
+  return impeller::stator::{{ns.name}}::{{func.name}}(
 {% for arg in func.arguments %}
 {% if arg.is_enum %}
-  static_cast<impeller::stator::{{ns.name}}::epoxy::{{arg.type}}>({{arg.identifier}})
+  static_cast<impeller::stator::{{ns.name}}::{{arg.type}}>({{arg.identifier}})
 {% else %}
   {{ arg.identifier }}
 {% endif %}

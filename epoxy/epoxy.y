@@ -41,6 +41,7 @@
   NAMESPACE               "namespace"
   CLASS                   "class"
   STRUCT                  "struct"
+  OPAQUE                  "opaque"
   FUNCTION                "function"
   ENUM                    "enum"
 
@@ -84,6 +85,7 @@
 %type <std::vector<epoxy::Variable>> VariableList
 %type <epoxy::Primitive> Primitive
 %type <epoxy::Struct> Struct
+%type <epoxy::Opaque> Opaque
 %type <epoxy::Enum> Enum
 %type <std::vector<std::string>> IdentifierList
 %type <std::variant<Primitive, std::string>> PrimitiveOrIdentifier
@@ -115,6 +117,7 @@ NamespaceItems
 NamespaceItem
   : Function  { $$ = $1; }
   | Struct    { $$ = $1; }
+  | Opaque    { $$ = $1; }
   | Enum      { $$ = $1; }
   ;
 
@@ -152,6 +155,10 @@ ArgumentList
 Struct
   : STRUCT IDENTIFIER CURLY_LEFT VariableList  CURLY_RIGHT { $$ = epoxy::Struct{$2, $4}; }
   | STRUCT IDENTIFIER CURLY_LEFT               CURLY_RIGHT { $$ = epoxy::Struct{$2, {}}; }
+  ;
+
+Opaque
+  : OPAQUE IDENTIFIER { $$ = epoxy::Opaque{$2}; }
   ;
 
 Variable

@@ -17,25 +17,74 @@ enum class AdoptTag {
 template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>
 class ScopedObject {
  public:
-  explicit ScopedObject(T* object) : object_(object) { object_->Retain(); }
+  ScopedObject() = default;
+
+  explicit ScopedObject(T* object) : object_(object) {
+    if (object_) {
+      object_->Retain();
+    }
+  }
 
   explicit ScopedObject(T* object, AdoptTag) : object_(object) {}
 
-  ~ScopedObject() { object_->Release(); }
+  ~ScopedObject() { Reset(); }
 
-  ScopedObject(const ScopedObject&) = delete;
+  ScopedObject(const ScopedObject& o) {
+    if (o.object_) {
+      object_ = o.object_;
+      object_->Retain();
+    }
+  }
 
-  ScopedObject& operator=(const ScopedObject&) = delete;
+  ScopedObject(ScopedObject&& o) { std::swap(o, o.object_); }
 
-  T* operator->() const { return object_; }
+  ScopedObject& operator=(const ScopedObject& o) {
+    Reset();
+    if (o.object_) {
+      object_ = o.object_;
+      object_->Retain();
+    }
+    return *this;
+  }
 
-  T* Leak() const {
-    object_->Retain();
+  ScopedObject& operator=(ScopedObject&& o) {
+    Reset();
+    if (o.object_) {
+      object_ = o.object_;
+      object_->Retain();
+    }
+    o.Reset();
+    return *this;
+  }
+
+  T* operator->() const { return Get(); }
+
+  T* Get() const { return object_; }
+
+  [[nodiscard]] T* Leak() const {
+    if (object_) {
+      object_->Retain();
+    }
     return object_;
   }
 
+  void Reset() {
+    if (object_) {
+      object_->Release();
+      object_ = nullptr;
+    }
+  }
+
+  constexpr bool operator==(const ScopedObject& o) const {
+    return object_ == o.object_;
+  }
+
+  constexpr bool operator!=(const ScopedObject& o) const {
+    return object_ != o.object_;
+  }
+
  private:
-  T* object_;
+  T* object_ = nullptr;
 };
 
 template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>

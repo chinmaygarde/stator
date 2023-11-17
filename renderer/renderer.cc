@@ -4,8 +4,16 @@
 
 #include "impeller/stator/renderer/renderer.h"
 
-namespace impeller::stator::compositor {
+namespace impeller::stator::renderer {
 
-// void SetGlobalContext(objffi::ScopedObject<Context> context) {}
+static objffi::ScopedObject<FFIContext> gContext;
 
-}  // namespace impeller::stator::compositor
+void SetGlobalContext(objffi::ScopedObject<FFIContext> context) {
+  gContext = std::move(context);
+}
+
+FFIContext* GetGlobalContext() {
+  return gContext.Get();
+}
+
+}  // namespace impeller::stator::renderer

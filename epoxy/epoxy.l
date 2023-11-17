@@ -40,6 +40,7 @@ WS                      [ \t\v\n\f]
 "class"                return epoxy::Parser::make_CLASS(CURRENT_LOC);
 "enum"                 return epoxy::Parser::make_ENUM(CURRENT_LOC);
 "struct"               return epoxy::Parser::make_STRUCT(CURRENT_LOC);
+"opaque"               return epoxy::Parser::make_OPAQUE(CURRENT_LOC);
 "function"             return epoxy::Parser::make_FUNCTION(CURRENT_LOC);
 
 "void"                 return epoxy::Parser::make_VOID_T(CURRENT_LOC);
