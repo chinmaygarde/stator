@@ -16,4 +16,11 @@ FFIContext* GetGlobalContext() {
   return gContext.Get();
 }
 
+FFISwapchain* ContextSwapchainCopy(FFIContext* context) {
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFISwapchain>(context->Get()->GetSwapchain()).Leak();
+}
+
 }  // namespace impeller::stator::renderer

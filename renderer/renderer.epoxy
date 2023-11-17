@@ -9,7 +9,7 @@ opaque FFISwapchain
 
 function GetGlobalContext() -> FFIContext*
 
-// function ContextGetSwapchain() -> Swapchain*
+function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
 
 // function SwapchainNextDrawableNew(Swapchain* swapchain) -> Texture*
 // function SwapchainPresentDrawable(Texture* texture)

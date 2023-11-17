@@ -27,8 +27,8 @@ impeller::stator::{{ns.name}}::
 {% for arg in func.arguments %}
 {% if arg.is_enum %}
 uint64_t
-{% else if arg.is_struct %}
-impeller::stator::{{ns.name}} {{arg.type}}*
+{% else if arg.is_struct or arg.is_opaque %}
+impeller::stator::{{ns.name}}::{{arg.type}}*
 {% else %}
 {{arg.type}}{% if arg.is_pointer %}*{% endif %}
 {% endif %}

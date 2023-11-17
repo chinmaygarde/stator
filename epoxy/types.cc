@@ -64,9 +64,10 @@ bool Variable::PassesSema(const Namespace& ns,
   if (auto user_type = GetUserDefinedType(); user_type.has_value()) {
     if (IsPointer()) {
       // If the user defined type is a pointer, it must be a known struct.
-      if (!ns.HasStructNamed(user_type.value())) {
-        stream << "No struct named " << user_type.value() << " in namespace "
-               << ns.GetName() << "." << std::endl;
+      if (!ns.HasStructNamed(user_type.value()) &&
+          !ns.HasOpaqueNamed(user_type.value())) {
+        stream << "No struct/opaque named " << user_type.value()
+               << " in namespace " << ns.GetName() << "." << std::endl;
         if (ns.HasEnumNamed(user_type.value())) {
           stream << "There is an enum named " << user_type.value()
                  << " but enums but may only be specified by value."
@@ -128,6 +129,7 @@ nlohmann::json::object_t Variable::GetJSONObject(const Namespace& ns) const {
     var["type"] = PrimitiveToTypeString(primitive.value());
     var["is_enum"] = false;
     var["is_struct"] = false;
+    var["is_opaque"] = false;
     var["is_primitive"] = true;
   }
 
@@ -135,6 +137,7 @@ nlohmann::json::object_t Variable::GetJSONObject(const Namespace& ns) const {
     var["type"] = user_type.value();
     var["is_enum"] = ns.HasEnumNamed(user_type.value());
     var["is_struct"] = ns.HasStructNamed(user_type.value());
+    var["is_opaque"] = ns.HasOpaqueNamed(user_type.value());
     var["is_primitive"] = false;
   }
 
