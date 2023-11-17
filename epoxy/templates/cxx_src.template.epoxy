@@ -20,7 +20,7 @@ extern "C" {
 
 EPOXY_EXPORT
 {% if func.returns_enum or func.returns_struct %}
-impeller::stator::{{ns.name}}::
+impeller::stator::{{ns.name}}::epoxy
 {% endif %}
 {{func.return_type}} {% if func.pointer_return %}*{% endif %}
  EPOXY_BIND_{{func.name}}(
@@ -28,17 +28,17 @@ impeller::stator::{{ns.name}}::
 {% if arg.is_enum %}
 uint64_t
 {% else if arg.is_struct %}
-impeller::stator::{{ns.name}}::{{arg.type}}*
+impeller::stator::{{ns.name}}::epoxy {{arg.type}}*
 {% else %}
 {{arg.type}}{% if arg.is_pointer %}*{% endif %}
 {% endif %}
  {{ arg.identifier }}{% if not loop.is_last %}, {% endif %}
 {% endfor %}
 ) {
-  return impeller::stator::{{ns.name}}::{{func.name}}(
+  return impeller::stator::{{ns.name}}::epoxy::{{func.name}}(
 {% for arg in func.arguments %}
 {% if arg.is_enum %}
-  static_cast<impeller::stator::{{ns.name}}::{{arg.type}}>({{arg.identifier}})
+  static_cast<impeller::stator::{{ns.name}}::epoxy::{{arg.type}}>({{arg.identifier}})
 {% else %}
   {{ arg.identifier }}
 {% endif %}

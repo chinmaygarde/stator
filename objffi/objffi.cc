@@ -7,7 +7,7 @@
 #include "impeller/stator/objffi/object.h"
 #include "objffi.epoxy.h"
 
-namespace impeller::stator::objffi {
+namespace impeller::stator::objffi::epoxy {
 
 void Retain(void* object) {
   if (!object) {
@@ -23,4 +23,4 @@ void Release(void* object) {
   reinterpret_cast<Object*>(object)->Release();
 }
 
-}  // namespace impeller::stator::objffi
+}  // namespace impeller::stator::objffi::epoxy

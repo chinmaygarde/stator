@@ -15,6 +15,8 @@ impeller_component("renderer") {
     "compositor.h",
     "context.cc",
     "context.h",
+    "renderer.cc",
+    "renderer.h",
     "swapchain.cc",
     "swapchain.h",
   ]

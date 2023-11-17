@@ -4,7 +4,7 @@
 #include <cstdint>
 {% for ns in namespaces %}
 
-namespace impeller::stator::{{ ns.name }} {
+namespace impeller::stator::{{ ns.name }}::epoxy {
 
 // {{ length(ns.enums) }} enum definition(s).
 
@@ -48,6 +48,6 @@ struct {{ struct.name }} {
 );
 
 {% endfor %}
-} //  namespace impeller::stator::{{ ns.name }}
+} //  namespace impeller::stator::{{ ns.name }}::epoxy
 
 {% endfor %}
