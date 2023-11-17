@@ -29,8 +29,40 @@ class ScopedObject {
 
   T* operator->() const { return object_; }
 
+  T* Leak() const {
+    object_->Retain();
+    return object_;
+  }
+
  private:
   T* object_;
 };
+
+template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>
+[[nodiscard]] ScopedObject<T> Ref(T* object) {
+  return ScopedObject<T>(object);
+}
+
+template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>
+[[nodiscard]] ScopedObject<T> Adopt(T* object) {
+  return ScopedObject<T>(object, AdoptTag::kAdopt);
+}
+
+template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>
+[[nodiscard]] ScopedObject<T> CastAndRef(void* object) {
+  return Ref(reinterpret_cast<T*>(object));
+}
+
+template <class T, class = std::enable_if_t<std::is_base_of_v<Object, T>>>
+[[nodiscard]] ScopedObject<T> CastAndAdopt(void* object) {
+  return Adopt(reinterpret_cast<T*>(object));
+}
+
+template <class T,
+          typename... Args,
+          class = std::enable_if_t<std::is_base_of_v<Object, T>>>
+[[nodiscard]] ScopedObject<T> Make(Args&&... args) {
+  return Adopt(new T(std::forward<Args>(args)...));
+}
 
 }  // namespace impeller::stator::objffi

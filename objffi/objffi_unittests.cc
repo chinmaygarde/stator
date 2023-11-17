@@ -10,7 +10,7 @@ namespace impeller::stator::objffi {
 
 class MyObject : public Object {
  public:
-  MyObject(bool& destroyed) : destroyed_(destroyed) {}
+  explicit MyObject(bool& destroyed) : destroyed_(destroyed) {}
 
   ~MyObject() { destroyed_ = true; }
 
@@ -71,9 +71,21 @@ TEST(ObjFFITest, CanCreateScopedObject) {
 
 TEST(ObjFFITest, TypeGuards) {
   bool destroyed = false;
-  auto my_object = new MyObject(destroyed);
-  ScopedObject object(my_object);
-  // ScopedObject object2(new int{12});
+  {
+    auto my_object = new MyObject(destroyed);
+    ScopedObject object(my_object);
+    auto object2 = Ref(my_object);
+    auto object3 = CastAndRef<MyObject>(reinterpret_cast<void*>(my_object));
+    ASSERT_EQ(my_object->GetRefCount(), 4u);
+    my_object->Retain();
+    auto object4 = Adopt(my_object);
+    ASSERT_EQ(my_object->GetRefCount(), 5u);
+    my_object->Release();
+  }
+  ASSERT_TRUE(destroyed);
+  bool destroyed2 = false;
+  { auto object2 = Make<MyObject>(destroyed2); }
+  ASSERT_TRUE(destroyed2);
 }
 
 }  // namespace impeller::stator::objffi
