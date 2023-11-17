@@ -4,18 +4,15 @@
 
 namespace renderer {
 
-function EpoxyRetain(void* obj)
-function EpoxyRelease(void* obj)
-
 struct Context { }
 struct Swapchain { }
 struct Texture { }
 
-function GetGlobalContext() -> Context*
+// function GetGlobalContext() -> Context*
 
-function ContextGetSwapchain() -> Swapchain*
+// function ContextGetSwapchain() -> Swapchain*
 
-function SwapchainNextDrawableNew(Swapchain* swapchain) -> Texture*
-function SwapchainPresentDrawable(Texture* texture)
+// function SwapchainNextDrawableNew(Swapchain* swapchain) -> Texture*
+// function SwapchainPresentDrawable(Texture* texture)
 
 } // namespace renderer

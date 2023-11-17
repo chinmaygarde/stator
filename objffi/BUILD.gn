@@ -1,0 +1,33 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../../tools/impeller.gni")
+import("../tools/epoxy.gni")
+
+epoxy_cxx("objffi_epoxy") {
+  source = "objffi.epoxy"
+}
+
+impeller_component("objffi") {
+  sources = [
+    "object.cc",
+    "object.h",
+    "objffi.cc",
+    "objffi.h",
+    "scoped_object.cc",
+    "scoped_object.h",
+  ]
+  deps = [ ":objffi_epoxy" ]
+}
+
+impeller_component("objffi_unittests") {
+  testonly = true
+
+  sources = [ "objffi_unittests.cc" ]
+
+  deps = [
+    ":objffi",
+    "//flutter/testing",
+  ]
+}

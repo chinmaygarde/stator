@@ -52,7 +52,13 @@ template("epoxy_cxx") {
     templ = src_templ
   }
 
+  config_target_name = "config_$target_name"
+  config(config_target_name) {
+    include_dirs = [ target_gen_dir ]
+  }
+
   impeller_component(target_name) {
+    public_configs = [ ":$config_target_name" ]
     sources = get_target_outputs(":$hdr_target_name") +
               get_target_outputs(":$src_target_name")
     deps = [
