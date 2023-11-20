@@ -8,6 +8,17 @@ typedef VoidPointer = Pointer<Void>;
 
 // {{ length(ns.structs) }} struct definitions.
 
+{% for struct in ns.structs %}
+
+final class {{struct.name}} extends Struct {
+{% for var in struct.variables %}
+  @{{to_c_type(var.type)}}()
+  external {{to_dart_type(var.type)}} {{var.identifier}};
+{% endfor %}
+}
+typedef {{struct.name}}Pointer = Pointer<{{struct.name}}>;
+{% endfor %}
+
 // {{ length(ns.opaques) }} opaque declarations.
 
 {% for opaque in ns.opaques -%}
