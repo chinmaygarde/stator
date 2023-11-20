@@ -7,6 +7,7 @@
 import 'dart:ffi';
 
 final class NativeContext extends Opaque { }
+typedef NativeContextPointer = Pointer<NativeContext>;
 
 final class Context implements Finalizable {
   Context(this.context) {
@@ -30,7 +31,7 @@ final class Stator {
 
   final DynamicLibrary dylib;
 
-  late final Pointer<NativeContext> Function() GetGlobalContext = dylib.lookup<NativeFunction<Pointer<NativeContext> Function()>>('GetGlobalContext').asFunction();
+  late final Pointer<NativeContext> Function() GetGlobalContext = dylib.lookup<NativeFunction<NativeContextPointer Function()>>('GetGlobalContext').asFunction();
 
   late final Pointer<NativeFunction<Void Function(Pointer<NativeContext>)>> ReleaseContextFN = dylib.lookup<NativeFunction<Void Function(Pointer<NativeContext>)>>('ReleaseContext');
   late final void Function(Pointer<NativeContext>) ReleaseContext = ReleaseContextFN.asFunction();

@@ -108,6 +108,29 @@ static std::string TypeToDartType(const std::string& type) {
   return "unknown";
 }
 
+static std::string ConvertToCamelCase(std::string_view string) {
+  if (string.empty()) {
+    return "";
+  }
+
+  std::stringstream stream;
+  bool next_upper = true;
+  for (size_t i = 0, count = string.length(); i < count; i++) {
+    auto ch = string.data()[i];
+    if (next_upper) {
+      next_upper = false;
+      stream << static_cast<char>(std::toupper(ch));
+      continue;
+    }
+    if (ch == '_') {
+      next_upper = true;
+      continue;
+    }
+    stream << ch;
+  }
+  return stream.str();
+}
+
 CodeGen::RenderResult CodeGen::Render(
     const std::vector<Namespace>& namespaces) const {
   inja::Environment env;
@@ -118,6 +141,9 @@ CodeGen::RenderResult CodeGen::Render(
   });
   env.add_callback("dart_type", 1u, [](inja::Arguments& args) {
     return TypeToDartType(args.at(0u)->get<std::string>());
+  });
+  env.add_callback("camel_case", 1u, [](inja::Arguments& args) {
+    return ConvertToCamelCase(args.at(0u)->get<std::string>());
   });
 
   auto render =

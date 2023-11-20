@@ -67,3 +67,19 @@ template("epoxy_cxx") {
     ]
   }
 }
+
+template("epoxy_dart") {
+  assert(defined(invoker.source), "The epoxy source file must be specifiled.")
+
+  source_file_name = get_path_info(invoker.source, "name")
+
+  dart_path = "$target_gen_dir/$source_file_name.epoxy.dart"
+
+  dart_templ = "../epoxy/templates/drt.template.epoxy"
+
+  epoxy(target_name) {
+    input = invoker.source
+    output = dart_path
+    templ = dart_templ
+  }
+}

@@ -9,6 +9,10 @@ epoxy_cxx("renderer_epoxy") {
   source = "renderer.epoxy"
 }
 
+epoxy_dart("renderer_epoxy_dart") {
+  source = "renderer.epoxy"
+}
+
 impeller_component("renderer") {
   sources = [
     "compositor.cc",
@@ -22,6 +26,7 @@ impeller_component("renderer") {
   ]
   deps = [
     ":renderer_epoxy",
+    ":renderer_epoxy_dart",
     "../../entity",
     "../../renderer",
     "../../typographer/backends/skia:typographer_skia_backend",
