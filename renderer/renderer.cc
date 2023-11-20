@@ -33,14 +33,14 @@ FFITexture* SwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
       .Leak();
 }
 
-uint32_t SwapchainPresentDrawable(FFISwapchain* swapchain_ptr,
-                                  FFITexture* texture_ptr) {
+bool SwapchainPresentDrawable(FFISwapchain* swapchain_ptr,
+                              FFITexture* texture_ptr) {
   auto swapchain = objffi::Ref(swapchain_ptr);
   auto texture = objffi::Ref(texture_ptr);
   if (!swapchain || !texture) {
-    return 1u;
+    return false;
   }
-  return swapchain->Get()->PresentDrawable(texture->Get()) ? 0u : 1u;
+  return swapchain->Get()->PresentDrawable(texture->Get());
 }
 
 }  // namespace impeller::stator::renderer

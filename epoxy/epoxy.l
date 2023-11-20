@@ -44,6 +44,7 @@ WS                      [ \t\v\n\f]
 "function"             return epoxy::Parser::make_FUNCTION(CURRENT_LOC);
 
 "void"                 return epoxy::Parser::make_VOID(CURRENT_LOC);
+"bool"                 return epoxy::Parser::make_BOOL(CURRENT_LOC);
 "int8"                 return epoxy::Parser::make_INT_8(CURRENT_LOC);
 "int16"                return epoxy::Parser::make_INT_16(CURRENT_LOC);
 "int32"                return epoxy::Parser::make_INT_32(CURRENT_LOC);

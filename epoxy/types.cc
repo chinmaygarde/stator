@@ -98,6 +98,8 @@ static std::string PrimitiveToTypeString(Primitive primitive) {
   switch (primitive) {
     case Primitive::kVoid:
       return "void";
+    case Primitive::kBool:
+      return "bool";
     case Primitive::kInt8:
       return "int8_t";
     case Primitive::kInt16:

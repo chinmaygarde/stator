@@ -38,6 +38,9 @@ static std::string TypeToDartFFIType(const std::string& type) {
   if (type == "void") {
     return "Void";
   }
+  if (type == "bool") {
+    return "Bool";
+  }
   if (type == "int8_t") {
     return "Int8";
   }
@@ -74,6 +77,9 @@ static std::string TypeToDartFFIType(const std::string& type) {
 static std::string TypeToDartType(const std::string& type) {
   if (type == "void") {
     return "void";
+  }
+  if (type == "bool") {
+    return "bool";
   }
   if (type == "int8_t") {
     return "int";

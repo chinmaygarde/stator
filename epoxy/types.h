@@ -16,6 +16,7 @@ class Namespace;
 
 enum class Primitive {
   kVoid,
+  kBool,
   kInt8,
   kInt16,
   kInt32,

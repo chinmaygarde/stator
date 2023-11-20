@@ -36,7 +36,7 @@
       <key>name</key>
       <string>support.type.epoxy</string>
       <key>match</key>
-      <string>int8|int16|int32|int64|uint8|uint16|uint32|uint64|double|float|void</string>
+      <string>int8|int16|int32|int64|uint8|uint16|uint32|uint64|double|float|void|bool</string>
     </dict>
   </array>
 </dict>

@@ -56,6 +56,8 @@
 
   VOID                    "void"
 
+  BOOL                    "bool"
+
   INT_8                   "int8"
   INT_16                  "int16"
   INT_32                  "int32"
@@ -175,6 +177,7 @@ VariableList
 
 Primitive
   : VOID       { $$ = epoxy::Primitive::kVoid; }
+  | BOOL       { $$ = epoxy::Primitive::kBool; }
   | INT_8      { $$ = epoxy::Primitive::kInt8; }
   | INT_16     { $$ = epoxy::Primitive::kInt16; }
   | INT_32     { $$ = epoxy::Primitive::kInt32; }
