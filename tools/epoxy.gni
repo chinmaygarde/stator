@@ -8,6 +8,7 @@ template("epoxy") {
   assert(defined(invoker.input), "The epoxy source file must be specified.")
   assert(defined(invoker.output), "The output path must be specified.")
   assert(defined(invoker.templ), "The template path must be specified.")
+  assert(defined(invoker.json), "The json path must be specified.")
 
   compiled_action(target_name) {
     tool = "//flutter/impeller/stator/epoxy:epoxy"
@@ -23,6 +24,8 @@ template("epoxy") {
       rebase_path(invoker.input, root_out_dir),
       "--template-file",
       rebase_path(invoker.templ, root_out_dir),
+      "--template-json",
+      rebase_path(invoker.json, root_out_dir),
     ]
   }
 }
@@ -43,6 +46,7 @@ template("epoxy_cxx") {
     input = invoker.source
     output = hdr_path
     templ = hdr_templ
+    json = "$hdr_path.json"
   }
 
   src_target_name = "src_$target_name"
@@ -50,6 +54,7 @@ template("epoxy_cxx") {
     input = invoker.source
     output = src_path
     templ = src_templ
+    json = "$src_path.json"
   }
 
   config_target_name = "config_$target_name"
@@ -81,5 +86,6 @@ template("epoxy_dart") {
     input = invoker.source
     output = dart_path
     templ = dart_templ
+    json = "$dart_path.json"
   }
 }

@@ -153,7 +153,7 @@ CodeGen::RenderResult CodeGen::Render(
 
 std::string CodeGen::GenerateTemplateDataJSON(
     const std::vector<Namespace>& namespaces) const {
-  return CreateJSONTemplateData(namespaces).dump();
+  return CreateJSONTemplateData(namespaces).dump(2u);
 }
 
 }  // namespace epoxy

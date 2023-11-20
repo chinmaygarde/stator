@@ -22,7 +22,7 @@ Usage:
     epoxy  --output <output file path>
            --idl    <Epoxy IDL file path>
            [--template-file <Template File Path>]
-           [--template-data-dump]
+           [--template-json <JSON File Path>]
            [--help]
            [--version]
 
@@ -35,15 +35,10 @@ Options:
 
   --idl               The path the Epoxy IDL file.
 
-  --template-file     The path to a custom code generation template. To
-                      introspect the data used to render the template, use the
-                      --template-data-dump option. The Inja template rendering
-                      system is used to render the template data.
+  --template-file     The path to a custom code generation template.
 
-  --template-data-dump
-                      Instead of rendering the code generation template, dump
-                      the template data. This is useful when writing or
-                      customizing a custom code generation template.
+  --template-json     The path to dump the data used to render the code
+                      generation template
 
   --help              Dump these help instructions.
 
@@ -140,11 +135,15 @@ bool Main(const CommandLine& args) {
 
   CodeGen code_gen(template_data.value().file_contents);
 
-  auto dump_template_data_flag = args.GetOption("template-data-dump");
-  if (dump_template_data_flag.has_value() && dump_template_data_flag.value()) {
-    std::cout << code_gen.GenerateTemplateDataJSON(sema.GetNamespaces())
-              << std::endl;
-    return true;
+  auto template_json_flag = args.GetString("template-json");
+  if (template_json_flag.has_value()) {
+    if (!OverwriteFileWithStringData(
+            template_json_flag.value(),
+            code_gen.GenerateTemplateDataJSON(sema.GetNamespaces()))) {
+      std::cerr << "Could not dump the template data to the specified file."
+                << std::endl;
+      return false;
+    }
   }
 
   auto code_gen_result = code_gen.Render(sema.GetNamespaces());
