@@ -20,6 +20,7 @@ FFISwapchain* ContextSwapchainCopy(FFIContext* context) {
   if (!context) {
     return nullptr;
   }
+
   return objffi::Make<FFISwapchain>(context->Get()->GetSwapchain()).Leak();
 }
 

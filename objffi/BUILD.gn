@@ -9,6 +9,10 @@ epoxy_cxx("objffi_epoxy") {
   source = "objffi.epoxy"
 }
 
+epoxy_dart("objffi_epoxy_dart") {
+  source = "objffi.epoxy"
+}
+
 impeller_component("objffi") {
   sources = [
     "object.cc",
@@ -18,7 +22,10 @@ impeller_component("objffi") {
     "scoped_object.cc",
     "scoped_object.h",
   ]
-  deps = [ ":objffi_epoxy" ]
+  deps = [
+    ":objffi_epoxy",
+    ":objffi_epoxy_dart",
+  ]
 }
 
 impeller_component("objffi_unittests") {

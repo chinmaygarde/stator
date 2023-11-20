@@ -68,7 +68,7 @@ static std::string TypeToDartFFIType(const std::string& type) {
   if (type == "float") {
     return "Float";
   }
-  return "unknown";
+  return type;
 }
 
 static std::string TypeToDartType(const std::string& type) {
@@ -105,7 +105,7 @@ static std::string TypeToDartType(const std::string& type) {
   if (type == "float") {
     return "double";
   }
-  return "unknown";
+  return type;
 }
 
 static std::string ConvertToCamelCase(std::string_view string) {
@@ -136,10 +136,10 @@ CodeGen::RenderResult CodeGen::Render(
   inja::Environment env;
   env.set_trim_blocks(true);
   env.set_lstrip_blocks(true);
-  env.add_callback("dart_ffi_type", 1u, [](inja::Arguments& args) {
+  env.add_callback("to_c_type", 1u, [](inja::Arguments& args) {
     return TypeToDartFFIType(args.at(0u)->get<std::string>());
   });
-  env.add_callback("dart_type", 1u, [](inja::Arguments& args) {
+  env.add_callback("to_dart_type", 1u, [](inja::Arguments& args) {
     return TypeToDartType(args.at(0u)->get<std::string>());
   });
   env.add_callback("camel_case", 1u, [](inja::Arguments& args) {

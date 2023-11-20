@@ -4,6 +4,7 @@
 
 #include "impeller/stator/objffi/objffi.h"
 
+#include "flutter/fml/logging.h"
 #include "impeller/stator/objffi/object.h"
 #include "objffi.epoxy.h"
 

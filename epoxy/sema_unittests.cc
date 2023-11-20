@@ -11,7 +11,6 @@ namespace testing {
 TEST(SemaTest, Empty) {
   Driver driver;
   auto driver_result = driver.Parse(R"~()~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
@@ -26,11 +25,9 @@ TEST(SemaTest, DuplicateFunctionsCauseSemaError) {
       function foo(int32_t a, int32_t b) -> void*
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -43,11 +40,9 @@ TEST(SemaTest, NonPointerVoidMemberIsError) {
       }
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -61,11 +56,9 @@ TEST(SemaTest, EnumCannotHaveDuplicateMembers) {
       }
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -81,11 +74,9 @@ TEST(SemaTest, StructsAndEnumNamesCannotCollide) {
       }
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -96,11 +87,9 @@ TEST(SemaTest, EnumNamesInFunctionArgsMustBeKnown) {
       function Foo(AbsentEnum val) -> void
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -113,11 +102,9 @@ TEST(SemaTest, EnumNamesInStructsMustBeKnown) {
       }
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -130,11 +117,9 @@ TEST(SemaTest, StructPointersInStructsMustBeKnown) {
       }
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -145,11 +130,9 @@ TEST(SemaTest, StructNamesInFunctionArgsMustBeKnown) {
       function Foo(AbsentStruct* val) -> void
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -163,11 +146,9 @@ TEST(SemaTest, CannotReturnPointerToUnknownStruct) {
       function Foo() -> AbsentStruct*
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
@@ -181,11 +162,9 @@ TEST(SemaTest, CannotReturnUnknownEnum) {
       function Foo() -> AbsentEnum
     }
   )~");
-  driver.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(driver_result, Driver::ParserResult::kSuccess);
   Sema sema;
   auto result = sema.Perform(driver.GetNamespaces());
-  sema.PrettyPrintErrors(std::cerr);
   ASSERT_EQ(result, Sema::Result::kError);
 }
 
