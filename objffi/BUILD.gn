@@ -25,6 +25,7 @@ impeller_component("objffi") {
   deps = [
     ":objffi_epoxy",
     ":objffi_epoxy_dart",
+    "//flutter/fml",
   ]
 }
 

@@ -6,12 +6,13 @@ namespace renderer {
 
 opaque FFIContext
 opaque FFISwapchain
+opaque FFITexture
 
 function GetGlobalContext() -> FFIContext*
 
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
 
-// function SwapchainNextDrawableNew(Swapchain* swapchain) -> Texture*
-// function SwapchainPresentDrawable(Texture* texture)
+function SwapchainNextDrawableNew(FFISwapchain* swapchain) -> FFITexture*
+function SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) -> uint32_t
 
 } // namespace renderer

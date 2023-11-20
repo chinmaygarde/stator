@@ -83,6 +83,8 @@ class ScopedObject {
     return object_ != o.object_;
   }
 
+  constexpr explicit operator bool() const { return object_ != nullptr; }
+
  private:
   T* object_ = nullptr;
 };

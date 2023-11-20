@@ -31,51 +31,26 @@ abstract class OBJFFIObject implements Finalizable {
   static var finalizer = NativeFinalizer(objffi.ReleasePTR);
 }
 
-final class Swapchain implements Finalizable {
-  Swapchain(this.swapchain) {
-    objffi.Retain(swapchain.cast());
-    swapchainFinalizer.attach(this, swapchain.cast(), detach: this);
-  }
-
-  void dispose() {
-    if (swapchain == nullptr) {
-      return;
-    }
-    objffi.Release(swapchain.cast());
-    swapchainFinalizer.detach(this);
-    swapchain = nullptr;
-  }
+final class Swapchain extends OBJFFIObject {
+  Swapchain(this.swapchain) : super(swapchain.cast());
 
   FFISwapchainPointer swapchain;
-  static var swapchainFinalizer = NativeFinalizer(objffi.ReleasePTR);
 }
 
-final class Context implements Finalizable {
-  Context(this.context) {
-    objffi.Retain(context.cast());
-    contextFinalizer.attach(this, context.cast(), detach: this);
-  }
+final class Context extends OBJFFIObject {
+  Context(this.context) : super(context.cast());
 
   Swapchain copySwapchain() {
     return Swapchain(renderer.ContextSwapchainCopy(context));
   }
 
-  void dispose() {
-    if (context == nullptr) {
-      return;
-    }
-    objffi.Release(context.cast());
-    contextFinalizer.detach(this);
-    context = nullptr;
-  }
-
   FFIContextPointer context;
-  static var contextFinalizer = NativeFinalizer(objffi.ReleasePTR);
 }
 
 final Context context = Context(renderer.GetGlobalContext());
 final Swapchain swapchain = context.copySwapchain();
 
 void main () {
-  context.dispose();
+  assert(!context.isDisposed());
+  assert(!swapchain.isDisposed());
 }

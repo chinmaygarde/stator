@@ -27,8 +27,21 @@ class FFISwapchain final : public objffi::Object {
   explicit FFISwapchain(std::shared_ptr<Swapchain> swapchain)
       : swapchain_(std::move(swapchain)) {}
 
+  const std::shared_ptr<Swapchain>& Get() const { return swapchain_; }
+
  private:
   std::shared_ptr<Swapchain> swapchain_;
+};
+
+class FFITexture final : public objffi::Object {
+ public:
+  explicit FFITexture(std::shared_ptr<Texture> texture)
+      : texture_(std::move(texture)) {}
+
+  const std::shared_ptr<Texture>& Get() const { return texture_; }
+
+ private:
+  std::shared_ptr<Texture> texture_;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

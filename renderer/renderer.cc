@@ -24,4 +24,23 @@ FFISwapchain* ContextSwapchainCopy(FFIContext* context) {
   return objffi::Make<FFISwapchain>(context->Get()->GetSwapchain()).Leak();
 }
 
+FFITexture* SwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
+  auto swapchain = objffi::Ref(swapchain_ptr);
+  if (!swapchain) {
+    return nullptr;
+  }
+  return objffi::Make<FFITexture>(swapchain->Get()->AcquireNextDrawable())
+      .Leak();
+}
+
+uint32_t SwapchainPresentDrawable(FFISwapchain* swapchain_ptr,
+                                  FFITexture* texture_ptr) {
+  auto swapchain = objffi::Ref(swapchain_ptr);
+  auto texture = objffi::Ref(texture_ptr);
+  if (!swapchain || !texture) {
+    return 1u;
+  }
+  return swapchain->Get()->PresentDrawable(texture->Get()) ? 0u : 1u;
+}
+
 }  // namespace impeller::stator::renderer

@@ -24,12 +24,14 @@ impeller_component("renderer") {
     "swapchain.cc",
     "swapchain.h",
   ]
-  deps = [
+  public_deps = [
     ":renderer_epoxy",
-    ":renderer_epoxy_dart",
     "../../entity",
     "../../renderer",
-    "../../typographer/backends/skia:typographer_skia_backend",
     "../objffi",
+  ]
+  deps = [
+    ":renderer_epoxy_dart",
+    "../../typographer/backends/skia:typographer_skia_backend",
   ]
 }

@@ -6,6 +6,7 @@
 
 #include "flutter/runtime/isolate_configuration.h"
 #include "impeller/stator/renderer/compositor.h"
+#include "impeller/stator/renderer/renderer.h"
 
 namespace impeller::stator::testing {
 
@@ -49,7 +50,27 @@ static std::shared_ptr<flutter::DartIsolate> CreateRunningRootIsolateOnUIRunner(
   return root_isolate;
 }
 
-StatorTest::StatorTest() {
+StatorTest::StatorTest() {}
+
+StatorTest::~StatorTest() {
+  fml::AutoResetWaitableEvent latch;
+  fml::TaskRunner::RunNowOrPostTask(task_runners_->GetUITaskRunner(), [&]() {
+    FML_CHECK(root_isolate_->Shutdown());
+    root_isolate_.reset();
+    latch.Signal();
+  });
+  latch.Wait();
+}
+
+void StatorTest::SetUp() {
+  // Setup the playground. This sets up the WSI we need for the context.
+  PlaygroundTest::SetUp();
+
+  // Setup the context. This sets up the FFI for the isolate.
+  context_ = Context::Make(GetContext());
+  renderer::SetGlobalContext(objffi::Make<renderer::FFIContext>(context_));
+
+  // Setup the isolate.
   settings_ = CreateSettingsForFixture();
   settings_.log_tag = "Stator";
 
@@ -75,21 +96,6 @@ StatorTest::StatorTest() {
     latch.Signal();
   });
   latch.Wait();
-}
-
-StatorTest::~StatorTest() {
-  fml::AutoResetWaitableEvent latch;
-  fml::TaskRunner::RunNowOrPostTask(task_runners_->GetUITaskRunner(), [&]() {
-    FML_CHECK(root_isolate_->Shutdown());
-    root_isolate_.reset();
-    latch.Signal();
-  });
-  latch.Wait();
-}
-
-void StatorTest::SetUp() {
-  PlaygroundTest::SetUp();
-  context_ = Context::Make(GetContext());
 }
 
 void StatorTest::TearDown() {

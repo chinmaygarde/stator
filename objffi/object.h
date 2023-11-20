@@ -5,6 +5,7 @@
 #pragma once
 
 #include <atomic>
+#include <utility>
 
 namespace impeller::stator::objffi {
 
