@@ -31,8 +31,27 @@ abstract class OBJFFIObject implements Finalizable {
   static var finalizer = NativeFinalizer(objffi.ReleasePTR);
 }
 
+final class Texture extends OBJFFIObject {
+  Texture(this.texture) : super(texture.cast());
+
+  FFITexturePointer texture;
+}
+
 final class Swapchain extends OBJFFIObject {
   Swapchain(this.swapchain) : super(swapchain.cast());
+
+  Texture acquireNextDrawable() {
+    final texture = renderer.SwapchainNextDrawableNew(swapchain);
+    final wrapped = Texture(texture);
+    objffi.Release(texture.cast());
+    return wrapped;
+  }
+
+  bool presentDrawable(Texture texture) {
+    final result = renderer.SwapchainPresentDrawable(swapchain, texture.texture);
+    texture.dispose();
+    return result == 0;
+  }
 
   FFISwapchainPointer swapchain;
 }
@@ -53,4 +72,6 @@ final Swapchain swapchain = context.copySwapchain();
 void main () {
   assert(!context.isDisposed());
   assert(!swapchain.isDisposed());
+  final texture = swapchain.acquireNextDrawable();
+  swapchain.presentDrawable(texture);
 }
