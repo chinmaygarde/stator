@@ -4,6 +4,7 @@
 
 #include "impeller/stator/renderer/swapchain.h"
 
+#include "flutter/fml/trace_event.h"
 #include "impeller/base/strings.h"
 #include "impeller/base/validation.h"
 #include "impeller/core/allocator.h"
@@ -42,6 +43,7 @@ void Swapchain::Shutdown() {
 
 std::shared_ptr<Texture> Swapchain::AcquireNextPresentable(
     std::chrono::nanoseconds timeout) {
+  TRACE_EVENT0("stator", __FUNCTION__);
   std::shared_ptr<Texture> result;
   bool did_pop = false;
   {
@@ -68,6 +70,7 @@ std::shared_ptr<Texture> Swapchain::AcquireNextPresentable(
 }
 
 bool Swapchain::PresentDrawable(std::shared_ptr<Texture> texture) {
+  TRACE_EVENT0("stator", __FUNCTION__);
   if (!texture) {
     return false;
   }
@@ -89,6 +92,7 @@ bool Swapchain::PresentDrawable(std::shared_ptr<Texture> texture) {
 }
 
 std::shared_ptr<Texture> Swapchain::AcquireNextDrawable() {
+  TRACE_EVENT0("stator", __FUNCTION__);
   if (auto drawable = AcquireNextRecyclableDrawable()) {
     return drawable;
   }
@@ -99,6 +103,7 @@ std::shared_ptr<Texture> Swapchain::AcquireNextDrawable() {
 }
 
 std::shared_ptr<Texture> Swapchain::AcquireNextRecyclableDrawable() {
+  TRACE_EVENT0("stator", __FUNCTION__);
   Lock lock(recyclables_mutex_);
   if (recyclables_.empty()) {
     return nullptr;
@@ -110,6 +115,7 @@ std::shared_ptr<Texture> Swapchain::AcquireNextRecyclableDrawable() {
 }
 
 std::shared_ptr<Texture> Swapchain::CreateDrawable() const {
+  TRACE_EVENT0("stator", __FUNCTION__);
   auto context = context_.lock();
   if (!context) {
     VALIDATION_LOG << "Context to create the drawable from no longer exists.";

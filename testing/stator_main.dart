@@ -2,6 +2,7 @@
 
 // ignore_for_file: always_specify_types
 
+import 'dart:async';
 import 'dart:ffi';
 
 import '/Users/chinmaygarde/VersionControlled/engine/src/out/host_debug_unopt_arm64/gen/flutter/impeller/stator/renderer/renderer.epoxy.dart';
@@ -70,8 +71,8 @@ final Context context = Context(renderer.GetGlobalContext());
 final Swapchain swapchain = context.copySwapchain();
 
 void main () {
-  assert(!context.isDisposed());
-  assert(!swapchain.isDisposed());
-  final texture = swapchain.acquireNextDrawable();
-  swapchain.presentDrawable(texture);
+  Timer.periodic(const Duration(milliseconds: 16), (timer) {
+    final texture = swapchain.acquireNextDrawable();
+    swapchain.presentDrawable(texture);
+  });
 }

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "impeller/renderer/render_target.h"
 #include "impeller/stator/objffi/scoped_object.h"
 #include "impeller/stator/renderer/context.h"
 #include "impeller/stator/renderer/swapchain.h"
@@ -42,6 +43,31 @@ class FFITexture final : public objffi::Object {
 
  private:
   std::shared_ptr<Texture> texture_;
+};
+
+class FFIRenderTarget final : public objffi::Object {
+ public:
+  FFIRenderTarget() = default;
+
+  RenderTarget& Get() { return render_target_; }
+
+ private:
+  RenderTarget render_target_;
+};
+
+class FFIColorAttachment final : public objffi::Object {
+ public:
+  ColorAttachment attachment;
+};
+
+class FFIDepthAttachment final : public objffi::Object {
+ public:
+  DepthAttachment attachment;
+};
+
+class FFIStencilAttachment final : public objffi::Object {
+ public:
+  StencilAttachment attachment;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

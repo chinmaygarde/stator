@@ -5,14 +5,28 @@
 namespace renderer {
 
 opaque FFIContext
-opaque FFISwapchain
-opaque FFITexture
 
 function GetGlobalContext() -> FFIContext*
 
+opaque FFISwapchain
+
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
+
+opaque FFITexture
 
 function SwapchainNextDrawableNew(FFISwapchain* swapchain) -> FFITexture*
 function SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) -> bool
+
+opaque FFIRenderTarget
+
+opaque FFIColorAttachment
+opaque FFIDepthAttachment
+opaque FFIStencilAttachment
+
+function RenderTargetNew() -> FFIRenderTarget*
+
+function RenderTargetSetColorAttachment(FFIRenderTarget* target, FFIColorAttachment* color, uint32 index) -> bool
+function RenderTargetSetDepthAttachment(FFIRenderTarget* target, FFIDepthAttachment* depth) -> bool
+function RenderTargetSetStencilAttachment(FFIRenderTarget* target, FFIStencilAttachment* stencil) -> bool
 
 } // namespace renderer

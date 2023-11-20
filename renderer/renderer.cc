@@ -4,6 +4,9 @@
 
 #include "impeller/stator/renderer/renderer.h"
 
+#include "impeller/base/config.h"
+#include "impeller/base/validation.h"
+
 namespace impeller::stator::renderer {
 
 static objffi::ScopedObject<FFIContext> gContext;
@@ -41,6 +44,56 @@ bool SwapchainPresentDrawable(FFISwapchain* swapchain_ptr,
     return false;
   }
   return swapchain->Get()->PresentDrawable(texture->Get());
+}
+
+FFIRenderTarget* RenderTargetNew() {
+  return objffi::Make<FFIRenderTarget>().Leak();
+}
+
+bool RenderTargetSetColorAttachment(FFIRenderTarget* p_target,
+                                    FFIColorAttachment* p_color,
+                                    uint32_t index) {
+  auto target = objffi::Ref(p_target);
+  auto color = objffi::Ref(p_color);
+  if (!target || !color) {
+    return false;
+  }
+  if (!color->attachment.IsValid()) {
+    VALIDATION_LOG << "Color attachment was invalid.";
+    return false;
+  }
+  target->Get().SetColorAttachment(color->attachment, index);
+  return true;
+}
+
+bool RenderTargetSetDepthAttachment(FFIRenderTarget* p_target,
+                                    FFIDepthAttachment* p_depth) {
+  auto target = objffi::Ref(p_target);
+  auto depth = objffi::Ref(p_depth);
+  if (!target || !depth) {
+    return false;
+  }
+  if (!depth->attachment.IsValid()) {
+    VALIDATION_LOG << "Depth attachment was invalid.";
+    return false;
+  }
+  target->Get().SetDepthAttachment(depth->attachment);
+  return true;
+}
+
+bool RenderTargetSetStencilAttachment(FFIRenderTarget* p_target,
+                                      FFIStencilAttachment* p_stencil) {
+  auto target = objffi::Ref(p_target);
+  auto stencil = objffi::Ref(p_stencil);
+  if (!target || !stencil) {
+    return false;
+  }
+  if (!stencil->attachment.IsValid()) {
+    VALIDATION_LOG << "Depth attachment was invalid.";
+    return false;
+  }
+  target->Get().SetStencilAttachment(stencil->attachment);
+  return true;
 }
 
 }  // namespace impeller::stator::renderer
