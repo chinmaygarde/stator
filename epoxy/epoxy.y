@@ -54,17 +54,17 @@
   PAREN_RIGHT             ")"
   COMMA                   ","
 
-  VOID_T                  "void"
+  VOID                    "void"
 
-  INT_8_T                 "int8_t"
-  INT_16_T                "int16_t"
-  INT_32_T                "int32_t"
-  INT_64_T                "int64_t"
+  INT_8                   "int8"
+  INT_16                  "int16"
+  INT_32                  "int32"
+  INT_64                  "int64"
 
-  UINT_8_T                "uint8_t"
-  UINT_16_T               "uint16_t"
-  UINT_32_T               "uint32_t"
-  UINT_64_T               "uint64_t"
+  UINT_8                  "uint8"
+  UINT_16                 "uint16"
+  UINT_32                 "uint32"
+  UINT_64                 "uint64"
 
   DOUBLE                  "double"
   FLOAT                   "float"
@@ -174,15 +174,15 @@ VariableList
   ;
 
 Primitive
-  : VOID_T     { $$ = epoxy::Primitive::kVoid; }
-  | INT_8_T    { $$ = epoxy::Primitive::kInt8; }
-  | INT_16_T   { $$ = epoxy::Primitive::kInt16; }
-  | INT_32_T   { $$ = epoxy::Primitive::kInt32; }
-  | INT_64_T   { $$ = epoxy::Primitive::kInt64; }
-  | UINT_8_T   { $$ = epoxy::Primitive::kUnsignedInt8; }
-  | UINT_16_T  { $$ = epoxy::Primitive::kUnsignedInt16; }
-  | UINT_32_T  { $$ = epoxy::Primitive::kUnsignedInt32; }
-  | UINT_64_T  { $$ = epoxy::Primitive::kUnsignedInt64; }
+  : VOID       { $$ = epoxy::Primitive::kVoid; }
+  | INT_8      { $$ = epoxy::Primitive::kInt8; }
+  | INT_16     { $$ = epoxy::Primitive::kInt16; }
+  | INT_32     { $$ = epoxy::Primitive::kInt32; }
+  | INT_64     { $$ = epoxy::Primitive::kInt64; }
+  | UINT_8     { $$ = epoxy::Primitive::kUnsignedInt8; }
+  | UINT_16    { $$ = epoxy::Primitive::kUnsignedInt16; }
+  | UINT_32    { $$ = epoxy::Primitive::kUnsignedInt32; }
+  | UINT_64    { $$ = epoxy::Primitive::kUnsignedInt64; }
   | DOUBLE     { $$ = epoxy::Primitive::kDouble; }
   | FLOAT      { $$ = epoxy::Primitive::kFloat; }
   ;

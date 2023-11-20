@@ -13,6 +13,6 @@ function GetGlobalContext() -> FFIContext*
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
 
 function SwapchainNextDrawableNew(FFISwapchain* swapchain) -> FFITexture*
-function SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) -> uint32_t
+function SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) -> uint32
 
 } // namespace renderer

@@ -43,7 +43,6 @@ def main():
     args.source
   ]
 
-  print(command)
   subprocess.check_output(command, cwd=args.outdir)
 
 if __name__ == '__main__':

@@ -43,15 +43,15 @@ WS                      [ \t\v\n\f]
 "opaque"               return epoxy::Parser::make_OPAQUE(CURRENT_LOC);
 "function"             return epoxy::Parser::make_FUNCTION(CURRENT_LOC);
 
-"void"                 return epoxy::Parser::make_VOID_T(CURRENT_LOC);
-"int8_t"               return epoxy::Parser::make_INT_8_T(CURRENT_LOC);
-"int16_t"              return epoxy::Parser::make_INT_16_T(CURRENT_LOC);
-"int32_t"              return epoxy::Parser::make_INT_32_T(CURRENT_LOC);
-"int64_t"              return epoxy::Parser::make_INT_64_T(CURRENT_LOC);
-"uint8_t"              return epoxy::Parser::make_UINT_8_T(CURRENT_LOC);
-"uint16_t"             return epoxy::Parser::make_UINT_16_T(CURRENT_LOC);
-"uint32_t"             return epoxy::Parser::make_UINT_32_T(CURRENT_LOC);
-"uint64_t"             return epoxy::Parser::make_UINT_64_T(CURRENT_LOC);
+"void"                 return epoxy::Parser::make_VOID(CURRENT_LOC);
+"int8"                 return epoxy::Parser::make_INT_8(CURRENT_LOC);
+"int16"                return epoxy::Parser::make_INT_16(CURRENT_LOC);
+"int32"                return epoxy::Parser::make_INT_32(CURRENT_LOC);
+"int64"                return epoxy::Parser::make_INT_64(CURRENT_LOC);
+"uint8"                return epoxy::Parser::make_UINT_8(CURRENT_LOC);
+"uint16"               return epoxy::Parser::make_UINT_16(CURRENT_LOC);
+"uint32"               return epoxy::Parser::make_UINT_32(CURRENT_LOC);
+"uint64"               return epoxy::Parser::make_UINT_64(CURRENT_LOC);
 "double"               return epoxy::Parser::make_DOUBLE(CURRENT_LOC);
 "float"                return epoxy::Parser::make_FLOAT(CURRENT_LOC);
 
