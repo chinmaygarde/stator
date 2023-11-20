@@ -15,23 +15,23 @@ enum HelloType {
 
 // Strucs are specified just like you would in C/C++;
 struct Hello {
-  int32_t cookie;
+  int32 cookie;
 
-  // Notice we used the int32_t primitive. There are the following built in primitives.
-  // int8_t: A signed 8-bit integer.
-  // int16_t: A signed 16-bit integer.
-  // int32_t: A signed 32-bit integer.
-  // int64_t: A signed 64-bit integer.
-  // uint8_t: An unsigned 8-bit integer.
-  // uint16_t: An unsigned 16-bit integer.
-  // uint32_t: An unsigned 32-bit integer.
-  // uint64_t: An unsigned 64-bit integer.
+  // Notice we used the int32 primitive. There are the following built in primitives.
+  // int8: A signed 8-bit integer.
+  // int16: A signed 16-bit integer.
+  // int32: A signed 32-bit integer.
+  // int64: A signed 64-bit integer.
+  // uint8: An unsigned 8-bit integer.
+  // uint16: An unsigned 16-bit integer.
+  // uint32: An unsigned 32-bit integer.
+  // uint64: An unsigned 64-bit integer.
   // double: A 64-bit double.
   // float: A 32-bit float.
   // void: A void type.
 
   // You can specify pointers to these primitives.
-  int64_t *pointer_to_int64;
+  int64 *pointer_to_int64;
 
   // You can specify a pointer to void.
   void *an_opaque_pointer;
@@ -67,9 +67,9 @@ function SayHello() -> void
 // They may returns primitives, pointers and struct. The return type may be a pointer
 // to a primitive or struct as well. However, all enums are passed and returned by value.
 
-function GetIntPointer() -> int32_t*
+function GetIntPointer() -> int32*
 
-function AddValues(int32_t* a, int32_t b) -> int32_t
+function AddValues(int32* a, int32 b) -> int32
 
 function CreateHello(HelloType type) -> Hello*
 

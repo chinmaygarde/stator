@@ -50,7 +50,7 @@ final class Swapchain extends OBJFFIObject {
   bool presentDrawable(Texture texture) {
     final result = renderer.SwapchainPresentDrawable(swapchain, texture.texture);
     texture.dispose();
-    return result == 0;
+    return result;
   }
 
   FFISwapchainPointer swapchain;
