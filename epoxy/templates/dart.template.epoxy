@@ -3,11 +3,9 @@
 import 'dart:ffi';
 
 typedef VoidPointer = Pointer<Void>;
-
 {% for ns in namespaces %}
 
-// {{ length(ns.structs) }} struct definitions.
-
+// {{ length(ns.structs) }} struct definition(s).
 {% for struct in ns.structs %}
 
 final class {{struct.name}} extends Struct {
@@ -19,7 +17,7 @@ final class {{struct.name}} extends Struct {
 typedef {{struct.name}}Pointer = Pointer<{{struct.name}}>;
 {% endfor %}
 
-// {{ length(ns.opaques) }} opaque declarations.
+// {{ length(ns.opaques) }} opaque declaration(s).
 
 {% for opaque in ns.opaques -%}
 
@@ -29,13 +27,13 @@ typedef {{ opaque.name }}Pointer = Pointer<{{ opaque.name }}>;
 {%  endfor -%}
 
 
-// {{ length(ns.functions) }} function definitions.
+// {{ length(ns.functions) }} function definition(s).
 
 {% for fn in ns.functions %}
 
-// {{ fn.name }} definitions.
+// {{ fn.name }} definition(s).
 
-// {{ fn.name }} C Type definitions.
+// {{ fn.name }} C Type definition(s).
 typedef {{fn.name}}CType = NativeFunction<
 {{to_c_type(fn.return_type)}}{% if fn.pointer_return %}Pointer{% endif %}
 
@@ -48,7 +46,7 @@ Function(
 )
 >;
 
-// {{ fn.name }} Dart Type definitions.
+// {{ fn.name }} Dart Type definition(s).
 typedef {{fn.name}}Type =
 {{to_dart_type(fn.return_type)}}{% if fn.pointer_return %}Pointer{% endif %}
 
@@ -68,7 +66,7 @@ Function(
 {% endfor %}
 
 
-// Proc table setup for {{ camel_case(ns.name) }}
+// Proc table setup for {{ camel_case(ns.name) }}.
 
 final class {{ camel_case(ns.name) }}Procs {
 
