@@ -80,7 +80,7 @@ template("epoxy_dart") {
 
   dart_path = "$target_gen_dir/$source_file_name.epoxy.dart"
 
-  dart_templ = "../epoxy/templates/drt.template.epoxy"
+  dart_templ = "../epoxy/templates/dart.template.epoxy"
 
   epoxy(target_name) {
     input = invoker.source

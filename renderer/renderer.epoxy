@@ -49,6 +49,9 @@ struct Color {
   float alpha;
 }
 
+function ColorAlloc() -> Color*
+function ColorFree(Color* color)
+
 function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction action) -> bool
