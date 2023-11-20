@@ -47,12 +47,7 @@ class FFITexture final : public objffi::Object {
 
 class FFIRenderTarget final : public objffi::Object {
  public:
-  FFIRenderTarget() = default;
-
-  RenderTarget& Get() { return render_target_; }
-
- private:
-  RenderTarget render_target_;
+  RenderTarget render_target;
 };
 
 class FFIColorAttachment final : public objffi::Object {

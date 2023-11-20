@@ -29,4 +29,30 @@ function RenderTargetSetColorAttachment(FFIRenderTarget* target, FFIColorAttachm
 function RenderTargetSetDepthAttachment(FFIRenderTarget* target, FFIDepthAttachment* depth) -> bool
 function RenderTargetSetStencilAttachment(FFIRenderTarget* target, FFIStencilAttachment* stencil) -> bool
 
+enum LoadAction {
+  DontCare,
+  Load,
+  Clear,
+}
+
+enum StoreAction {
+  DontCare,
+  Store,
+  MultisampleResolve,
+  StoreAndMultisampleResolve,
+}
+
+struct Color {
+  float red;
+  float green;
+  float blue;
+  float alpha;
+}
+
+function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
+function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
+function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction action) -> bool
+function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction action) -> bool
+function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, Color* color) -> bool
+
 } // namespace renderer

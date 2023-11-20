@@ -62,7 +62,7 @@ bool RenderTargetSetColorAttachment(FFIRenderTarget* p_target,
     VALIDATION_LOG << "Color attachment was invalid.";
     return false;
   }
-  target->Get().SetColorAttachment(color->attachment, index);
+  target->render_target.SetColorAttachment(color->attachment, index);
   return true;
 }
 
@@ -77,7 +77,7 @@ bool RenderTargetSetDepthAttachment(FFIRenderTarget* p_target,
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->Get().SetDepthAttachment(depth->attachment);
+  target->render_target.SetDepthAttachment(depth->attachment);
   return true;
 }
 
@@ -92,7 +92,7 @@ bool RenderTargetSetStencilAttachment(FFIRenderTarget* p_target,
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->Get().SetStencilAttachment(stencil->attachment);
+  target->render_target.SetStencilAttachment(stencil->attachment);
   return true;
 }
 
