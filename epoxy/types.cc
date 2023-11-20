@@ -224,6 +224,20 @@ bool Function::PassesSema(const Namespace& ns,
       }
     }
   }
+  {
+    std::map<std::string, size_t> arg_counts;
+    for (const auto& arg : arguments_) {
+      ++arg_counts[arg.GetIdentifier()];
+    }
+    for (const auto& arg_count : arg_counts) {
+      if (arg_count.second > 1) {
+        stream << "In function named '" << name_ << "' argument '"
+               << arg_count.first << "' is repeated " << arg_count.second
+               << " times.";
+        return false;
+      }
+    }
+  }
 
   return true;
 }
