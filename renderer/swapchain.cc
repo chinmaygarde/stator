@@ -4,6 +4,7 @@
 
 #include "impeller/stator/renderer/swapchain.h"
 
+#include "impeller/base/strings.h"
 #include "impeller/base/validation.h"
 #include "impeller/core/allocator.h"
 #include "impeller/stator/renderer/context.h"
@@ -16,6 +17,11 @@ Swapchain::Swapchain(const std::shared_ptr<Context>& context,
     : context_(context),
       max_drawable_count_(max_drawable_count),
       recyclable_expiry_(recyclable_expiry) {
+  TextureDescriptor desc;
+  desc.size = ISize(100u, 100u);
+  desc.format = PixelFormat::kB8G8R8A8UNormInt;
+  desc.storage_mode = StorageMode::kDevicePrivate;
+  texture_desc_ = desc;
   is_valid_ = true;
 }
 
@@ -109,8 +115,13 @@ std::shared_ptr<Texture> Swapchain::CreateDrawable() const {
     VALIDATION_LOG << "Context to create the drawable from no longer exists.";
     return nullptr;
   }
-  return context->GetImpellerContext()->GetResourceAllocator()->CreateTexture(
-      texture_desc_);
+  auto texture =
+      context->GetImpellerContext()->GetResourceAllocator()->CreateTexture(
+          texture_desc_);
+  if (texture) {
+    texture->SetLabel(SPrintF("Swapchain Texture %zu", texture_count_++));
+  }
+  return texture;
 }
 
 void Swapchain::RecycleDrawable(std::shared_ptr<Texture> texture) {

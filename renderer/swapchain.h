@@ -73,6 +73,7 @@ class Swapchain {
   std::deque<Recyclable> recyclables_ IPLR_GUARDED_BY(recyclables_mutex_);
   TextureDescriptor texture_desc_ IPLR_GUARDED_BY(mutex_)
       IPLR_GUARDED_BY(recyclables_mutex_);
+  mutable size_t texture_count_ = 1u;
   bool is_valid_ = false;
 
   std::shared_ptr<Texture> CreateDrawable() const;
