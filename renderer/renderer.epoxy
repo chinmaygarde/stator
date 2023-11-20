@@ -54,8 +54,8 @@ function ColorFree(Color* color)
 
 function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
-function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction action) -> bool
-function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction action) -> bool
+function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction load_action) -> bool
+function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction store_action) -> bool
 function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, Color* color) -> bool
 
 } // namespace renderer

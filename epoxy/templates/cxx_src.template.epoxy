@@ -26,7 +26,7 @@ impeller::stator::{{ns.name}}::
  EPOXY_BIND_{{func.name}}(
 {% for arg in func.arguments %}
 {% if arg.is_enum %}
-uint64_t
+int64_t
 {% else if arg.is_struct or arg.is_opaque %}
 impeller::stator::{{ns.name}}::{{arg.type}}*
 {% else %}

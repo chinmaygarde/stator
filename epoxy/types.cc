@@ -579,15 +579,20 @@ const std::vector<std::string>& Enum::GetMembers() const {
 }
 
 bool Enum::PassesSema(const Namespace& ns, std::stringstream& stream) const {
-  std::map<std::string, size_t> member_counts;
-  for (const auto& member : members_) {
-    member_counts[member]++;
+  if (members_.empty()) {
+    stream << "Enum " << name_ << " cannot be empty." << std::endl;
+    return false;
   }
-
-  for (const auto& count : member_counts) {
-    if (count.second > 1) {
-      stream << "Enum " << name_ << " has duplicate member " << count.first;
-      return false;
+  {
+    std::map<std::string, size_t> member_counts;
+    for (const auto& member : members_) {
+      member_counts[member]++;
+    }
+    for (const auto& count : member_counts) {
+      if (count.second > 1) {
+        stream << "Enum " << name_ << " has duplicate member " << count.first;
+        return false;
+      }
     }
   }
   return true;

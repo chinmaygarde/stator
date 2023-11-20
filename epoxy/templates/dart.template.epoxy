@@ -5,6 +5,16 @@ import 'dart:ffi';
 typedef VoidPointer = Pointer<Void>;
 {% for ns in namespaces %}
 
+// {{ length(ns.enums) }} enum definition(s).
+{% for enum in ns.enums %}
+
+enum {{enum.name}} {
+{% for member in enum.members %}
+  {{member}},
+{% endfor %}
+}
+{% endfor %}
+
 // {{ length(ns.structs) }} struct definition(s).
 {% for struct in ns.structs %}
 
@@ -39,7 +49,11 @@ typedef {{fn.name}}CType = NativeFunction<
 
 Function(
 {% for arg in fn.arguments %}
+{% if arg.is_enum %}
+  Int64
+{% else %}
   {{to_c_type(arg.type)}}{% if arg.is_pointer %}Pointer{% endif %}
+{% endif %}
   {{arg.identifier}}
   {% if not loop.is_last %},{% endif %}
 {% endfor %}
@@ -54,6 +68,8 @@ Function(
 {% for arg in fn.arguments %}
 {% if arg.is_pointer and arg.type == "void" %}
   VoidPointer
+{% else if arg.is_enum %}
+  int
 {% else %}
   {{to_dart_type(arg.type)}}{% if arg.is_pointer %}Pointer{% endif %}
 {% endif %}
