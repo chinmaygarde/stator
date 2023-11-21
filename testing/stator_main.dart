@@ -70,7 +70,40 @@ final class Context extends OBJFFIObject {
 final class RenderTarget extends OBJFFIObject {
   RenderTarget(this.target) : super(target.cast());
 
+  Map<int, ColorAttachment> get colorAttachments => _colorAttachments;
+
+  bool setColorAttachment(ColorAttachment attachment, int index) {
+    if (index < 0) {
+      return false;
+    }
+    _colorAttachments[index] = attachment;
+    return renderer.RenderTargetSetColorAttachment(target, attachment.attachment, index);
+  }
+
+  DepthAttachment? get depthAttachment => _depthAttachment;
+
+  set depthAttachment(DepthAttachment? attachment) {
+    if (attachment == _depthAttachment) {
+      return;
+    }
+    _depthAttachment = attachment;
+    renderer.RenderTargetSetDepthAttachment(target, _depthAttachment == null ? nullptr : _depthAttachment!.attachment);
+  }
+
+  StencilAttachment? get stencilAttachment => _stencilAttachment;
+
+  set stencilAttachment(StencilAttachment? attachment) {
+    if (_stencilAttachment == attachment) {
+      return;
+    }
+    _stencilAttachment = attachment;
+    renderer.RenderTargetSetStencilAttachment(target, _stencilAttachment == null ? nullptr : _stencilAttachment!.attachment);
+  }
+
   FFIRenderTargetPointer target;
+  final Map<int, ColorAttachment> _colorAttachments = <int, ColorAttachment>{};
+  DepthAttachment? _depthAttachment;
+  StencilAttachment? _stencilAttachment;
 }
 
 final class Color {

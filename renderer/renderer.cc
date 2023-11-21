@@ -63,27 +63,29 @@ bool RenderTargetSetColorAttachment(FFIRenderTarget* target,
 
 bool RenderTargetSetDepthAttachment(FFIRenderTarget* target,
                                     FFIDepthAttachment* depth) {
-  if (!target || !depth) {
+  if (!target) {
     return false;
   }
-  if (!depth->attachment.IsValid()) {
+  if (depth && !depth->attachment.IsValid()) {
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->render_target.SetDepthAttachment(depth->attachment);
+  target->render_target.SetDepthAttachment(depth ? depth->attachment
+                                                 : std::nullopt);
   return true;
 }
 
 bool RenderTargetSetStencilAttachment(FFIRenderTarget* target,
                                       FFIStencilAttachment* stencil) {
-  if (!target || !stencil) {
+  if (!target) {
     return false;
   }
-  if (!stencil->attachment.IsValid()) {
+  if (stencil && !stencil->attachment.IsValid()) {
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->render_target.SetStencilAttachment(stencil->attachment);
+  target->render_target.SetStencilAttachment(stencil ? stencil->attachment
+                                                     : std::nullopt);
   return true;
 }
 
