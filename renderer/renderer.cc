@@ -97,11 +97,11 @@ bool RenderTargetSetStencilAttachment(FFIRenderTarget* target,
 }
 
 FFIColor* ColorAlloc() {
-  return reinterpret_cast<FFIColor*>(std::calloc(1u, sizeof(FFIColor)));
+  return std::make_unique<FFIColor>().release();
 }
 
 void ColorFree(FFIColor* color) {
-  return std::free(color);
+  delete color;
 }
 
 FFIColorAttachment* ColorAttachmentNew() {
@@ -376,18 +376,93 @@ bool CommandSetInstanceCount(FFICommand* command, uint64_t instance_count) {
 }
 
 FFIViewport* FFIViewportAlloc() {
-  IMPELLER_UNIMPLEMENTED;
+  return std::make_unique<FFIViewport>().release();
 }
 
 void FFIViewportFree(FFIViewport* viewport) {
-  IMPELLER_UNIMPLEMENTED;
+  delete viewport;
 }
 
 FFIIRect* FFIIRectAlloc() {
-  IMPELLER_UNIMPLEMENTED;
+  return std::make_unique<FFIIRect>().release();
 }
 
 void FFIIRectFree(FFIIRect* rect) {
+  delete rect;
+}
+
+FFIPipelineLibrary* ContextPipelineLibraryCopy(FFIContext* context) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIPipeline* PipelineLibraryGetPipelineCopy(
+    FFIPipelineLibrary* pipeline_library,
+    FFIPipelineDescriptor* pipeline_descriptor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIPipelineDescriptor* PipelineDescriptorNew() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor,
+                                    SampleCount count) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor,
+                                FFIShaderFunction* shader_function) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetVertexDescriptor(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    FFIVertexDescriptor* vertex_descriptor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetColorAttachmentDescriptor(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor,
+    uint32_t index) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetDepthAttachmentDescriptor(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    FFIPipelineDepthAttachmentDescriptor*
+        pipeline_depth_attachment_descriptor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetStencilAttachmentDescriptor(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    FFIPipelineStencilAttachmentDescriptor*
+        pipeline_stencil_attachment_descriptor,
+    Facing facing) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetCullMode(FFIPipelineDescriptor* pipeline_descriptor,
+                                   Facing facing) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetWindingOrder(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    WindingOrder winding) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetPrimitiveType(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    PrimitiveType primitive_type) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDescriptorSetPolygonMode(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    PolygonMode polygon_mode) {
   IMPELLER_UNIMPLEMENTED;
 }
 

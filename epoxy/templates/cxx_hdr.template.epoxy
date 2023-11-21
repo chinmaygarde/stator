@@ -31,7 +31,8 @@ struct {{ struct.name }} {
 {% for var in struct.variables %}
   {{var.type}}
   {% if var.is_pointer %} * {% endif %}
-  {{var.identifier}};
+  {{var.identifier}} = {};
+
 {% endfor %}
 }; // struct {{ struct.name }}
 {% endfor %}

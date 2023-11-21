@@ -28,9 +28,45 @@ enum IndexType {
 }
 
 //------------------------------------------------------------------------------
+enum SampleCount {
+  One,
+  Four,
+}
+
+//------------------------------------------------------------------------------
+enum Facing {
+  None,
+  Front,
+  Back,
+  Both,
+}
+
+//------------------------------------------------------------------------------
+enum WindingOrder {
+  Clockwise,
+  CounterClockwise,
+}
+
+//------------------------------------------------------------------------------
+enum PrimitiveType {
+  Triangle,
+  TriangleStrip,
+  Line,
+  LineStrip,
+  Point,
+}
+
+//------------------------------------------------------------------------------
+enum PolygonMode {
+  Fill,
+  Line,
+}
+
+//------------------------------------------------------------------------------
 opaque FFIContext
 
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
+function ContextPipelineLibraryCopy(FFIContext* context) -> FFIPipelineLibrary*
 function ContextCommandBufferNew(FFIContext* context) -> FFICommandBuffer*
 function GetGlobalContext() -> FFIContext*
 
@@ -67,6 +103,42 @@ opaque FFICommandBindings
 
 //------------------------------------------------------------------------------
 opaque FFIPipeline
+
+//------------------------------------------------------------------------------
+opaque FFIPipelineLibrary
+
+function PipelineLibraryGetPipelineCopy(FFIPipelineLibrary* pipeline_library, FFIPipelineDescriptor* pipeline_descriptor) -> FFIPipeline*
+
+//------------------------------------------------------------------------------
+opaque FFIPipelineDescriptor
+
+function PipelineDescriptorNew() -> FFIPipelineDescriptor*
+
+function PipelineDescriptSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor, SampleCount count) -> bool
+function PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor, FFIShaderFunction* shader_function) -> bool
+function PipelineDescriptorSetVertexDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIVertexDescriptor* vertex_descriptor) -> bool
+function PipelineDescriptorSetColorAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor, uint32 index) -> bool
+function PipelineDescriptorSetDepthAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineDepthAttachmentDescriptor* pipeline_depth_attachment_descriptor) -> bool
+function PipelineDescriptorSetStencilAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineStencilAttachmentDescriptor* pipeline_stencil_attachment_descriptor, Facing facing) -> bool
+function PipelineDescriptorSetCullMode(FFIPipelineDescriptor* pipeline_descriptor, Facing facing) -> bool
+function PipelineDescriptorSetWindingOrder(FFIPipelineDescriptor* pipeline_descriptor, WindingOrder winding) -> bool
+function PipelineDescriptorSetPrimitiveType(FFIPipelineDescriptor* pipeline_descriptor, PrimitiveType primitive_type) -> bool
+function PipelineDescriptorSetPolygonMode(FFIPipelineDescriptor* pipeline_descriptor, PolygonMode polygon_mode) -> bool
+
+//------------------------------------------------------------------------------
+opaque FFIShaderFunction
+
+//------------------------------------------------------------------------------
+opaque FFIVertexDescriptor
+
+//------------------------------------------------------------------------------
+opaque FFIPipelineColorAttachmentDescriptor
+
+//------------------------------------------------------------------------------
+opaque FFIPipelineDepthAttachmentDescriptor
+
+//------------------------------------------------------------------------------
+opaque FFIPipelineStencilAttachmentDescriptor
 
 //------------------------------------------------------------------------------
 opaque FFIBufferView
