@@ -20,6 +20,14 @@ enum StoreAction {
 }
 
 //------------------------------------------------------------------------------
+enum IndexType {
+  Unknown,
+  Bit16,
+  Bit32,
+  None,
+}
+
+//------------------------------------------------------------------------------
 opaque FFIContext
 
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
@@ -42,6 +50,50 @@ function RenderPassEncodeCommands(FFIRenderPass* render_pass) -> bool
 opaque FFICommand
 
 function CommandNew() -> FFICommand*
+function CommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) -> bool
+function CommandSetVertexBindings(FFICommand* command, FFICommandBindings* vertex_bindings) -> bool
+function CommandSetFragmentBindings(FFICommand* command, FFICommandBindings* fragment_bindings) -> bool
+function CommandSetIndexBuffer(FFICommand* command, FFIBufferView* index_buffer_view) -> bool
+function CommandSetVertexCount(FFICommand* command, uint64 vertex_count) -> bool
+function CommandSetIndexType(FFICommand* command, IndexType index_type) -> bool
+function CommandSetStencilReference(FFICommand* command, uint32 stencil_reference) -> bool
+function CommandSetBaseVertex(FFICommand* command, uint64 base_vertex) -> bool
+function CommandSetViewport(FFICommand* command, FFIViewport* viewport) -> bool
+function CommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) -> bool
+function CommandSetInstanceCount(FFICommand* command, uint64 instance_count) -> bool
+
+//------------------------------------------------------------------------------
+opaque FFICommandBindings
+
+//------------------------------------------------------------------------------
+opaque FFIPipeline
+
+//------------------------------------------------------------------------------
+opaque FFIBufferView
+
+//------------------------------------------------------------------------------
+struct FFIViewport {
+  double origin_x;
+  double origin_y;
+  double size_width;
+  double size_height;
+  double z_near;
+  double z_far;
+}
+
+function FFIViewportAlloc() -> FFIViewport*
+function FFIViewportFree(FFIViewport* viewport)
+
+//------------------------------------------------------------------------------
+struct FFIIRect {
+  int64 origin_x;
+  int64 origin_y;
+  int64 size_width;
+  int64 size_height;
+}
+
+function FFIIRectAlloc() -> FFIIRect*
+function FFIIRectFree(FFIIRect* rect)
 
 //------------------------------------------------------------------------------
 opaque FFISwapchain

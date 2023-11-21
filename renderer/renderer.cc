@@ -101,7 +101,7 @@ FFIColor* ColorAlloc() {
 }
 
 void ColorFree(FFIColor* color) {
-  return free(color);
+  return std::free(color);
 }
 
 FFIColorAttachment* ColorAttachmentNew() {
@@ -325,6 +325,70 @@ bool CommandBufferSubmit(FFICommandBuffer* command_buffer) {
     return false;
   }
   return command_buffer->command_buffer->SubmitCommands();
+}
+
+bool CommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetVertexBindings(FFICommand* command,
+                              FFICommandBindings* vertex_bindings) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetFragmentBindings(FFICommand* command,
+                                FFICommandBindings* fragment_bindings) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetIndexBuffer(FFICommand* command,
+                           FFIBufferView* index_buffer_view) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetVertexCount(FFICommand* command, uint64_t vertex_count) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetIndexType(FFICommand* command, IndexType index_type) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetStencilReference(FFICommand* command,
+                                uint32_t stencil_reference) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetBaseVertex(FFICommand* command, uint64_t base_vertex) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetViewport(FFICommand* command, FFIViewport* viewport) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool CommandSetInstanceCount(FFICommand* command, uint64_t instance_count) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIViewport* FFIViewportAlloc() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+void FFIViewportFree(FFIViewport* viewport) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIIRect* FFIIRectAlloc() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+void FFIIRectFree(FFIIRect* rect) {
+  IMPELLER_UNIMPLEMENTED;
 }
 
 }  // namespace impeller::stator::renderer
