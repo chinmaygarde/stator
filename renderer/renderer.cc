@@ -36,10 +36,7 @@ FFITexture* SwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
       .Leak();
 }
 
-bool SwapchainPresentDrawable(FFISwapchain* swapchain_ptr,
-                              FFITexture* texture_ptr) {
-  auto swapchain = objffi::Ref(swapchain_ptr);
-  auto texture = objffi::Ref(texture_ptr);
+bool SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) {
   if (!swapchain || !texture) {
     return false;
   }
@@ -50,11 +47,9 @@ FFIRenderTarget* RenderTargetNew() {
   return objffi::Make<FFIRenderTarget>().Leak();
 }
 
-bool RenderTargetSetColorAttachment(FFIRenderTarget* p_target,
-                                    FFIColorAttachment* p_color,
+bool RenderTargetSetColorAttachment(FFIRenderTarget* target,
+                                    FFIColorAttachment* color,
                                     uint32_t index) {
-  auto target = objffi::Ref(p_target);
-  auto color = objffi::Ref(p_color);
   if (!target || !color) {
     return false;
   }
@@ -66,10 +61,8 @@ bool RenderTargetSetColorAttachment(FFIRenderTarget* p_target,
   return true;
 }
 
-bool RenderTargetSetDepthAttachment(FFIRenderTarget* p_target,
-                                    FFIDepthAttachment* p_depth) {
-  auto target = objffi::Ref(p_target);
-  auto depth = objffi::Ref(p_depth);
+bool RenderTargetSetDepthAttachment(FFIRenderTarget* target,
+                                    FFIDepthAttachment* depth) {
   if (!target || !depth) {
     return false;
   }
@@ -81,10 +74,8 @@ bool RenderTargetSetDepthAttachment(FFIRenderTarget* p_target,
   return true;
 }
 
-bool RenderTargetSetStencilAttachment(FFIRenderTarget* p_target,
-                                      FFIStencilAttachment* p_stencil) {
-  auto target = objffi::Ref(p_target);
-  auto stencil = objffi::Ref(p_stencil);
+bool RenderTargetSetStencilAttachment(FFIRenderTarget* target,
+                                      FFIStencilAttachment* stencil) {
   if (!target || !stencil) {
     return false;
   }
@@ -93,6 +84,87 @@ bool RenderTargetSetStencilAttachment(FFIRenderTarget* p_target,
     return false;
   }
   target->render_target.SetStencilAttachment(stencil->attachment);
+  return true;
+}
+
+FFIColor* ColorAlloc() {
+  return reinterpret_cast<FFIColor*>(std::calloc(1u, sizeof(FFIColor)));
+}
+
+void ColorFree(FFIColor* color) {
+  return free(color);
+}
+
+bool ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) {
+  if (!color) {
+    return false;
+  }
+
+  color->attachment.texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+bool ColorAttachmentSetResolveTexture(FFIColorAttachment* color,
+                                      FFITexture* texture) {
+  if (!color) {
+    return false;
+  }
+  color->attachment.resolve_texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+constexpr impeller::LoadAction ToLoadAction(LoadAction action) {
+  switch (action) {
+    case LoadAction::DontCare:
+      return impeller::LoadAction::kDontCare;
+    case LoadAction::Load:
+      return impeller::LoadAction::kLoad;
+    case LoadAction::Clear:
+      return impeller::LoadAction::kClear;
+  }
+  return impeller::LoadAction::kClear;
+}
+
+bool ColorAttachmentSetLoadAction(FFIColorAttachment* color,
+                                  LoadAction load_action) {
+  if (!color) {
+    return false;
+  }
+  color->attachment.load_action = ToLoadAction(load_action);
+  return true;
+}
+
+constexpr impeller::StoreAction ToStoreAction(StoreAction action) {
+  switch (action) {
+    case StoreAction::DontCare:
+      return impeller::StoreAction::kDontCare;
+    case StoreAction::Store:
+      return impeller::StoreAction::kStore;
+    case StoreAction::MultisampleResolve:
+      return impeller::StoreAction::kMultisampleResolve;
+    case StoreAction::StoreAndMultisampleResolve:
+      return impeller::StoreAction::kStoreAndMultisampleResolve;
+      break;
+  }
+  return impeller::StoreAction::kDontCare;
+}
+
+bool ColorAttachmentSetStoreAction(FFIColorAttachment* color,
+                                   StoreAction store_action) {
+  if (!color) {
+    return false;
+  }
+  color->attachment.store_action = ToStoreAction(store_action);
+  return true;
+}
+
+bool ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment,
+                                  FFIColor* color) {
+  if (!color_attachment || !color) {
+    return false;
+  }
+  color_attachment->attachment.clear_color =
+      impeller::Color{color->red, color->green, color->blue, color->alpha};
   return true;
 }
 

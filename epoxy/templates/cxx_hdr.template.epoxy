@@ -13,9 +13,9 @@ enum class {{ enum.name }} : uint64_t {
 {% for member in enum.members %}
   {{ member }},
 {% endfor %}
-}; //  {{ enum.name }}
-{% endfor %}
+}; // enum  class {{ enum.name }}
 
+{% endfor %}
 
 // {{ length(ns.structs) }} struct forward declaration(s).
 

@@ -42,20 +42,20 @@ enum StoreAction {
   StoreAndMultisampleResolve,
 }
 
-struct Color {
+struct FFIColor {
   float red;
   float green;
   float blue;
   float alpha;
 }
 
-function ColorAlloc() -> Color*
-function ColorFree(Color* color)
+function ColorAlloc() -> FFIColor*
+function ColorFree(FFIColor* color)
 
 function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction load_action) -> bool
 function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction store_action) -> bool
-function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, Color* color) -> bool
+function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, FFIColor* color) -> bool
 
 } // namespace renderer

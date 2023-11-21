@@ -67,6 +67,101 @@ final class Context extends OBJFFIObject {
   FFIContextPointer context;
 }
 
+final class RenderTarget extends OBJFFIObject {
+  RenderTarget(this.target) : super(target.cast());
+
+  FFIRenderTargetPointer target;
+}
+
+final class Color {
+  Color(this.red, this.green, this.blue, this.alpha);
+
+  Color.transparentBlack();
+
+  double red = 0.0;
+  double green = 0.0;
+  double blue = 0.0;
+  double alpha = 0.0;
+}
+
+final class ColorAttachment extends OBJFFIObject {
+  ColorAttachment(this.attachment) : super(attachment.cast());
+
+  set loadAction(LoadAction action) {
+    if (action == _loadAction) {
+      return;
+    }
+    renderer.ColorAttachmentSetLoadAction(attachment, action.index);
+    _loadAction = action;
+  }
+
+  LoadAction get loadAction => _loadAction;
+
+  set storeAction(StoreAction action) {
+    if (action == _storeAction) {
+      return;
+    }
+    renderer.ColorAttachmentSetStoreAction(attachment, action.index);
+    _storeAction = action;
+  }
+
+  StoreAction get storeAction => _storeAction;
+
+  Texture? get texture => _texture;
+
+  set texture(Texture? texture) {
+    if (_texture == texture) {
+      return;
+    }
+
+    _texture = texture;
+    renderer.ColorAttachmentSetTexture(attachment, _texture != null ? _texture!.texture : nullptr);
+  }
+
+  Texture? get resolveTexture => _resolveTexture;
+
+  set resolveTexture(Texture? texture) {
+    if (_resolveTexture == texture) {
+      return;
+    }
+
+    _resolveTexture = texture;
+    renderer.ColorAttachmentSetResolveTexture(attachment, _resolveTexture != null ? _resolveTexture!.texture : nullptr);
+  }
+
+  Color get clearColor => _clearColor;
+
+  set clearColor(Color color) {
+    _clearColor = color;
+    final ffiColor = renderer.ColorAlloc();
+    ffiColor.ref.red = color.red;
+    ffiColor.ref.green = color.green;
+    ffiColor.ref.blue = color.blue;
+    ffiColor.ref.alpha = color.alpha;
+    renderer.ColorAttachmentSetClearColor(attachment, ffiColor);
+    renderer.ColorFree(ffiColor);
+  }
+
+  FFIColorAttachmentPointer attachment;
+  Texture? _texture;
+  Texture? _resolveTexture;
+  LoadAction _loadAction  = LoadAction.DontCare;
+  StoreAction _storeAction = StoreAction.DontCare;
+  Color _clearColor = Color.transparentBlack();
+}
+
+final class DepthAttachment extends OBJFFIObject {
+  DepthAttachment(this.attachment) : super(attachment.cast());
+
+  FFIDepthAttachmentPointer attachment;
+}
+
+final class StencilAttachment extends OBJFFIObject {
+  StencilAttachment(this.attachment) : super(attachment.cast());
+
+  FFIStencilAttachmentPointer attachment;
+}
+
 final Context context = Context(renderer.GetGlobalContext());
 final Swapchain swapchain = context.copySwapchain();
 
