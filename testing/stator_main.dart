@@ -64,7 +64,45 @@ final class Context extends OBJFFIObject {
     return Swapchain(renderer.ContextSwapchainCopy(context));
   }
 
+  CommandBuffer createCommandBuffer() {
+    return CommandBuffer(renderer.ContextCommandBufferNew(context));
+  }
+
   FFIContextPointer context;
+}
+
+final class CommandBuffer extends OBJFFIObject {
+  CommandBuffer(this.commandBuffer) : super(commandBuffer.cast());
+
+  RenderPass createRenderPass(RenderTarget renderTarget) {
+    return RenderPass(renderer.CommandBufferCreateRenderPassNew(commandBuffer, renderTarget.target));
+  }
+
+  bool submit() {
+    return renderer.CommandBufferSubmit(commandBuffer);
+  }
+
+  FFICommandBufferPointer commandBuffer;
+}
+
+final class RenderPass extends OBJFFIObject {
+  RenderPass(this.renderPass) : super(renderPass.cast());
+
+  bool addCommand(Command command) {
+    return renderer.RenderPassAddCommand(renderPass, command.command);
+  }
+
+  bool encodeCommands() {
+    return renderer.RenderPassEncodeCommands(renderPass);
+  }
+
+  FFIRenderPassPointer renderPass;
+}
+
+final class Command extends OBJFFIObject {
+  Command(this.command) : super(command.cast());
+
+  FFICommandPointer command;
 }
 
 final class RenderTarget extends OBJFFIObject {
@@ -328,11 +366,19 @@ void main () {
     final color0 = ColorAttachment();
     color0.loadAction = LoadAction.Clear;
     color0.storeAction = StoreAction.Store;
-    color0.clearColor = Color(1.0, 1.0, 0.0, 1.0);
+    color0.clearColor = Color(1.0, 1.0, 1.0, 1.0);
     color0.texture = texture;
 
     final renderTarget = RenderTarget();
     renderTarget.setColorAttachment(color0, 0);
+
+    final commandBuffer = context.createCommandBuffer();
+
+    final renderPass = commandBuffer.createRenderPass(renderTarget);
+
+    renderPass.encodeCommands();
+
+    commandBuffer.submit();
 
     swapchain.presentDrawable(texture);
   });
