@@ -68,7 +68,9 @@ final class Context extends OBJFFIObject {
 }
 
 final class RenderTarget extends OBJFFIObject {
-  RenderTarget(this.target) : super(target.cast());
+  RenderTarget() : this.fromPtr(renderer.RenderTargetNew());
+
+  RenderTarget.fromPtr(this.target) : super(target.cast());
 
   Map<int, ColorAttachment> get colorAttachments => _colorAttachments;
 
@@ -118,7 +120,9 @@ final class Color {
 }
 
 final class ColorAttachment extends OBJFFIObject {
-  ColorAttachment(this.attachment) : super(attachment.cast());
+  ColorAttachment() : this.fromPtr(renderer.ColorAttachmentNew());
+
+  ColorAttachment.fromPtr(this.attachment) : super(attachment.cast());
 
   LoadAction get loadAction => _loadAction;
 
@@ -320,6 +324,16 @@ final Swapchain swapchain = context.copySwapchain();
 void main () {
   Timer.periodic(const Duration(milliseconds: 16), (timer) {
     final texture = swapchain.acquireNextDrawable();
+
+    final color0 = ColorAttachment();
+    color0.loadAction = LoadAction.Clear;
+    color0.storeAction = StoreAction.Store;
+    color0.clearColor = Color(1.0, 1.0, 0.0, 1.0);
+    color0.texture = texture;
+
+    final renderTarget = RenderTarget();
+    renderTarget.setColorAttachment(color0, 0);
+
     swapchain.presentDrawable(texture);
   });
 }

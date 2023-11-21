@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "impeller/renderer/command.h"
+#include "impeller/renderer/render_pass.h"
 #include "impeller/renderer/render_target.h"
 #include "impeller/stator/objffi/scoped_object.h"
 #include "impeller/stator/renderer/context.h"
@@ -63,6 +65,27 @@ class FFIDepthAttachment final : public objffi::Object {
 class FFIStencilAttachment final : public objffi::Object {
  public:
   StencilAttachment attachment;
+};
+
+class FFICommandBuffer final : public objffi::Object {
+ public:
+  explicit FFICommandBuffer(std::shared_ptr<impeller::CommandBuffer> buffer)
+      : command_buffer(std::move(buffer)) {}
+
+  std::shared_ptr<impeller::CommandBuffer> command_buffer;
+};
+
+class FFIRenderPass final : public objffi::Object {
+ public:
+  explicit FFIRenderPass(std::shared_ptr<impeller::RenderPass> pass)
+      : render_pass(std::move(pass)) {}
+
+  std::shared_ptr<impeller::RenderPass> render_pass;
+};
+
+class FFICommand final : public objffi::Object {
+ public:
+  impeller::Command command;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

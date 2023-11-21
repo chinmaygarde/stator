@@ -278,4 +278,53 @@ bool StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment,
   return true;
 }
 
+FFICommandBuffer* ContextCommandBufferNew(FFIContext* context) {
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFICommandBuffer>(
+             context->Get()->GetImpellerContext()->CreateCommandBuffer())
+      .Leak();
+}
+
+FFIRenderPass* CommandBufferCreateRenderPassNew(
+    FFICommandBuffer* command_buffer,
+    FFIRenderTarget* render_target) {
+  if (!command_buffer || !render_target) {
+    return nullptr;
+  }
+  auto render_pass = command_buffer->command_buffer->CreateRenderPass(
+      render_target->render_target);
+  if (!render_pass) {
+    VALIDATION_LOG << "Could not create render pass.";
+    return nullptr;
+  }
+  return objffi::Make<FFIRenderPass>(std::move(render_pass)).Leak();
+}
+
+bool RenderPassAddCommand(FFIRenderPass* render_pass, FFICommand* command) {
+  if (!render_pass || !command) {
+    return false;
+  }
+  return render_pass->render_pass->AddCommand(std::move(command->command));
+}
+
+bool RenderPassEncodeCommands(FFIRenderPass* render_pass) {
+  if (!render_pass) {
+    return false;
+  }
+  return render_pass->render_pass->EncodeCommands();
+}
+
+FFICommand* CommandNew() {
+  return objffi::Make<FFICommand>().Leak();
+}
+
+bool CommandBufferSubmit(FFICommandBuffer* command_buffer) {
+  if (!command_buffer) {
+    return false;
+  }
+  return command_buffer->command_buffer->SubmitCommands();
+}
+
 }  // namespace impeller::stator::renderer

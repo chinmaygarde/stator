@@ -23,8 +23,25 @@ enum StoreAction {
 opaque FFIContext
 
 function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
-
+function ContextCommandBufferNew(FFIContext* context) -> FFICommandBuffer*
 function GetGlobalContext() -> FFIContext*
+
+//------------------------------------------------------------------------------
+opaque FFICommandBuffer
+
+function CommandBufferCreateRenderPassNew(FFICommandBuffer* command_buffer, FFIRenderTarget* render_target) -> FFIRenderPass*
+function CommandBufferSubmit(FFICommandBuffer* command_buffer) -> bool
+
+//------------------------------------------------------------------------------
+opaque FFIRenderPass
+
+function RenderPassAddCommand(FFIRenderPass* render_pass, FFICommand* command) -> bool
+function RenderPassEncodeCommands(FFIRenderPass* render_pass) -> bool
+
+//------------------------------------------------------------------------------
+opaque FFICommand
+
+function CommandNew() -> FFICommand*
 
 //------------------------------------------------------------------------------
 opaque FFISwapchain
