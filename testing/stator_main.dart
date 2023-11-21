@@ -87,6 +87,8 @@ final class Color {
 final class ColorAttachment extends OBJFFIObject {
   ColorAttachment(this.attachment) : super(attachment.cast());
 
+  LoadAction get loadAction => _loadAction;
+
   set loadAction(LoadAction action) {
     if (action == _loadAction) {
       return;
@@ -95,7 +97,7 @@ final class ColorAttachment extends OBJFFIObject {
     _loadAction = action;
   }
 
-  LoadAction get loadAction => _loadAction;
+  StoreAction get storeAction => _storeAction;
 
   set storeAction(StoreAction action) {
     if (action == _storeAction) {
@@ -104,8 +106,6 @@ final class ColorAttachment extends OBJFFIObject {
     renderer.ColorAttachmentSetStoreAction(attachment, action.index);
     _storeAction = action;
   }
-
-  StoreAction get storeAction => _storeAction;
 
   Texture? get texture => _texture;
 
@@ -153,13 +153,132 @@ final class ColorAttachment extends OBJFFIObject {
 final class DepthAttachment extends OBJFFIObject {
   DepthAttachment(this.attachment) : super(attachment.cast());
 
+  LoadAction get loadAction => _loadAction;
+
+  set loadAction(LoadAction action) {
+    if (action == _loadAction) {
+      return;
+    }
+    renderer.DepthAttachmentSetLoadAction(attachment, action.index);
+    _loadAction = action;
+  }
+
+  StoreAction get storeAction => _storeAction;
+
+  set storeAction(StoreAction action) {
+    if (action == _storeAction) {
+      return;
+    }
+    renderer.DepthAttachmentSetStoreAction(attachment, action.index);
+    _storeAction = action;
+  }
+
+  Texture? get texture => _texture;
+
+  set texture(Texture? texture) {
+    if (_texture == texture) {
+      return;
+    }
+
+    _texture = texture;
+    renderer.DepthAttachmentSetTexture(
+        attachment, _texture != null ? _texture!.texture : nullptr);
+  }
+
+  Texture? get resolveTexture => _resolveTexture;
+
+  set resolveTexture(Texture? texture) {
+    if (_resolveTexture == texture) {
+      return;
+    }
+
+    _resolveTexture = texture;
+    renderer.DepthAttachmentSetResolveTexture(attachment,
+        _resolveTexture != null ? _resolveTexture!.texture : nullptr);
+  }
+
+  double get clearDepth => _clearDepth;
+
+  set clearDepth(double depth) {
+    if (_clearDepth == depth) {
+      return;
+    }
+
+    _clearDepth = depth;
+    renderer.DepthAttachmentSetClearDepth(attachment, _clearDepth);
+  }
+
   FFIDepthAttachmentPointer attachment;
+  Texture? _texture;
+  Texture? _resolveTexture;
+  LoadAction _loadAction = LoadAction.DontCare;
+  StoreAction _storeAction = StoreAction.DontCare;
+  double _clearDepth = 0.0;
 }
 
 final class StencilAttachment extends OBJFFIObject {
   StencilAttachment(this.attachment) : super(attachment.cast());
 
+  LoadAction get loadAction => _loadAction;
+
+  set loadAction(LoadAction action) {
+    if (action == _loadAction) {
+      return;
+    }
+    renderer.StencilAttachmentSetLoadAction(attachment, action.index);
+    _loadAction = action;
+  }
+
+  StoreAction get storeAction => _storeAction;
+
+  set storeAction(StoreAction action) {
+    if (action == _storeAction) {
+      return;
+    }
+    renderer.StencilAttachmentSetStoreAction(attachment, action.index);
+    _storeAction = action;
+  }
+
+  Texture? get texture => _texture;
+
+  set texture(Texture? texture) {
+    if (_texture == texture) {
+      return;
+    }
+
+    _texture = texture;
+    renderer.StencilAttachmentSetTexture(
+        attachment, _texture != null ? _texture!.texture : nullptr);
+  }
+
+  Texture? get resolveTexture => _resolveTexture;
+
+  set resolveTexture(Texture? texture) {
+    if (_resolveTexture == texture) {
+      return;
+    }
+
+    _resolveTexture = texture;
+    renderer.StencilAttachmentSetResolveTexture(attachment,
+        _resolveTexture != null ? _resolveTexture!.texture : nullptr);
+  }
+
+  int get clearStencil => _clearStencil;
+
+  set clearStencil(int stencil) {
+    if (stencil == _clearStencil) {
+      return;
+    }
+    _clearStencil = stencil;
+    renderer.StencilAttachmentSetClearStencil(attachment, _clearStencil);
+  }
+
   FFIStencilAttachmentPointer attachment;
+  Texture? _texture;
+  Texture? _resolveTexture;
+  LoadAction _loadAction = LoadAction.DontCare;
+  StoreAction _storeAction = StoreAction.DontCare;
+  int _clearStencil = 0;
 }
 
 final Context context = Context(renderer.GetGlobalContext());

@@ -33,7 +33,7 @@ struct {{ struct.name }} {
   {% if var.is_pointer %} * {% endif %}
   {{var.identifier}};
 {% endfor %}
-}; //  {{ struct.name }}
+}; // struct {{ struct.name }}
 {% endfor %}
 
 // {{ length(ns.opaques) }} opaque struct forward declaration(s).

@@ -52,10 +52,25 @@ struct FFIColor {
 function ColorAlloc() -> FFIColor*
 function ColorFree(FFIColor* color)
 
+function ColorAttachmentNew() -> FFIColorAttachment*
 function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
 function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction load_action) -> bool
 function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction store_action) -> bool
 function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, FFIColor* color) -> bool
+
+function DepthAttachmentNew() -> FFIDepthAttachment*
+function DepthAttachmentSetTexture(FFIDepthAttachment* depth, FFITexture* texture) -> bool
+function DepthAttachmentSetResolveTexture(FFIDepthAttachment* depth, FFITexture* texture) -> bool
+function DepthAttachmentSetLoadAction(FFIDepthAttachment* depth, LoadAction load_action) -> bool
+function DepthAttachmentSetStoreAction(FFIDepthAttachment* depth, StoreAction store_action) -> bool
+function DepthAttachmentSetClearDepth(FFIDepthAttachment* depth_attachment, double clear_depth) -> bool
+
+function StencilAttachmentNew() -> FFIStencilAttachment*
+function StencilAttachmentSetTexture(FFIStencilAttachment* stencil, FFITexture* texture) -> bool
+function StencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil, FFITexture* texture) -> bool
+function StencilAttachmentSetLoadAction(FFIStencilAttachment* stencil, LoadAction load_action) -> bool
+function StencilAttachmentSetStoreAction(FFIStencilAttachment* stencil, StoreAction store_action) -> bool
+function StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment, int32 clear_stencil) -> bool
 
 } // namespace renderer

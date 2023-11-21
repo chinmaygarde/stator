@@ -95,6 +95,10 @@ void ColorFree(FFIColor* color) {
   return free(color);
 }
 
+FFIColorAttachment* ColorAttachmentNew() {
+  return objffi::Make<FFIColorAttachment>().Leak();
+}
+
 bool ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) {
   if (!color) {
     return false;
@@ -165,6 +169,103 @@ bool ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment,
   }
   color_attachment->attachment.clear_color =
       impeller::Color{color->red, color->green, color->blue, color->alpha};
+  return true;
+}
+
+FFIDepthAttachment* DepthAttachmentNew() {
+  return objffi::Make<FFIDepthAttachment>().Leak();
+}
+
+bool DepthAttachmentSetTexture(FFIDepthAttachment* depth, FFITexture* texture) {
+  if (!depth) {
+    return false;
+  }
+  depth->attachment.texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+bool DepthAttachmentSetResolveTexture(FFIDepthAttachment* depth,
+                                      FFITexture* texture) {
+  if (!depth) {
+    return false;
+  }
+  depth->attachment.resolve_texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+bool DepthAttachmentSetLoadAction(FFIDepthAttachment* depth,
+                                  LoadAction load_action) {
+  if (!depth) {
+    return false;
+  }
+  depth->attachment.load_action = ToLoadAction(load_action);
+  return true;
+}
+
+bool DepthAttachmentSetStoreAction(FFIDepthAttachment* depth,
+                                   StoreAction store_action) {
+  if (!depth) {
+    return false;
+  }
+  depth->attachment.store_action = ToStoreAction(store_action);
+  return true;
+}
+
+bool DepthAttachmentSetClearDepth(FFIDepthAttachment* depth_attachment,
+                                  double clear_depth) {
+  if (!depth_attachment) {
+    return false;
+  }
+  depth_attachment->attachment.clear_depth = clear_depth;
+  return true;
+}
+
+FFIStencilAttachment* StencilAttachmentNew() {
+  return objffi::Make<FFIStencilAttachment>().Leak();
+}
+
+bool StencilAttachmentSetTexture(FFIStencilAttachment* stencil,
+                                 FFITexture* texture) {
+  if (!stencil) {
+    return false;
+  }
+  stencil->attachment.texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+bool StencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil,
+                                        FFITexture* texture) {
+  if (!stencil) {
+    return false;
+  }
+  stencil->attachment.resolve_texture = texture ? texture->Get() : nullptr;
+  return true;
+}
+
+bool StencilAttachmentSetLoadAction(FFIStencilAttachment* stencil,
+                                    LoadAction load_action) {
+  if (!stencil) {
+    return false;
+  }
+  stencil->attachment.load_action = ToLoadAction(load_action);
+  return true;
+}
+
+bool StencilAttachmentSetStoreAction(FFIStencilAttachment* stencil,
+                                     StoreAction store_action) {
+  if (!stencil) {
+    return false;
+  }
+  stencil->attachment.store_action = ToStoreAction(store_action);
+  return true;
+}
+
+bool StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment,
+                                      int32_t clear_stencil) {
+  if (!stencil_attachment) {
+    return false;
+  }
+  stencil_attachment->attachment.clear_stencil = clear_stencil;
   return true;
 }
 
