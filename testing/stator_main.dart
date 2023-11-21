@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:math';
 
 import '/Users/chinmaygarde/VersionControlled/engine/src/out/host_debug_unopt_arm64/gen/flutter/impeller/stator/renderer/renderer.epoxy.dart';
 import '/Users/chinmaygarde/VersionControlled/engine/src/out/host_debug_unopt_arm64/gen/flutter/impeller/stator/objffi/objffi.epoxy.dart';
@@ -366,7 +367,7 @@ void main () {
     final color0 = ColorAttachment();
     color0.loadAction = LoadAction.Clear;
     color0.storeAction = StoreAction.Store;
-    color0.clearColor = Color(1.0, 1.0, 1.0, 1.0);
+    color0.clearColor = Color(Random().nextDouble(), Random().nextDouble(), Random().nextDouble(), 1.0);
     color0.texture = texture;
 
     final renderTarget = RenderTarget();
