@@ -70,8 +70,11 @@ bool RenderTargetSetDepthAttachment(FFIRenderTarget* target,
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->render_target.SetDepthAttachment(depth ? depth->attachment
-                                                 : std::nullopt);
+  if (depth) {
+    target->render_target.SetDepthAttachment(depth->attachment);
+  } else {
+    target->render_target.SetDepthAttachment(std::nullopt);
+  }
   return true;
 }
 
@@ -84,8 +87,12 @@ bool RenderTargetSetStencilAttachment(FFIRenderTarget* target,
     VALIDATION_LOG << "Depth attachment was invalid.";
     return false;
   }
-  target->render_target.SetStencilAttachment(stencil ? stencil->attachment
-                                                     : std::nullopt);
+  if (stencil) {
+    target->render_target.SetStencilAttachment(stencil->attachment);
+  } else {
+    target->render_target.SetStencilAttachment(std::nullopt);
+  }
+
   return true;
 }
 
