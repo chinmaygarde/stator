@@ -466,4 +466,131 @@ bool PipelineDescriptorSetPolygonMode(
   IMPELLER_UNIMPLEMENTED;
 }
 
+FFIPipelineColorAttachmentDescriptor* PipelineColorAttachmentDescriptorNew() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetPixelFormat(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    PixelFormat format) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetBlendingEnabled(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    bool enabled) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetSourceColorBlendFactor(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendFactor factor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetColorBlendOperation(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendOperation operation) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendFactor factor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendFactor factor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetAlphaBlendOperation(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendOperation operation) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    BlendFactor factor) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineColorAttachmentDescriptorSetColorWriteMask(
+    FFIPipelineColorAttachmentDescriptor* desc,
+    uint64_t write_mask) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIPipelineDepthAttachmentDescriptor* PipelineDepthAttachmentDescriptorNew() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDepthAttachmentDescriptorSetPixelFormat(
+    FFIPipelineDepthAttachmentDescriptor* desc,
+    PixelFormat format) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDepthAttachmentDescriptorSetDepthCompareFunction(
+    FFIPipelineDepthAttachmentDescriptor* desc,
+    CompareFunction depth_compare) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineDepthAttachmentDescriptorSetDepthWriteEnabled(
+    FFIPipelineDepthAttachmentDescriptor* desc,
+    bool depth_write_enabled) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIPipelineStencilAttachmentDescriptor*
+PipelineStencilAttachmentDescriptorNew() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetPixelFormat(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    PixelFormat format) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetStencilCompare(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    CompareFunction func) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetStencilFailure(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    StencilOperation operation) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetDepthFailure(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    StencilOperation operation) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetDepthStencilPass(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    StencilOperation operation) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetReadMask(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    uint32_t read_mask) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool PipelineStencilAttachmentDescriptorSetWriteMask(
+    FFIPipelineStencilAttachmentDescriptor* desc,
+    uint32_t write_mask) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
 }  // namespace impeller::stator::renderer

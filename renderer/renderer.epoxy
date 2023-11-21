@@ -5,6 +5,77 @@
 namespace renderer {
 
 //------------------------------------------------------------------------------
+enum PixelFormat {
+  Unknown,
+  A8UNormInt,
+  R8UNormInt,
+  R8G8UNormInt,
+  R8G8B8A8UNormInt,
+  R8G8B8A8UNormIntSRGB,
+  B8G8R8A8UNormInt,
+  B8G8R8A8UNormIntSRGB,
+  R32G32B32A32Float,
+  R16G16B16A16Float,
+  B10G10R10XR,
+  B10G10R10XRSRGB,
+  B10G10R10A10XR,
+  S8UInt,
+  D24UnormS8Uint,
+  D32FloatS8UInt,
+}
+
+
+//------------------------------------------------------------------------------
+enum BlendFactor {
+  Zero,
+  One,
+  SourceColor,
+  OneMinusSourceColor,
+  SourceAlpha,
+  OneMinusSourceAlpha,
+  DestinationColor,
+  OneMinusDestinationColor,
+  DestinationAlpha,
+  OneMinusDestinationAlpha,
+  SourceAlphaSaturated,
+  BlendColor,
+  OneMinusBlendColor,
+  BlendAlpha,
+  OneMinusBlendAlpha,
+}
+
+//------------------------------------------------------------------------------
+enum BlendOperation {
+  Add,
+  Subtract,
+  ReverseSubtract,
+}
+
+//------------------------------------------------------------------------------
+enum CompareFunction {
+  Never,
+  Always,
+  Less,
+  Equal,
+  LessEqual,
+  Greater,
+  NotEqual,
+  GreaterEqual,
+}
+
+//------------------------------------------------------------------------------
+enum StencilOperation {
+  Keep,
+  Zero,
+  SetToReferenceValue,
+  IncrementClamp,
+  DecrementClamp,
+  Invert,
+  IncrementWrap,
+  DecrementWrap,
+}
+
+//------------------------------------------------------------------------------
 enum LoadAction {
   DontCare,
   Load,
@@ -134,11 +205,36 @@ opaque FFIVertexDescriptor
 //------------------------------------------------------------------------------
 opaque FFIPipelineColorAttachmentDescriptor
 
+function PipelineColorAttachmentDescriptorNew() -> FFIPipelineColorAttachmentDescriptor *
+function PipelineColorAttachmentDescriptorSetPixelFormat(FFIPipelineColorAttachmentDescriptor *desc, PixelFormat format) -> bool
+function PipelineColorAttachmentDescriptorSetBlendingEnabled(FFIPipelineColorAttachmentDescriptor *desc, bool enabled) -> bool
+function PipelineColorAttachmentDescriptorSetSourceColorBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
+function PipelineColorAttachmentDescriptorSetColorBlendOperation(FFIPipelineColorAttachmentDescriptor *desc, BlendOperation operation) -> bool
+function PipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
+function PipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
+function PipelineColorAttachmentDescriptorSetAlphaBlendOperation(FFIPipelineColorAttachmentDescriptor *desc, BlendOperation operation) -> bool
+function PipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
+function PipelineColorAttachmentDescriptorSetColorWriteMask(FFIPipelineColorAttachmentDescriptor *desc, uint64 write_mask) -> bool
+
 //------------------------------------------------------------------------------
 opaque FFIPipelineDepthAttachmentDescriptor
 
+function PipelineDepthAttachmentDescriptorNew() -> FFIPipelineDepthAttachmentDescriptor *
+function PipelineDepthAttachmentDescriptorSetPixelFormat(FFIPipelineDepthAttachmentDescriptor* desc, PixelFormat format) -> bool
+function PipelineDepthAttachmentDescriptorSetDepthCompareFunction(FFIPipelineDepthAttachmentDescriptor* desc, CompareFunction depth_compare) -> bool
+function PipelineDepthAttachmentDescriptorSetDepthWriteEnabled(FFIPipelineDepthAttachmentDescriptor* desc, bool depth_write_enabled) -> bool
+
 //------------------------------------------------------------------------------
 opaque FFIPipelineStencilAttachmentDescriptor
+
+function PipelineStencilAttachmentDescriptorNew() -> FFIPipelineStencilAttachmentDescriptor *
+function PipelineStencilAttachmentDescriptorSetPixelFormat(FFIPipelineStencilAttachmentDescriptor* desc, PixelFormat format) -> bool
+function PipelineStencilAttachmentDescriptorSetStencilCompare(FFIPipelineStencilAttachmentDescriptor* desc, CompareFunction func) -> bool
+function PipelineStencilAttachmentDescriptorSetStencilFailure(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
+function PipelineStencilAttachmentDescriptorSetDepthFailure(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
+function PipelineStencilAttachmentDescriptorSetDepthStencilPass(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
+function PipelineStencilAttachmentDescriptorSetReadMask(FFIPipelineStencilAttachmentDescriptor* desc, uint32 read_mask) -> bool
+function PipelineStencilAttachmentDescriptorSetWriteMask(FFIPipelineStencilAttachmentDescriptor* desc, uint32 write_mask) -> bool
 
 //------------------------------------------------------------------------------
 opaque FFIBufferView
