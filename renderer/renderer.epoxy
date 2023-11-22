@@ -185,7 +185,7 @@ opaque FFIPipelineDescriptor
 
 function PipelineDescriptorNew() -> FFIPipelineDescriptor*
 
-function PipelineDescriptSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor, SampleCount count) -> bool
+function PipelineDescriptorSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor, SampleCount count) -> bool
 function PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor, FFIShaderFunction* shader_function) -> bool
 function PipelineDescriptorSetVertexDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIVertexDescriptor* vertex_descriptor) -> bool
 function PipelineDescriptorSetColorAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor, uint32 index) -> bool

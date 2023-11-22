@@ -405,8 +405,9 @@ FFIPipelineDescriptor* PipelineDescriptorNew() {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor,
-                                    SampleCount count) {
+bool PipelineDescriptorSetSampleCount(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    SampleCount count) {
   IMPELLER_UNIMPLEMENTED;
 }
 

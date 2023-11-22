@@ -9,7 +9,7 @@ namespace impeller::stator::{{ ns.name }} {
 // {{ length(ns.enums) }} enum definition(s).
 
 {% for enum in ns.enums %}
-enum class {{ enum.name }} : uint64_t {
+enum class {{ enum.name }} : uint32_t {
 {% for member in enum.members %}
   {{ member }},
 {% endfor %}
