@@ -392,7 +392,12 @@ void FFIIRectFree(FFIIRect* rect) {
 }
 
 FFIPipelineLibrary* ContextPipelineLibraryCopy(FFIContext* context) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFIPipelineLibrary>(
+             context->Get()->GetImpellerContext()->GetPipelineLibrary())
+      .Leak();
 }
 
 FFIPipeline* PipelineLibraryGetPipelineCopy(
@@ -402,13 +407,26 @@ FFIPipeline* PipelineLibraryGetPipelineCopy(
 }
 
 FFIPipelineDescriptor* PipelineDescriptorNew() {
-  IMPELLER_UNIMPLEMENTED;
+  return objffi::Make<FFIPipelineDescriptor>().Leak();
+}
+
+constexpr impeller::SampleCount ToSampleCount(SampleCount count) {
+  switch (count) {
+    case SampleCount::One:
+      return impeller::SampleCount::kCount1;
+    case SampleCount::Four:
+      return impeller::SampleCount::kCount4;
+  }
 }
 
 bool PipelineDescriptorSetSampleCount(
     FFIPipelineDescriptor* pipeline_descriptor,
     SampleCount count) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetSampleCount(ToSampleCount(count));
+  return true;
 }
 
 bool PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor,

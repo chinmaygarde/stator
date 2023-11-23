@@ -88,6 +88,20 @@ class FFICommand final : public objffi::Object {
   impeller::Command command;
 };
 
+class FFIPipelineDescriptor final : public objffi::Object {
+ public:
+  impeller::PipelineDescriptor descriptor;
+};
+
+class FFIPipelineLibrary final : public objffi::Object {
+ public:
+  explicit FFIPipelineLibrary(
+      std::shared_ptr<impeller::PipelineLibrary> library)
+      : pipeline_library(std::move(library)) {}
+
+  std::shared_ptr<impeller::PipelineLibrary> pipeline_library;
+};
+
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);
 
 }  // namespace impeller::stator::renderer
