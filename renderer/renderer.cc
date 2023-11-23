@@ -687,130 +687,336 @@ bool FFIPipelineDescriptorSetPolygonMode(
 }
 
 FFIPipelineColorAttachmentDescriptor* PipelineColorAttachmentDescriptorNew() {
-  IMPELLER_UNIMPLEMENTED;
+  return objffi::Make<FFIPipelineColorAttachmentDescriptor>().Leak();
+}
+
+constexpr impeller::PixelFormat ToPixelFormat(PixelFormat format) {
+  switch (format) {
+    case PixelFormat::Unknown:
+      return impeller::PixelFormat::kUnknown;
+    case PixelFormat::A8UNormInt:
+      return impeller::PixelFormat::kA8UNormInt;
+    case PixelFormat::R8UNormInt:
+      return impeller::PixelFormat::kR8UNormInt;
+    case PixelFormat::R8G8UNormInt:
+      return impeller::PixelFormat::kR8G8UNormInt;
+    case PixelFormat::R8G8B8A8UNormInt:
+      return impeller::PixelFormat::kR8G8B8A8UNormInt;
+    case PixelFormat::R8G8B8A8UNormIntSRGB:
+      return impeller::PixelFormat::kR8G8B8A8UNormIntSRGB;
+    case PixelFormat::B8G8R8A8UNormInt:
+      return impeller::PixelFormat::kB8G8R8A8UNormInt;
+    case PixelFormat::B8G8R8A8UNormIntSRGB:
+      return impeller::PixelFormat::kB8G8R8A8UNormIntSRGB;
+    case PixelFormat::R32G32B32A32Float:
+      return impeller::PixelFormat::kR32G32B32A32Float;
+    case PixelFormat::R16G16B16A16Float:
+      return impeller::PixelFormat::kR16G16B16A16Float;
+    case PixelFormat::B10G10R10XR:
+      return impeller::PixelFormat::kB10G10R10XR;
+    case PixelFormat::B10G10R10XRSRGB:
+      return impeller::PixelFormat::kB10G10R10XRSRGB;
+    case PixelFormat::B10G10R10A10XR:
+      return impeller::PixelFormat::kB10G10R10A10XR;
+    case PixelFormat::S8UInt:
+      return impeller::PixelFormat::kS8UInt;
+    case PixelFormat::D24UnormS8Uint:
+      return impeller::PixelFormat::kD24UnormS8Uint;
+    case PixelFormat::D32FloatS8UInt:
+      return impeller::PixelFormat::kD32FloatS8UInt;
+  }
+  return impeller::PixelFormat::kUnknown;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetPixelFormat(
     FFIPipelineColorAttachmentDescriptor* desc,
     PixelFormat format) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.format = ToPixelFormat(format);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetBlendingEnabled(
     FFIPipelineColorAttachmentDescriptor* desc,
     bool enabled) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.blending_enabled = enabled;
+  return true;
+}
+
+constexpr impeller::BlendFactor ToBlendFactor(BlendFactor factor) {
+  switch (factor) {
+    case BlendFactor::Zero:
+      return impeller::BlendFactor::kZero;
+    case BlendFactor::One:
+      return impeller::BlendFactor::kOne;
+    case BlendFactor::SourceColor:
+      return impeller::BlendFactor::kSourceColor;
+    case BlendFactor::OneMinusSourceColor:
+      return impeller::BlendFactor::kOneMinusSourceColor;
+    case BlendFactor::SourceAlpha:
+      return impeller::BlendFactor::kSourceAlpha;
+    case BlendFactor::OneMinusSourceAlpha:
+      return impeller::BlendFactor::kOneMinusSourceAlpha;
+    case BlendFactor::DestinationColor:
+      return impeller::BlendFactor::kDestinationColor;
+    case BlendFactor::OneMinusDestinationColor:
+      return impeller::BlendFactor::kOneMinusDestinationColor;
+    case BlendFactor::DestinationAlpha:
+      return impeller::BlendFactor::kDestinationAlpha;
+    case BlendFactor::OneMinusDestinationAlpha:
+      return impeller::BlendFactor::kOneMinusDestinationAlpha;
+    case BlendFactor::SourceAlphaSaturated:
+      return impeller::BlendFactor::kSourceAlphaSaturated;
+    case BlendFactor::BlendColor:
+      return impeller::BlendFactor::kBlendColor;
+    case BlendFactor::OneMinusBlendColor:
+      return impeller::BlendFactor::kOneMinusBlendColor;
+    case BlendFactor::BlendAlpha:
+      return impeller::BlendFactor::kBlendAlpha;
+    case BlendFactor::OneMinusBlendAlpha:
+      return impeller::BlendFactor::kOneMinusBlendAlpha;
+  }
+  return impeller::BlendFactor::kZero;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetSourceColorBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.src_color_blend_factor = ToBlendFactor(factor);
+  return true;
+}
+
+constexpr impeller::BlendOperation ToBlendOperation(BlendOperation op) {
+  switch (op) {
+    case BlendOperation::Add:
+      return impeller::BlendOperation::kAdd;
+    case BlendOperation::Subtract:
+      return impeller::BlendOperation::kSubtract;
+    case BlendOperation::ReverseSubtract:
+      return impeller::BlendOperation::kReverseSubtract;
+  }
+  return impeller::BlendOperation::kAdd;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetColorBlendOperation(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendOperation operation) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.color_blend_op = ToBlendOperation(operation);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.dst_color_blend_factor = ToBlendFactor(factor);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.src_alpha_blend_factor = ToBlendFactor(factor);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetAlphaBlendOperation(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendOperation operation) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.alpha_blend_op = ToBlendOperation(operation);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.dst_alpha_blend_factor = ToBlendFactor(factor);
+  return true;
 }
 
 bool FFIPipelineColorAttachmentDescriptorSetColorWriteMask(
     FFIPipelineColorAttachmentDescriptor* desc,
     uint64_t write_mask) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.write_mask = write_mask;
+  return true;
 }
 
 FFIPipelineDepthAttachmentDescriptor* PipelineDepthAttachmentDescriptorNew() {
-  IMPELLER_UNIMPLEMENTED;
+  return objffi::Make<FFIPipelineDepthAttachmentDescriptor>().Leak();
 }
 
 bool FFIPipelineDepthAttachmentDescriptorSetPixelFormat(
     FFIPipelineDepthAttachmentDescriptor* desc,
     PixelFormat format) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->pixel_format = ToPixelFormat(format);
+  return true;
+}
+
+impeller::CompareFunction ToCompareFunction(CompareFunction func) {
+  switch (func) {
+    case CompareFunction::Never:
+      return impeller::CompareFunction::kNever;
+    case CompareFunction::Always:
+      return impeller::CompareFunction::kAlways;
+    case CompareFunction::Less:
+      return impeller::CompareFunction::kLess;
+    case CompareFunction::Equal:
+      return impeller::CompareFunction::kEqual;
+    case CompareFunction::LessEqual:
+      return impeller::CompareFunction::kLessEqual;
+    case CompareFunction::Greater:
+      return impeller::CompareFunction::kGreater;
+    case CompareFunction::NotEqual:
+      return impeller::CompareFunction::kNotEqual;
+    case CompareFunction::GreaterEqual:
+      return impeller::CompareFunction::kGreaterEqual;
+  }
+  return impeller::CompareFunction::kNever;
 }
 
 bool FFIPipelineDepthAttachmentDescriptorSetDepthCompareFunction(
     FFIPipelineDepthAttachmentDescriptor* desc,
     CompareFunction depth_compare) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.depth_compare = ToCompareFunction(depth_compare);
+  return true;
 }
 
 bool FFIPipelineDepthAttachmentDescriptorSetDepthWriteEnabled(
     FFIPipelineDepthAttachmentDescriptor* desc,
     bool depth_write_enabled) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.depth_write_enabled = depth_write_enabled;
+  return true;
 }
 
 FFIPipelineStencilAttachmentDescriptor*
 PipelineStencilAttachmentDescriptorNew() {
-  IMPELLER_UNIMPLEMENTED;
+  return objffi::Make<FFIPipelineStencilAttachmentDescriptor>().Leak();
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetPixelFormat(
     FFIPipelineStencilAttachmentDescriptor* desc,
     PixelFormat format) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->pixel_format = ToPixelFormat(format);
+  return true;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetStencilCompare(
     FFIPipelineStencilAttachmentDescriptor* desc,
     CompareFunction func) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.stencil_compare = ToCompareFunction(func);
+  return true;
+}
+
+constexpr impeller::StencilOperation ToStencilOperation(StencilOperation op) {
+  switch (op) {
+    case StencilOperation::Keep:
+      return impeller::StencilOperation::kKeep;
+    case StencilOperation::Zero:
+      return impeller::StencilOperation::kZero;
+    case StencilOperation::SetToReferenceValue:
+      return impeller::StencilOperation::kSetToReferenceValue;
+    case StencilOperation::IncrementClamp:
+      return impeller::StencilOperation::kIncrementClamp;
+    case StencilOperation::DecrementClamp:
+      return impeller::StencilOperation::kDecrementClamp;
+    case StencilOperation::Invert:
+      return impeller::StencilOperation::kInvert;
+    case StencilOperation::IncrementWrap:
+      return impeller::StencilOperation::kIncrementWrap;
+    case StencilOperation::DecrementWrap:
+      return impeller::StencilOperation::kDecrementWrap;
+  }
+  return impeller::StencilOperation::kKeep;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetStencilFailure(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.stencil_failure = ToStencilOperation(operation);
+  return true;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetDepthFailure(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.depth_failure = ToStencilOperation(operation);
+  return true;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetDepthStencilPass(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.depth_stencil_pass = ToStencilOperation(operation);
+  return true;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetReadMask(
     FFIPipelineStencilAttachmentDescriptor* desc,
     uint32_t read_mask) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.read_mask = read_mask;
+  return true;
 }
 
 bool FFIPipelineStencilAttachmentDescriptorSetWriteMask(
     FFIPipelineStencilAttachmentDescriptor* desc,
     uint32_t write_mask) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.write_mask = write_mask;
+  return true;
 }
 
 }  // namespace impeller::stator::renderer

@@ -151,11 +151,13 @@ class FFIPipelineColorAttachmentDescriptor final : public objffi::Object {
 
 class FFIPipelineDepthAttachmentDescriptor final : public objffi::Object {
  public:
+  impeller::PixelFormat pixel_format = impeller::PixelFormat::kUnknown;
   DepthAttachmentDescriptor descriptor;
 };
 
 class FFIPipelineStencilAttachmentDescriptor final : public objffi::Object {
  public:
+  impeller::PixelFormat pixel_format = impeller::PixelFormat::kUnknown;
   StencilAttachmentDescriptor descriptor;
 };
 
