@@ -7,8 +7,10 @@
 #include "impeller/core/buffer_view.h"
 #include "impeller/renderer/command.h"
 #include "impeller/renderer/pipeline.h"
+#include "impeller/renderer/pipeline_library.h"
 #include "impeller/renderer/render_pass.h"
 #include "impeller/renderer/render_target.h"
+#include "impeller/renderer/vertex_descriptor.h"
 #include "impeller/stator/objffi/scoped_object.h"
 #include "impeller/stator/renderer/context.h"
 #include "impeller/stator/renderer/swapchain.h"
@@ -106,27 +108,55 @@ class FFIPipelineLibrary final : public objffi::Object {
 
 class FFIPipeline final : public objffi::Object {
  public:
-  explicit FFIPipeline(
-      std::shared_ptr<impeller::Pipeline<PipelineDescriptor>> pipeline)
+  explicit FFIPipeline(PipelineFuture<PipelineDescriptor> pipeline)
       : pipeline_(std::move(pipeline)) {}
 
-  std::shared_ptr<impeller::Pipeline<PipelineDescriptor>> pipeline_;
+  PipelineFuture<PipelineDescriptor> pipeline_;
 };
 
 class FFICommandBindings final : public objffi::Object {
  public:
-  explicit FFICommandBindings(impeller::Bindings bindings)
-      : bindings_(std::move(bindings)) {}
+  explicit FFICommandBindings(impeller::Bindings p_bindings)
+      : bindings(std::move(p_bindings)) {}
 
-  impeller::Bindings bindings_;
+  impeller::Bindings bindings;
 };
 
 class FFIBufferView final : public objffi::Object {
  public:
   explicit FFIBufferView(impeller::BufferView buffer_view)
-      : buffer_view_(std::move(buffer_view)) {}
+      : buffer_view(std::move(buffer_view)) {}
 
-  impeller::BufferView buffer_view_;
+  impeller::BufferView buffer_view;
+};
+
+class FFIShaderFunction final : public objffi::Object {
+ public:
+  explicit FFIShaderFunction(
+      std::shared_ptr<impeller::ShaderFunction> shader_function)
+      : shader_function(std::move(shader_function)) {}
+
+  std::shared_ptr<impeller::ShaderFunction> shader_function;
+};
+
+class FFIVertexDescriptor final : public objffi::Object {
+ public:
+  std::shared_ptr<VertexDescriptor> vertex_descriptor;
+};
+
+class FFIPipelineColorAttachmentDescriptor final : public objffi::Object {
+ public:
+  ColorAttachmentDescriptor descriptor;
+};
+
+class FFIPipelineDepthAttachmentDescriptor final : public objffi::Object {
+ public:
+  DepthAttachmentDescriptor descriptor;
+};
+
+class FFIPipelineStencilAttachmentDescriptor final : public objffi::Object {
+ public:
+  StencilAttachmentDescriptor descriptor;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

@@ -45,6 +45,13 @@ enum BlendFactor {
 }
 
 //------------------------------------------------------------------------------
+enum CullMode {
+  None,
+  FrontFace,
+  BackFace,
+}
+
+//------------------------------------------------------------------------------
 enum BlendOperation {
   Add,
   Subtract,
@@ -190,7 +197,7 @@ opaque FFIPipelineDescriptor {
   function SetColorAttachmentDescriptor(FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor, uint32 index) -> bool
   function SetDepthAttachmentDescriptor(FFIPipelineDepthAttachmentDescriptor* pipeline_depth_attachment_descriptor) -> bool
   function SetStencilAttachmentDescriptor(FFIPipelineStencilAttachmentDescriptor* pipeline_stencil_attachment_descriptor, Facing facing) -> bool
-  function SetCullMode(Facing facing) -> bool
+  function SetCullMode(CullMode cull_mode) -> bool
   function SetWindingOrder(WindingOrder winding) -> bool
   function SetPrimitiveType(PrimitiveType primitive_type) -> bool
   function SetPolygonMode(PolygonMode polygon_mode) -> bool

@@ -334,7 +334,7 @@ bool FFICommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) {
   if (!command) {
     return false;
   }
-  command->command.pipeline = pipeline ? pipeline->pipeline_ : nullptr;
+  command->command.pipeline = pipeline ? pipeline->pipeline_.Get() : nullptr;
   return true;
 }
 
@@ -344,7 +344,7 @@ bool FFICommandSetVertexBindings(FFICommand* command,
     return false;
   }
   command->command.vertex_bindings =
-      vertex_bindings ? vertex_bindings->bindings_ : Bindings{};
+      vertex_bindings ? vertex_bindings->bindings : Bindings{};
   return true;
 }
 
@@ -354,7 +354,7 @@ bool FFICommandSetFragmentBindings(FFICommand* command,
     return false;
   }
   command->command.fragment_bindings =
-      fragment_bindings ? fragment_bindings->bindings_ : Bindings{};
+      fragment_bindings ? fragment_bindings->bindings : Bindings{};
   return true;
 }
 
@@ -364,7 +364,7 @@ bool FFICommandSetIndexBuffer(FFICommand* command,
     return false;
   }
   command->command.index_buffer =
-      index_buffer_view ? index_buffer_view->buffer_view_ : BufferView{};
+      index_buffer_view ? index_buffer_view->buffer_view : BufferView{};
   return true;
 }
 
@@ -485,10 +485,14 @@ FFIPipelineLibrary* FFIContextPipelineLibraryCopy(FFIContext* context) {
       .Leak();
 }
 
-FFIPipeline* PipelineLibraryGetPipelineCopy(
-    FFIPipelineLibrary* pipeline_library,
-    FFIPipelineDescriptor* pipeline_descriptor) {
-  IMPELLER_UNIMPLEMENTED;
+FFIPipeline* PipelineLibraryGetPipelineCopy(FFIPipelineLibrary* library,
+                                            FFIPipelineDescriptor* desc) {
+  if (!library || !desc) {
+    return nullptr;
+  }
+  return objffi::Make<FFIPipeline>(
+             library->pipeline_library->GetPipeline(desc->descriptor))
+      .Leak();
 }
 
 FFIPipelineDescriptor* PipelineDescriptorNew() {
@@ -516,27 +520,51 @@ bool FFIPipelineDescriptorSetSampleCount(
 
 bool FFIPipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor,
                                    FFIShaderFunction* shader_function) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor || !shader_function) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.AddStageEntrypoint(
+      shader_function->shader_function);
+  return true;
 }
 
 bool FFIPipelineDescriptorSetVertexDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIVertexDescriptor* vertex_descriptor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetVertexDescriptor(
+      vertex_descriptor ? vertex_descriptor->vertex_descriptor : nullptr);
+  return true;
 }
 
 bool FFIPipelineDescriptorSetColorAttachmentDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor,
     uint32_t index) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetColorAttachmentDescriptor(
+      index, pipeline_color_attachment_descriptor
+                 ? pipeline_color_attachment_descriptor->descriptor
+                 : ColorAttachmentDescriptor{});
+  return true;
 }
 
 bool FFIPipelineDescriptorSetDepthAttachmentDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIPipelineDepthAttachmentDescriptor*
         pipeline_depth_attachment_descriptor) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetDepthStencilAttachmentDescriptor(
+      pipeline_depth_attachment_descriptor
+          ? pipeline_depth_attachment_descriptor->descriptor
+          : std::optional<DepthAttachmentDescriptor>{std::nullopt});
+  return true;
 }
 
 bool FFIPipelineDescriptorSetStencilAttachmentDescriptor(
@@ -544,31 +572,118 @@ bool FFIPipelineDescriptorSetStencilAttachmentDescriptor(
     FFIPipelineStencilAttachmentDescriptor*
         pipeline_stencil_attachment_descriptor,
     Facing facing) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  std::optional<StencilAttachmentDescriptor> front, back;
+  std::optional<StencilAttachmentDescriptor> arg =
+      pipeline_stencil_attachment_descriptor
+          ? pipeline_stencil_attachment_descriptor->descriptor
+          : std::optional<StencilAttachmentDescriptor>{std::nullopt};
+  switch (facing) {
+    case Facing::None:
+      break;
+    case Facing::Front:
+      front = arg;
+      break;
+    case Facing::Back:
+      back = arg;
+      break;
+    case Facing::Both:
+      back = front = arg;
+      break;
+  }
+  pipeline_descriptor->descriptor.SetStencilAttachmentDescriptors(front, back);
+  return true;
+}
+
+constexpr impeller::CullMode ToCullMode(CullMode mode) {
+  switch (mode) {
+    case CullMode::None:
+      return impeller::CullMode::kNone;
+    case CullMode::FrontFace:
+      return impeller::CullMode::kFrontFace;
+    case CullMode::BackFace:
+      return impeller::CullMode::kBackFace;
+  }
+  return impeller::CullMode::kNone;
 }
 
 bool FFIPipelineDescriptorSetCullMode(
     FFIPipelineDescriptor* pipeline_descriptor,
-    Facing facing) {
-  IMPELLER_UNIMPLEMENTED;
+    CullMode mode) {
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetCullMode(ToCullMode(mode));
+  return true;
+}
+
+constexpr impeller::WindingOrder ToWindingOrder(WindingOrder order) {
+  switch (order) {
+    case WindingOrder::Clockwise:
+      return impeller::WindingOrder::kClockwise;
+    case WindingOrder::CounterClockwise:
+      return impeller::WindingOrder::kCounterClockwise;
+  }
+  return impeller::WindingOrder::kClockwise;
 }
 
 bool FFIPipelineDescriptorSetWindingOrder(
     FFIPipelineDescriptor* pipeline_descriptor,
     WindingOrder winding) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetWindingOrder(ToWindingOrder(winding));
+  return true;
+}
+
+constexpr impeller::PrimitiveType ToPrimitiveType(PrimitiveType type) {
+  switch (type) {
+    case PrimitiveType::Triangle:
+      return impeller::PrimitiveType::kTriangle;
+    case PrimitiveType::TriangleStrip:
+      return impeller::PrimitiveType::kTriangleStrip;
+    case PrimitiveType::Line:
+      return impeller::PrimitiveType::kLine;
+    case PrimitiveType::LineStrip:
+      return impeller::PrimitiveType::kLineStrip;
+    case PrimitiveType::Point:
+      return impeller::PrimitiveType::kPoint;
+  }
+  return impeller::PrimitiveType::kTriangle;
 }
 
 bool FFIPipelineDescriptorSetPrimitiveType(
     FFIPipelineDescriptor* pipeline_descriptor,
     PrimitiveType primitive_type) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetPrimitiveType(
+      ToPrimitiveType(primitive_type));
+  return true;
+}
+
+constexpr impeller::PolygonMode ToPolygonMode(PolygonMode mode) {
+  switch (mode) {
+    case PolygonMode::Fill:
+      return impeller::PolygonMode::kFill;
+    case PolygonMode::Line:
+      return impeller::PolygonMode::kLine;
+  }
+  return impeller::PolygonMode::kFill;
 }
 
 bool FFIPipelineDescriptorSetPolygonMode(
     FFIPipelineDescriptor* pipeline_descriptor,
     PolygonMode polygon_mode) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!pipeline_descriptor) {
+    return false;
+  }
+  pipeline_descriptor->descriptor.SetPolygonMode(ToPolygonMode(polygon_mode));
+  return true;
 }
 
 FFIPipelineColorAttachmentDescriptor* PipelineColorAttachmentDescriptorNew() {
