@@ -71,6 +71,8 @@ class Function {
 
   ~Function();
 
+  void SetParent(const std::string& parent_name);
+
   const std::string& GetName() const;
 
   const std::vector<Variable>& GetArguments() const;
@@ -115,15 +117,19 @@ class Struct {
   std::vector<Variable> variables_;
 };
 
+using Functions = std::vector<Function>;
+
 class Opaque {
  public:
   Opaque();
 
-  Opaque(std::string name);
+  Opaque(std::string name, Functions functions = {});
 
   ~Opaque();
 
   const std::string& GetName() const;
+
+  const Functions& GetFunctions() const;
 
   bool PassesSema(const Namespace& ns, std::stringstream& stream) const;
 
@@ -131,6 +137,7 @@ class Opaque {
 
  private:
   std::string name_;
+  Functions functions_;
 };
 
 class Enum {

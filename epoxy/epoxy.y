@@ -82,6 +82,7 @@
 %type <epoxy::NamespaceItems> NamespaceItems
 %type <epoxy::NamespaceItem> NamespaceItem
 %type <epoxy::Function> Function
+%type <epoxy::Functions> Functions
 %type <epoxy::Variable> Variable
 %type <std::vector<epoxy::Variable>> ArgumentList
 %type <std::vector<epoxy::Variable>> VariableList
@@ -160,7 +161,14 @@ Struct
   ;
 
 Opaque
-  : OPAQUE IDENTIFIER { $$ = epoxy::Opaque{$2}; }
+  : OPAQUE IDENTIFIER                                  { $$ = epoxy::Opaque{$2}; }
+  | OPAQUE IDENTIFIER CURLY_LEFT           CURLY_RIGHT { $$ = epoxy::Opaque{$2}; }
+  | OPAQUE IDENTIFIER CURLY_LEFT Functions CURLY_RIGHT { $$ = epoxy::Opaque{$2, $4}; }
+  ;
+
+Functions
+  : Function                     { $$ = {$1}; }
+  | Functions Function           { $$ = $1; $$.push_back($2); }
   ;
 
 Variable

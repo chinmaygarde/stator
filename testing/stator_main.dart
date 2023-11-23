@@ -43,14 +43,14 @@ final class Swapchain extends OBJFFIObject {
   Swapchain(this.swapchain) : super(swapchain.cast());
 
   Texture acquireNextDrawable() {
-    final texture = renderer.SwapchainNextDrawableNew(swapchain);
+    final texture = renderer.FFISwapchainNextDrawableNew(swapchain);
     final wrapped = Texture(texture);
     objffi.Release(texture.cast());
     return wrapped;
   }
 
   bool presentDrawable(Texture texture) {
-    final result = renderer.SwapchainPresentDrawable(swapchain, texture.texture);
+    final result = renderer.FFISwapchainPresentDrawable(swapchain, texture.texture);
     texture.dispose();
     return result;
   }
@@ -62,11 +62,11 @@ final class Context extends OBJFFIObject {
   Context(this.context) : super(context.cast());
 
   Swapchain copySwapchain() {
-    return Swapchain(renderer.ContextSwapchainCopy(context));
+    return Swapchain(renderer.FFIContextSwapchainCopy(context));
   }
 
   CommandBuffer createCommandBuffer() {
-    return CommandBuffer(renderer.ContextCommandBufferNew(context));
+    return CommandBuffer(renderer.FFIContextCommandBufferNew(context));
   }
 
   FFIContextPointer context;
@@ -76,11 +76,11 @@ final class CommandBuffer extends OBJFFIObject {
   CommandBuffer(this.commandBuffer) : super(commandBuffer.cast());
 
   RenderPass createRenderPass(RenderTarget renderTarget) {
-    return RenderPass(renderer.CommandBufferCreateRenderPassNew(commandBuffer, renderTarget.target));
+    return RenderPass(renderer.FFICommandBufferCreateRenderPassNew(commandBuffer, renderTarget.target));
   }
 
   bool submit() {
-    return renderer.CommandBufferSubmit(commandBuffer);
+    return renderer.FFICommandBufferSubmit(commandBuffer);
   }
 
   FFICommandBufferPointer commandBuffer;
@@ -90,11 +90,11 @@ final class RenderPass extends OBJFFIObject {
   RenderPass(this.renderPass) : super(renderPass.cast());
 
   bool addCommand(Command command) {
-    return renderer.RenderPassAddCommand(renderPass, command.command);
+    return renderer.FFIRenderPassAddCommand(renderPass, command.command);
   }
 
   bool encodeCommands() {
-    return renderer.RenderPassEncodeCommands(renderPass);
+    return renderer.FFIRenderPassEncodeCommands(renderPass);
   }
 
   FFIRenderPassPointer renderPass;
@@ -118,7 +118,7 @@ final class RenderTarget extends OBJFFIObject {
       return false;
     }
     _colorAttachments[index] = attachment;
-    return renderer.RenderTargetSetColorAttachment(target, attachment.attachment, index);
+    return renderer.FFIRenderTargetSetColorAttachment(target, attachment.attachment, index);
   }
 
   DepthAttachment? get depthAttachment => _depthAttachment;
@@ -128,7 +128,7 @@ final class RenderTarget extends OBJFFIObject {
       return;
     }
     _depthAttachment = attachment;
-    renderer.RenderTargetSetDepthAttachment(target, _depthAttachment == null ? nullptr : _depthAttachment!.attachment);
+    renderer.FFIRenderTargetSetDepthAttachment(target, _depthAttachment == null ? nullptr : _depthAttachment!.attachment);
   }
 
   StencilAttachment? get stencilAttachment => _stencilAttachment;
@@ -138,7 +138,7 @@ final class RenderTarget extends OBJFFIObject {
       return;
     }
     _stencilAttachment = attachment;
-    renderer.RenderTargetSetStencilAttachment(target, _stencilAttachment == null ? nullptr : _stencilAttachment!.attachment);
+    renderer.FFIRenderTargetSetStencilAttachment(target, _stencilAttachment == null ? nullptr : _stencilAttachment!.attachment);
   }
 
   FFIRenderTargetPointer target;
@@ -169,7 +169,7 @@ final class ColorAttachment extends OBJFFIObject {
     if (action == _loadAction) {
       return;
     }
-    renderer.ColorAttachmentSetLoadAction(attachment, action.index);
+    renderer.FFIColorAttachmentSetLoadAction(attachment, action.index);
     _loadAction = action;
   }
 
@@ -179,7 +179,7 @@ final class ColorAttachment extends OBJFFIObject {
     if (action == _storeAction) {
       return;
     }
-    renderer.ColorAttachmentSetStoreAction(attachment, action.index);
+    renderer.FFIColorAttachmentSetStoreAction(attachment, action.index);
     _storeAction = action;
   }
 
@@ -191,7 +191,7 @@ final class ColorAttachment extends OBJFFIObject {
     }
 
     _texture = texture;
-    renderer.ColorAttachmentSetTexture(attachment, _texture != null ? _texture!.texture : nullptr);
+    renderer.FFIColorAttachmentSetTexture(attachment, _texture != null ? _texture!.texture : nullptr);
   }
 
   Texture? get resolveTexture => _resolveTexture;
@@ -202,7 +202,7 @@ final class ColorAttachment extends OBJFFIObject {
     }
 
     _resolveTexture = texture;
-    renderer.ColorAttachmentSetResolveTexture(attachment, _resolveTexture != null ? _resolveTexture!.texture : nullptr);
+    renderer.FFIColorAttachmentSetResolveTexture(attachment, _resolveTexture != null ? _resolveTexture!.texture : nullptr);
   }
 
   Color get clearColor => _clearColor;
@@ -214,7 +214,7 @@ final class ColorAttachment extends OBJFFIObject {
     ffiColor.ref.green = color.green;
     ffiColor.ref.blue = color.blue;
     ffiColor.ref.alpha = color.alpha;
-    renderer.ColorAttachmentSetClearColor(attachment, ffiColor);
+    renderer.FFIColorAttachmentSetClearColor(attachment, ffiColor);
     renderer.ColorFree(ffiColor);
   }
 
@@ -235,7 +235,7 @@ final class DepthAttachment extends OBJFFIObject {
     if (action == _loadAction) {
       return;
     }
-    renderer.DepthAttachmentSetLoadAction(attachment, action.index);
+    renderer.FFIDepthAttachmentSetLoadAction(attachment, action.index);
     _loadAction = action;
   }
 
@@ -245,7 +245,7 @@ final class DepthAttachment extends OBJFFIObject {
     if (action == _storeAction) {
       return;
     }
-    renderer.DepthAttachmentSetStoreAction(attachment, action.index);
+    renderer.FFIDepthAttachmentSetStoreAction(attachment, action.index);
     _storeAction = action;
   }
 
@@ -257,7 +257,7 @@ final class DepthAttachment extends OBJFFIObject {
     }
 
     _texture = texture;
-    renderer.DepthAttachmentSetTexture(
+    renderer.FFIDepthAttachmentSetTexture(
         attachment, _texture != null ? _texture!.texture : nullptr);
   }
 
@@ -269,7 +269,7 @@ final class DepthAttachment extends OBJFFIObject {
     }
 
     _resolveTexture = texture;
-    renderer.DepthAttachmentSetResolveTexture(attachment,
+    renderer.FFIDepthAttachmentSetResolveTexture(attachment,
         _resolveTexture != null ? _resolveTexture!.texture : nullptr);
   }
 
@@ -281,7 +281,7 @@ final class DepthAttachment extends OBJFFIObject {
     }
 
     _clearDepth = depth;
-    renderer.DepthAttachmentSetClearDepth(attachment, _clearDepth);
+    renderer.FFIDepthAttachmentSetClearDepth(attachment, _clearDepth);
   }
 
   FFIDepthAttachmentPointer attachment;
@@ -301,7 +301,7 @@ final class StencilAttachment extends OBJFFIObject {
     if (action == _loadAction) {
       return;
     }
-    renderer.StencilAttachmentSetLoadAction(attachment, action.index);
+    renderer.FFIStencilAttachmentSetLoadAction(attachment, action.index);
     _loadAction = action;
   }
 
@@ -311,7 +311,7 @@ final class StencilAttachment extends OBJFFIObject {
     if (action == _storeAction) {
       return;
     }
-    renderer.StencilAttachmentSetStoreAction(attachment, action.index);
+    renderer.FFIStencilAttachmentSetStoreAction(attachment, action.index);
     _storeAction = action;
   }
 
@@ -323,7 +323,7 @@ final class StencilAttachment extends OBJFFIObject {
     }
 
     _texture = texture;
-    renderer.StencilAttachmentSetTexture(
+    renderer.FFIStencilAttachmentSetTexture(
         attachment, _texture != null ? _texture!.texture : nullptr);
   }
 
@@ -335,7 +335,7 @@ final class StencilAttachment extends OBJFFIObject {
     }
 
     _resolveTexture = texture;
-    renderer.StencilAttachmentSetResolveTexture(attachment,
+    renderer.FFIStencilAttachmentSetResolveTexture(attachment,
         _resolveTexture != null ? _resolveTexture!.texture : nullptr);
   }
 
@@ -346,7 +346,7 @@ final class StencilAttachment extends OBJFFIObject {
       return;
     }
     _clearStencil = stencil;
-    renderer.StencilAttachmentSetClearStencil(attachment, _clearStencil);
+    renderer.FFIStencilAttachmentSetClearStencil(attachment, _clearStencil);
   }
 
   FFIStencilAttachmentPointer attachment;

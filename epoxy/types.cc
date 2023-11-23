@@ -177,6 +177,11 @@ Function::ReturnType Function::GetReturnType() const {
   return return_type_;
 }
 
+void Function::SetParent(const std::string& parent_name) {
+  name_ = parent_name + name_;
+  arguments_.insert(arguments_.begin(), Variable{parent_name, "thiz", true});
+}
+
 bool Function::ReturnsPointer() const {
   return pointer_return_;
 }
@@ -456,6 +461,9 @@ nlohmann::json::object_t Namespace::GetJSONObject() const {
 
   for (const auto& opaque : opaques_) {
     opaques.emplace_back(opaque.GetJSONObject(*this));
+    for (const auto& opaque_function : opaque.GetFunctions()) {
+      funcs.push_back(opaque_function.GetJSONObject(*this));
+    }
   }
 
   for (const auto& fun : functions_) {
@@ -531,7 +539,12 @@ nlohmann::json::object_t Struct::GetJSONObject(const Namespace& ns) const {
 
 Opaque::Opaque() = default;
 
-Opaque::Opaque(std::string name) : name_(std::move(name)) {}
+Opaque::Opaque(std::string name, Functions functions)
+    : name_(std::move(name)), functions_(std::move(functions)) {
+  for (auto& function : functions_) {
+    function.SetParent(name_);
+  }
+}
 
 Opaque::~Opaque() = default;
 
@@ -539,16 +552,43 @@ const std::string& Opaque::GetName() const {
   return name_;
 }
 
+const Functions& Opaque::GetFunctions() const {
+  return functions_;
+}
+
 bool Opaque::PassesSema(const Namespace& ns, std::stringstream& stream) const {
-  size_t found_count = 0u;
-  for (const auto& opaque : ns.GetOpaques()) {
-    if (opaque.GetName() == name_) {
-      found_count++;
+  {
+    size_t found_count = 0u;
+    for (const auto& opaque : ns.GetOpaques()) {
+      if (opaque.GetName() == name_) {
+        found_count++;
+      }
+    }
+    if (found_count != 1) {
+      stream << "Multiple definition of opaque '" << name_ << "'." << std::endl;
+      return false;
     }
   }
-  if (found_count != 1) {
-    stream << "Multiple definition of opaque '" << name_ << "'." << std::endl;
-    return false;
+  {
+    std::map<std::string, size_t> function_name_counts;
+    for (const auto& function : functions_) {
+      ++function_name_counts[function.GetName()];
+    }
+    for (const auto& function_name_count : function_name_counts) {
+      if (function_name_count.second > 1u) {
+        stream << "Duplicate definition of function named '"
+               << function_name_count.first << "' in opaque '" << name_ << "'."
+               << std::endl;
+        return false;
+      }
+    }
+  }
+  {
+    for (const auto& function : functions_) {
+      if (!function.PassesSema(ns, stream)) {
+        return false;
+      }
+    }
   }
   return true;
 }

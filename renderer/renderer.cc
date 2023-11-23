@@ -19,7 +19,7 @@ FFIContext* GetGlobalContext() {
   return gContext.Get();
 }
 
-FFISwapchain* ContextSwapchainCopy(FFIContext* context) {
+FFISwapchain* FFIContextSwapchainCopy(FFIContext* context) {
   if (!context) {
     return nullptr;
   }
@@ -27,7 +27,7 @@ FFISwapchain* ContextSwapchainCopy(FFIContext* context) {
   return objffi::Make<FFISwapchain>(context->Get()->GetSwapchain()).Leak();
 }
 
-FFITexture* SwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
+FFITexture* FFISwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
   auto swapchain = objffi::Ref(swapchain_ptr);
   if (!swapchain) {
     return nullptr;
@@ -36,7 +36,7 @@ FFITexture* SwapchainNextDrawableNew(FFISwapchain* swapchain_ptr) {
       .Leak();
 }
 
-bool SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) {
+bool FFISwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) {
   if (!swapchain || !texture) {
     return false;
   }
@@ -47,9 +47,9 @@ FFIRenderTarget* RenderTargetNew() {
   return objffi::Make<FFIRenderTarget>().Leak();
 }
 
-bool RenderTargetSetColorAttachment(FFIRenderTarget* target,
-                                    FFIColorAttachment* color,
-                                    uint32_t index) {
+bool FFIRenderTargetSetColorAttachment(FFIRenderTarget* target,
+                                       FFIColorAttachment* color,
+                                       uint32_t index) {
   if (!target || !color) {
     return false;
   }
@@ -61,8 +61,8 @@ bool RenderTargetSetColorAttachment(FFIRenderTarget* target,
   return true;
 }
 
-bool RenderTargetSetDepthAttachment(FFIRenderTarget* target,
-                                    FFIDepthAttachment* depth) {
+bool FFIRenderTargetSetDepthAttachment(FFIRenderTarget* target,
+                                       FFIDepthAttachment* depth) {
   if (!target) {
     return false;
   }
@@ -78,8 +78,8 @@ bool RenderTargetSetDepthAttachment(FFIRenderTarget* target,
   return true;
 }
 
-bool RenderTargetSetStencilAttachment(FFIRenderTarget* target,
-                                      FFIStencilAttachment* stencil) {
+bool FFIRenderTargetSetStencilAttachment(FFIRenderTarget* target,
+                                         FFIStencilAttachment* stencil) {
   if (!target) {
     return false;
   }
@@ -108,7 +108,8 @@ FFIColorAttachment* ColorAttachmentNew() {
   return objffi::Make<FFIColorAttachment>().Leak();
 }
 
-bool ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) {
+bool FFIColorAttachmentSetTexture(FFIColorAttachment* color,
+                                  FFITexture* texture) {
   if (!color) {
     return false;
   }
@@ -117,8 +118,8 @@ bool ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) {
   return true;
 }
 
-bool ColorAttachmentSetResolveTexture(FFIColorAttachment* color,
-                                      FFITexture* texture) {
+bool FFIColorAttachmentSetResolveTexture(FFIColorAttachment* color,
+                                         FFITexture* texture) {
   if (!color) {
     return false;
   }
@@ -138,8 +139,8 @@ constexpr impeller::LoadAction ToLoadAction(LoadAction action) {
   return impeller::LoadAction::kClear;
 }
 
-bool ColorAttachmentSetLoadAction(FFIColorAttachment* color,
-                                  LoadAction load_action) {
+bool FFIColorAttachmentSetLoadAction(FFIColorAttachment* color,
+                                     LoadAction load_action) {
   if (!color) {
     return false;
   }
@@ -162,8 +163,8 @@ constexpr impeller::StoreAction ToStoreAction(StoreAction action) {
   return impeller::StoreAction::kDontCare;
 }
 
-bool ColorAttachmentSetStoreAction(FFIColorAttachment* color,
-                                   StoreAction store_action) {
+bool FFIColorAttachmentSetStoreAction(FFIColorAttachment* color,
+                                      StoreAction store_action) {
   if (!color) {
     return false;
   }
@@ -171,8 +172,8 @@ bool ColorAttachmentSetStoreAction(FFIColorAttachment* color,
   return true;
 }
 
-bool ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment,
-                                  FFIColor* color) {
+bool FFIColorAttachmentSetClearColor(FFIColorAttachment* color_attachment,
+                                     FFIColor* color) {
   if (!color_attachment || !color) {
     return false;
   }
@@ -185,7 +186,8 @@ FFIDepthAttachment* DepthAttachmentNew() {
   return objffi::Make<FFIDepthAttachment>().Leak();
 }
 
-bool DepthAttachmentSetTexture(FFIDepthAttachment* depth, FFITexture* texture) {
+bool FFIDepthAttachmentSetTexture(FFIDepthAttachment* depth,
+                                  FFITexture* texture) {
   if (!depth) {
     return false;
   }
@@ -193,8 +195,8 @@ bool DepthAttachmentSetTexture(FFIDepthAttachment* depth, FFITexture* texture) {
   return true;
 }
 
-bool DepthAttachmentSetResolveTexture(FFIDepthAttachment* depth,
-                                      FFITexture* texture) {
+bool FFIDepthAttachmentSetResolveTexture(FFIDepthAttachment* depth,
+                                         FFITexture* texture) {
   if (!depth) {
     return false;
   }
@@ -202,8 +204,8 @@ bool DepthAttachmentSetResolveTexture(FFIDepthAttachment* depth,
   return true;
 }
 
-bool DepthAttachmentSetLoadAction(FFIDepthAttachment* depth,
-                                  LoadAction load_action) {
+bool FFIDepthAttachmentSetLoadAction(FFIDepthAttachment* depth,
+                                     LoadAction load_action) {
   if (!depth) {
     return false;
   }
@@ -211,8 +213,8 @@ bool DepthAttachmentSetLoadAction(FFIDepthAttachment* depth,
   return true;
 }
 
-bool DepthAttachmentSetStoreAction(FFIDepthAttachment* depth,
-                                   StoreAction store_action) {
+bool FFIDepthAttachmentSetStoreAction(FFIDepthAttachment* depth,
+                                      StoreAction store_action) {
   if (!depth) {
     return false;
   }
@@ -220,8 +222,8 @@ bool DepthAttachmentSetStoreAction(FFIDepthAttachment* depth,
   return true;
 }
 
-bool DepthAttachmentSetClearDepth(FFIDepthAttachment* depth_attachment,
-                                  double clear_depth) {
+bool FFIDepthAttachmentSetClearDepth(FFIDepthAttachment* depth_attachment,
+                                     double clear_depth) {
   if (!depth_attachment) {
     return false;
   }
@@ -233,8 +235,8 @@ FFIStencilAttachment* StencilAttachmentNew() {
   return objffi::Make<FFIStencilAttachment>().Leak();
 }
 
-bool StencilAttachmentSetTexture(FFIStencilAttachment* stencil,
-                                 FFITexture* texture) {
+bool FFIStencilAttachmentSetTexture(FFIStencilAttachment* stencil,
+                                    FFITexture* texture) {
   if (!stencil) {
     return false;
   }
@@ -242,8 +244,8 @@ bool StencilAttachmentSetTexture(FFIStencilAttachment* stencil,
   return true;
 }
 
-bool StencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil,
-                                        FFITexture* texture) {
+bool FFIStencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil,
+                                           FFITexture* texture) {
   if (!stencil) {
     return false;
   }
@@ -251,8 +253,8 @@ bool StencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil,
   return true;
 }
 
-bool StencilAttachmentSetLoadAction(FFIStencilAttachment* stencil,
-                                    LoadAction load_action) {
+bool FFIStencilAttachmentSetLoadAction(FFIStencilAttachment* stencil,
+                                       LoadAction load_action) {
   if (!stencil) {
     return false;
   }
@@ -260,8 +262,8 @@ bool StencilAttachmentSetLoadAction(FFIStencilAttachment* stencil,
   return true;
 }
 
-bool StencilAttachmentSetStoreAction(FFIStencilAttachment* stencil,
-                                     StoreAction store_action) {
+bool FFIStencilAttachmentSetStoreAction(FFIStencilAttachment* stencil,
+                                        StoreAction store_action) {
   if (!stencil) {
     return false;
   }
@@ -269,8 +271,9 @@ bool StencilAttachmentSetStoreAction(FFIStencilAttachment* stencil,
   return true;
 }
 
-bool StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment,
-                                      int32_t clear_stencil) {
+bool FFIStencilAttachmentSetClearStencil(
+    FFIStencilAttachment* stencil_attachment,
+    int32_t clear_stencil) {
   if (!stencil_attachment) {
     return false;
   }
@@ -278,7 +281,7 @@ bool StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment,
   return true;
 }
 
-FFICommandBuffer* ContextCommandBufferNew(FFIContext* context) {
+FFICommandBuffer* FFIContextCommandBufferNew(FFIContext* context) {
   if (!context) {
     return nullptr;
   }
@@ -287,7 +290,7 @@ FFICommandBuffer* ContextCommandBufferNew(FFIContext* context) {
       .Leak();
 }
 
-FFIRenderPass* CommandBufferCreateRenderPassNew(
+FFIRenderPass* FFICommandBufferCreateRenderPassNew(
     FFICommandBuffer* command_buffer,
     FFIRenderTarget* render_target) {
   if (!command_buffer || !render_target) {
@@ -302,14 +305,14 @@ FFIRenderPass* CommandBufferCreateRenderPassNew(
   return objffi::Make<FFIRenderPass>(std::move(render_pass)).Leak();
 }
 
-bool RenderPassAddCommand(FFIRenderPass* render_pass, FFICommand* command) {
+bool FFIRenderPassAddCommand(FFIRenderPass* render_pass, FFICommand* command) {
   if (!render_pass || !command) {
     return false;
   }
   return render_pass->render_pass->AddCommand(std::move(command->command));
 }
 
-bool RenderPassEncodeCommands(FFIRenderPass* render_pass) {
+bool FFIRenderPassEncodeCommands(FFIRenderPass* render_pass) {
   if (!render_pass) {
     return false;
   }
@@ -320,58 +323,58 @@ FFICommand* CommandNew() {
   return objffi::Make<FFICommand>().Leak();
 }
 
-bool CommandBufferSubmit(FFICommandBuffer* command_buffer) {
+bool FFICommandBufferSubmit(FFICommandBuffer* command_buffer) {
   if (!command_buffer) {
     return false;
   }
   return command_buffer->command_buffer->SubmitCommands();
 }
 
-bool CommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) {
+bool FFICommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetVertexBindings(FFICommand* command,
-                              FFICommandBindings* vertex_bindings) {
+bool FFICommandSetVertexBindings(FFICommand* command,
+                                 FFICommandBindings* vertex_bindings) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetFragmentBindings(FFICommand* command,
-                                FFICommandBindings* fragment_bindings) {
+bool FFICommandSetFragmentBindings(FFICommand* command,
+                                   FFICommandBindings* fragment_bindings) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetIndexBuffer(FFICommand* command,
-                           FFIBufferView* index_buffer_view) {
+bool FFICommandSetIndexBuffer(FFICommand* command,
+                              FFIBufferView* index_buffer_view) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetVertexCount(FFICommand* command, uint64_t vertex_count) {
+bool FFICommandSetVertexCount(FFICommand* command, uint64_t vertex_count) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetIndexType(FFICommand* command, IndexType index_type) {
+bool FFICommandSetIndexType(FFICommand* command, IndexType index_type) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetStencilReference(FFICommand* command,
-                                uint32_t stencil_reference) {
+bool FFICommandSetStencilReference(FFICommand* command,
+                                   uint32_t stencil_reference) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetBaseVertex(FFICommand* command, uint64_t base_vertex) {
+bool FFICommandSetBaseVertex(FFICommand* command, uint64_t base_vertex) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetViewport(FFICommand* command, FFIViewport* viewport) {
+bool FFICommandSetViewport(FFICommand* command, FFIViewport* viewport) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) {
+bool FFICommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool CommandSetInstanceCount(FFICommand* command, uint64_t instance_count) {
+bool FFICommandSetInstanceCount(FFICommand* command, uint64_t instance_count) {
   IMPELLER_UNIMPLEMENTED;
 }
 
@@ -391,7 +394,7 @@ void FFIIRectFree(FFIIRect* rect) {
   delete rect;
 }
 
-FFIPipelineLibrary* ContextPipelineLibraryCopy(FFIContext* context) {
+FFIPipelineLibrary* FFIContextPipelineLibraryCopy(FFIContext* context) {
   if (!context) {
     return nullptr;
   }
@@ -419,7 +422,7 @@ constexpr impeller::SampleCount ToSampleCount(SampleCount count) {
   }
 }
 
-bool PipelineDescriptorSetSampleCount(
+bool FFIPipelineDescriptorSetSampleCount(
     FFIPipelineDescriptor* pipeline_descriptor,
     SampleCount count) {
   if (!pipeline_descriptor) {
@@ -429,32 +432,32 @@ bool PipelineDescriptorSetSampleCount(
   return true;
 }
 
-bool PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor,
-                                FFIShaderFunction* shader_function) {
+bool FFIPipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor,
+                                   FFIShaderFunction* shader_function) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetVertexDescriptor(
+bool FFIPipelineDescriptorSetVertexDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIVertexDescriptor* vertex_descriptor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetColorAttachmentDescriptor(
+bool FFIPipelineDescriptorSetColorAttachmentDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor,
     uint32_t index) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetDepthAttachmentDescriptor(
+bool FFIPipelineDescriptorSetDepthAttachmentDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIPipelineDepthAttachmentDescriptor*
         pipeline_depth_attachment_descriptor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetStencilAttachmentDescriptor(
+bool FFIPipelineDescriptorSetStencilAttachmentDescriptor(
     FFIPipelineDescriptor* pipeline_descriptor,
     FFIPipelineStencilAttachmentDescriptor*
         pipeline_stencil_attachment_descriptor,
@@ -462,24 +465,25 @@ bool PipelineDescriptorSetStencilAttachmentDescriptor(
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetCullMode(FFIPipelineDescriptor* pipeline_descriptor,
-                                   Facing facing) {
+bool FFIPipelineDescriptorSetCullMode(
+    FFIPipelineDescriptor* pipeline_descriptor,
+    Facing facing) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetWindingOrder(
+bool FFIPipelineDescriptorSetWindingOrder(
     FFIPipelineDescriptor* pipeline_descriptor,
     WindingOrder winding) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetPrimitiveType(
+bool FFIPipelineDescriptorSetPrimitiveType(
     FFIPipelineDescriptor* pipeline_descriptor,
     PrimitiveType primitive_type) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDescriptorSetPolygonMode(
+bool FFIPipelineDescriptorSetPolygonMode(
     FFIPipelineDescriptor* pipeline_descriptor,
     PolygonMode polygon_mode) {
   IMPELLER_UNIMPLEMENTED;
@@ -489,55 +493,55 @@ FFIPipelineColorAttachmentDescriptor* PipelineColorAttachmentDescriptorNew() {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetPixelFormat(
+bool FFIPipelineColorAttachmentDescriptorSetPixelFormat(
     FFIPipelineColorAttachmentDescriptor* desc,
     PixelFormat format) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetBlendingEnabled(
+bool FFIPipelineColorAttachmentDescriptorSetBlendingEnabled(
     FFIPipelineColorAttachmentDescriptor* desc,
     bool enabled) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetSourceColorBlendFactor(
+bool FFIPipelineColorAttachmentDescriptorSetSourceColorBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetColorBlendOperation(
+bool FFIPipelineColorAttachmentDescriptorSetColorBlendOperation(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendOperation operation) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(
+bool FFIPipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(
+bool FFIPipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetAlphaBlendOperation(
+bool FFIPipelineColorAttachmentDescriptorSetAlphaBlendOperation(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendOperation operation) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(
+bool FFIPipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(
     FFIPipelineColorAttachmentDescriptor* desc,
     BlendFactor factor) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineColorAttachmentDescriptorSetColorWriteMask(
+bool FFIPipelineColorAttachmentDescriptorSetColorWriteMask(
     FFIPipelineColorAttachmentDescriptor* desc,
     uint64_t write_mask) {
   IMPELLER_UNIMPLEMENTED;
@@ -547,19 +551,19 @@ FFIPipelineDepthAttachmentDescriptor* PipelineDepthAttachmentDescriptorNew() {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDepthAttachmentDescriptorSetPixelFormat(
+bool FFIPipelineDepthAttachmentDescriptorSetPixelFormat(
     FFIPipelineDepthAttachmentDescriptor* desc,
     PixelFormat format) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDepthAttachmentDescriptorSetDepthCompareFunction(
+bool FFIPipelineDepthAttachmentDescriptorSetDepthCompareFunction(
     FFIPipelineDepthAttachmentDescriptor* desc,
     CompareFunction depth_compare) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineDepthAttachmentDescriptorSetDepthWriteEnabled(
+bool FFIPipelineDepthAttachmentDescriptorSetDepthWriteEnabled(
     FFIPipelineDepthAttachmentDescriptor* desc,
     bool depth_write_enabled) {
   IMPELLER_UNIMPLEMENTED;
@@ -570,43 +574,43 @@ PipelineStencilAttachmentDescriptorNew() {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetPixelFormat(
+bool FFIPipelineStencilAttachmentDescriptorSetPixelFormat(
     FFIPipelineStencilAttachmentDescriptor* desc,
     PixelFormat format) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetStencilCompare(
+bool FFIPipelineStencilAttachmentDescriptorSetStencilCompare(
     FFIPipelineStencilAttachmentDescriptor* desc,
     CompareFunction func) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetStencilFailure(
+bool FFIPipelineStencilAttachmentDescriptorSetStencilFailure(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetDepthFailure(
+bool FFIPipelineStencilAttachmentDescriptorSetDepthFailure(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetDepthStencilPass(
+bool FFIPipelineStencilAttachmentDescriptorSetDepthStencilPass(
     FFIPipelineStencilAttachmentDescriptor* desc,
     StencilOperation operation) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetReadMask(
+bool FFIPipelineStencilAttachmentDescriptorSetReadMask(
     FFIPipelineStencilAttachmentDescriptor* desc,
     uint32_t read_mask) {
   IMPELLER_UNIMPLEMENTED;
 }
 
-bool PipelineStencilAttachmentDescriptorSetWriteMask(
+bool FFIPipelineStencilAttachmentDescriptorSetWriteMask(
     FFIPipelineStencilAttachmentDescriptor* desc,
     uint32_t write_mask) {
   IMPELLER_UNIMPLEMENTED;

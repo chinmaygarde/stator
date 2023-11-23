@@ -134,40 +134,42 @@ enum PolygonMode {
 }
 
 //------------------------------------------------------------------------------
-opaque FFIContext
+opaque FFIContext {
+  function SwapchainCopy() -> FFISwapchain*
+  function PipelineLibraryCopy() -> FFIPipelineLibrary*
+  function CommandBufferNew() -> FFICommandBuffer*
+}
 
-function ContextSwapchainCopy(FFIContext* context) -> FFISwapchain*
-function ContextPipelineLibraryCopy(FFIContext* context) -> FFIPipelineLibrary*
-function ContextCommandBufferNew(FFIContext* context) -> FFICommandBuffer*
 function GetGlobalContext() -> FFIContext*
 
 //------------------------------------------------------------------------------
-opaque FFICommandBuffer
-
-function CommandBufferCreateRenderPassNew(FFICommandBuffer* command_buffer, FFIRenderTarget* render_target) -> FFIRenderPass*
-function CommandBufferSubmit(FFICommandBuffer* command_buffer) -> bool
-
-//------------------------------------------------------------------------------
-opaque FFIRenderPass
-
-function RenderPassAddCommand(FFIRenderPass* render_pass, FFICommand* command) -> bool
-function RenderPassEncodeCommands(FFIRenderPass* render_pass) -> bool
+opaque FFICommandBuffer {
+  function CreateRenderPassNew(FFIRenderTarget* render_target) -> FFIRenderPass*
+  function Submit() -> bool
+}
 
 //------------------------------------------------------------------------------
-opaque FFICommand
+opaque FFIRenderPass {
+  function AddCommand(FFICommand* command) -> bool
+  function EncodeCommands() -> bool
+}
+
+//------------------------------------------------------------------------------
+opaque FFICommand {
+  function SetPipeline(FFIPipeline* pipeline) -> bool
+  function SetVertexBindings(FFICommandBindings* vertex_bindings) -> bool
+  function SetFragmentBindings(FFICommandBindings* fragment_bindings) -> bool
+  function SetIndexBuffer(FFIBufferView* index_buffer_view) -> bool
+  function SetVertexCount(uint64 vertex_count) -> bool
+  function SetIndexType(IndexType index_type) -> bool
+  function SetStencilReference(uint32 stencil_reference) -> bool
+  function SetBaseVertex(uint64 base_vertex) -> bool
+  function SetViewport(FFIViewport* viewport) -> bool
+  function SetScissor(FFIIRect* scissor_rect) -> bool
+  function SetInstanceCount(uint64 instance_count) -> bool
+}
 
 function CommandNew() -> FFICommand*
-function CommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) -> bool
-function CommandSetVertexBindings(FFICommand* command, FFICommandBindings* vertex_bindings) -> bool
-function CommandSetFragmentBindings(FFICommand* command, FFICommandBindings* fragment_bindings) -> bool
-function CommandSetIndexBuffer(FFICommand* command, FFIBufferView* index_buffer_view) -> bool
-function CommandSetVertexCount(FFICommand* command, uint64 vertex_count) -> bool
-function CommandSetIndexType(FFICommand* command, IndexType index_type) -> bool
-function CommandSetStencilReference(FFICommand* command, uint32 stencil_reference) -> bool
-function CommandSetBaseVertex(FFICommand* command, uint64 base_vertex) -> bool
-function CommandSetViewport(FFICommand* command, FFIViewport* viewport) -> bool
-function CommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) -> bool
-function CommandSetInstanceCount(FFICommand* command, uint64 instance_count) -> bool
 
 //------------------------------------------------------------------------------
 opaque FFICommandBindings
@@ -181,20 +183,20 @@ opaque FFIPipelineLibrary
 function PipelineLibraryGetPipelineCopy(FFIPipelineLibrary* pipeline_library, FFIPipelineDescriptor* pipeline_descriptor) -> FFIPipeline*
 
 //------------------------------------------------------------------------------
-opaque FFIPipelineDescriptor
+opaque FFIPipelineDescriptor {
+  function SetSampleCount(SampleCount count) -> bool
+  function AddStage(FFIShaderFunction* shader_function) -> bool
+  function SetVertexDescriptor(FFIVertexDescriptor* vertex_descriptor) -> bool
+  function SetColorAttachmentDescriptor(FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor, uint32 index) -> bool
+  function SetDepthAttachmentDescriptor(FFIPipelineDepthAttachmentDescriptor* pipeline_depth_attachment_descriptor) -> bool
+  function SetStencilAttachmentDescriptor(FFIPipelineStencilAttachmentDescriptor* pipeline_stencil_attachment_descriptor, Facing facing) -> bool
+  function SetCullMode(Facing facing) -> bool
+  function SetWindingOrder(WindingOrder winding) -> bool
+  function SetPrimitiveType(PrimitiveType primitive_type) -> bool
+  function SetPolygonMode(PolygonMode polygon_mode) -> bool
+}
 
 function PipelineDescriptorNew() -> FFIPipelineDescriptor*
-
-function PipelineDescriptorSetSampleCount(FFIPipelineDescriptor* pipeline_descriptor, SampleCount count) -> bool
-function PipelineDescriptorAddStage(FFIPipelineDescriptor* pipeline_descriptor, FFIShaderFunction* shader_function) -> bool
-function PipelineDescriptorSetVertexDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIVertexDescriptor* vertex_descriptor) -> bool
-function PipelineDescriptorSetColorAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineColorAttachmentDescriptor* pipeline_color_attachment_descriptor, uint32 index) -> bool
-function PipelineDescriptorSetDepthAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineDepthAttachmentDescriptor* pipeline_depth_attachment_descriptor) -> bool
-function PipelineDescriptorSetStencilAttachmentDescriptor(FFIPipelineDescriptor* pipeline_descriptor, FFIPipelineStencilAttachmentDescriptor* pipeline_stencil_attachment_descriptor, Facing facing) -> bool
-function PipelineDescriptorSetCullMode(FFIPipelineDescriptor* pipeline_descriptor, Facing facing) -> bool
-function PipelineDescriptorSetWindingOrder(FFIPipelineDescriptor* pipeline_descriptor, WindingOrder winding) -> bool
-function PipelineDescriptorSetPrimitiveType(FFIPipelineDescriptor* pipeline_descriptor, PrimitiveType primitive_type) -> bool
-function PipelineDescriptorSetPolygonMode(FFIPipelineDescriptor* pipeline_descriptor, PolygonMode polygon_mode) -> bool
 
 //------------------------------------------------------------------------------
 opaque FFIShaderFunction
@@ -203,38 +205,41 @@ opaque FFIShaderFunction
 opaque FFIVertexDescriptor
 
 //------------------------------------------------------------------------------
-opaque FFIPipelineColorAttachmentDescriptor
+opaque FFIPipelineColorAttachmentDescriptor {
+  function SetPixelFormat(PixelFormat format) -> bool
+  function SetBlendingEnabled(bool enabled) -> bool
+  function SetSourceColorBlendFactor(BlendFactor factor) -> bool
+  function SetColorBlendOperation(BlendOperation operation) -> bool
+  function SetDestinationColorBlendFactor(BlendFactor factor) -> bool
+  function SetSourceAlphaBlendFactor(BlendFactor factor) -> bool
+  function SetAlphaBlendOperation(BlendOperation operation) -> bool
+  function SetDestinationAlphaBlendFactor(BlendFactor factor) -> bool
+  function SetColorWriteMask(uint64 write_mask) -> bool
+}
 
 function PipelineColorAttachmentDescriptorNew() -> FFIPipelineColorAttachmentDescriptor *
-function PipelineColorAttachmentDescriptorSetPixelFormat(FFIPipelineColorAttachmentDescriptor *desc, PixelFormat format) -> bool
-function PipelineColorAttachmentDescriptorSetBlendingEnabled(FFIPipelineColorAttachmentDescriptor *desc, bool enabled) -> bool
-function PipelineColorAttachmentDescriptorSetSourceColorBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
-function PipelineColorAttachmentDescriptorSetColorBlendOperation(FFIPipelineColorAttachmentDescriptor *desc, BlendOperation operation) -> bool
-function PipelineColorAttachmentDescriptorSetDestinationColorBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
-function PipelineColorAttachmentDescriptorSetSourceAlphaBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
-function PipelineColorAttachmentDescriptorSetAlphaBlendOperation(FFIPipelineColorAttachmentDescriptor *desc, BlendOperation operation) -> bool
-function PipelineColorAttachmentDescriptorSetDestinationAlphaBlendFactor(FFIPipelineColorAttachmentDescriptor *desc, BlendFactor factor) -> bool
-function PipelineColorAttachmentDescriptorSetColorWriteMask(FFIPipelineColorAttachmentDescriptor *desc, uint64 write_mask) -> bool
 
 //------------------------------------------------------------------------------
-opaque FFIPipelineDepthAttachmentDescriptor
+opaque FFIPipelineDepthAttachmentDescriptor {
+  function SetPixelFormat(PixelFormat format) -> bool
+  function SetDepthCompareFunction(CompareFunction depth_compare) -> bool
+  function SetDepthWriteEnabled(bool depth_write_enabled) -> bool
+}
 
 function PipelineDepthAttachmentDescriptorNew() -> FFIPipelineDepthAttachmentDescriptor *
-function PipelineDepthAttachmentDescriptorSetPixelFormat(FFIPipelineDepthAttachmentDescriptor* desc, PixelFormat format) -> bool
-function PipelineDepthAttachmentDescriptorSetDepthCompareFunction(FFIPipelineDepthAttachmentDescriptor* desc, CompareFunction depth_compare) -> bool
-function PipelineDepthAttachmentDescriptorSetDepthWriteEnabled(FFIPipelineDepthAttachmentDescriptor* desc, bool depth_write_enabled) -> bool
 
 //------------------------------------------------------------------------------
-opaque FFIPipelineStencilAttachmentDescriptor
+opaque FFIPipelineStencilAttachmentDescriptor {
+  function SetPixelFormat(PixelFormat format) -> bool
+  function SetStencilCompare(CompareFunction func) -> bool
+  function SetStencilFailure(StencilOperation operation) -> bool
+  function SetDepthFailure(StencilOperation operation) -> bool
+  function SetDepthStencilPass(StencilOperation operation) -> bool
+  function SetReadMask(uint32 read_mask) -> bool
+  function SetWriteMask(uint32 write_mask) -> bool
+}
 
 function PipelineStencilAttachmentDescriptorNew() -> FFIPipelineStencilAttachmentDescriptor *
-function PipelineStencilAttachmentDescriptorSetPixelFormat(FFIPipelineStencilAttachmentDescriptor* desc, PixelFormat format) -> bool
-function PipelineStencilAttachmentDescriptorSetStencilCompare(FFIPipelineStencilAttachmentDescriptor* desc, CompareFunction func) -> bool
-function PipelineStencilAttachmentDescriptorSetStencilFailure(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
-function PipelineStencilAttachmentDescriptorSetDepthFailure(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
-function PipelineStencilAttachmentDescriptorSetDepthStencilPass(FFIPipelineStencilAttachmentDescriptor* desc, StencilOperation operation) -> bool
-function PipelineStencilAttachmentDescriptorSetReadMask(FFIPipelineStencilAttachmentDescriptor* desc, uint32 read_mask) -> bool
-function PipelineStencilAttachmentDescriptorSetWriteMask(FFIPipelineStencilAttachmentDescriptor* desc, uint32 write_mask) -> bool
 
 //------------------------------------------------------------------------------
 opaque FFIBufferView
@@ -264,51 +269,55 @@ function FFIIRectAlloc() -> FFIIRect*
 function FFIIRectFree(FFIIRect* rect)
 
 //------------------------------------------------------------------------------
-opaque FFISwapchain
-
-function SwapchainNextDrawableNew(FFISwapchain* swapchain) -> FFITexture*
-function SwapchainPresentDrawable(FFISwapchain* swapchain, FFITexture* texture) -> bool
+opaque FFISwapchain {
+  function NextDrawableNew() -> FFITexture*
+  function PresentDrawable(FFITexture* texture) -> bool
+}
 
 //------------------------------------------------------------------------------
 opaque FFITexture
 
 //------------------------------------------------------------------------------
-opaque FFIRenderTarget
+opaque FFIRenderTarget {
+  function SetColorAttachment(FFIColorAttachment* color, uint32 index) -> bool
+  function SetDepthAttachment(FFIDepthAttachment* depth) -> bool
+  function SetStencilAttachment(FFIStencilAttachment* stencil) -> bool
+}
 
 function RenderTargetNew() -> FFIRenderTarget*
-function RenderTargetSetColorAttachment(FFIRenderTarget* target, FFIColorAttachment* color, uint32 index) -> bool
-function RenderTargetSetDepthAttachment(FFIRenderTarget* target, FFIDepthAttachment* depth) -> bool
-function RenderTargetSetStencilAttachment(FFIRenderTarget* target, FFIStencilAttachment* stencil) -> bool
 
 //------------------------------------------------------------------------------
-opaque FFIColorAttachment
+opaque FFIColorAttachment {
+  function SetTexture(FFITexture* texture) -> bool
+  function SetResolveTexture(FFITexture* texture) -> bool
+  function SetLoadAction(LoadAction load_action) -> bool
+  function SetStoreAction(StoreAction store_action) -> bool
+  function SetClearColor(FFIColor* color) -> bool
+}
 
 function ColorAttachmentNew() -> FFIColorAttachment*
-function ColorAttachmentSetTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
-function ColorAttachmentSetResolveTexture(FFIColorAttachment* color, FFITexture* texture) -> bool
-function ColorAttachmentSetLoadAction(FFIColorAttachment* color, LoadAction load_action) -> bool
-function ColorAttachmentSetStoreAction(FFIColorAttachment* color, StoreAction store_action) -> bool
-function ColorAttachmentSetClearColor(FFIColorAttachment* color_attachment, FFIColor* color) -> bool
 
 //------------------------------------------------------------------------------
-opaque FFIDepthAttachment
+opaque FFIDepthAttachment {
+  function SetTexture(FFITexture* texture) -> bool
+  function SetResolveTexture(FFITexture* texture) -> bool
+  function SetLoadAction(LoadAction load_action) -> bool
+  function SetStoreAction(StoreAction store_action) -> bool
+  function SetClearDepth(double clear_depth) -> bool
+}
 
 function DepthAttachmentNew() -> FFIDepthAttachment*
-function DepthAttachmentSetTexture(FFIDepthAttachment* depth, FFITexture* texture) -> bool
-function DepthAttachmentSetResolveTexture(FFIDepthAttachment* depth, FFITexture* texture) -> bool
-function DepthAttachmentSetLoadAction(FFIDepthAttachment* depth, LoadAction load_action) -> bool
-function DepthAttachmentSetStoreAction(FFIDepthAttachment* depth, StoreAction store_action) -> bool
-function DepthAttachmentSetClearDepth(FFIDepthAttachment* depth_attachment, double clear_depth) -> bool
 
 //------------------------------------------------------------------------------
-opaque FFIStencilAttachment
+opaque FFIStencilAttachment {
+  function SetTexture(FFITexture* texture) -> bool
+  function SetResolveTexture(FFITexture* texture) -> bool
+  function SetLoadAction(LoadAction load_action) -> bool
+  function SetStoreAction(StoreAction store_action) -> bool
+  function SetClearStencil(int32 clear_stencil) -> bool
+}
 
 function StencilAttachmentNew() -> FFIStencilAttachment*
-function StencilAttachmentSetTexture(FFIStencilAttachment* stencil, FFITexture* texture) -> bool
-function StencilAttachmentSetResolveTexture(FFIStencilAttachment* stencil, FFITexture* texture) -> bool
-function StencilAttachmentSetLoadAction(FFIStencilAttachment* stencil, LoadAction load_action) -> bool
-function StencilAttachmentSetStoreAction(FFIStencilAttachment* stencil, StoreAction store_action) -> bool
-function StencilAttachmentSetClearStencil(FFIStencilAttachment* stencil_attachment, int32 clear_stencil) -> bool
 
 //------------------------------------------------------------------------------
 struct FFIColor {
