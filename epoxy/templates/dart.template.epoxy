@@ -2,7 +2,6 @@
 
 import 'dart:ffi';
 
-typedef VoidPointer = Pointer<Void>;
 {% for ns in namespaces %}
 
 // {{ length(ns.enums) }} enum definition(s).
@@ -51,6 +50,8 @@ Function(
 {% for arg in fn.arguments %}
 {% if arg.is_enum %}
   Int64
+{% else if arg.is_pointer and arg.is_primitive %}
+  Pointer<{{to_c_type(arg.type)}}>
 {% else %}
   {{to_c_type(arg.type)}}{% if arg.is_pointer %}Pointer{% endif %}
 {% endif %}
@@ -66,8 +67,8 @@ typedef {{fn.name}}Type =
 
 Function(
 {% for arg in fn.arguments %}
-{% if arg.is_pointer and arg.type == "void" %}
-  VoidPointer
+{% if arg.is_pointer and arg.is_primitive %}
+  Pointer<{{to_c_type(arg.type)}}>
 {% else if arg.is_enum %}
   int
 {% else %}
