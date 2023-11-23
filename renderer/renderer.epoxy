@@ -251,16 +251,11 @@ function PipelineStencilAttachmentDescriptorNew() -> FFIPipelineStencilAttachmen
 //------------------------------------------------------------------------------
 opaque FFIBufferView
 
-function BufferViewNew(FFIBuffer* buffer, uint32 offset, uint32 length) -> FFIBufferView*
-
-//------------------------------------------------------------------------------
-opaque FFIBuffer
-
 //------------------------------------------------------------------------------
 opaque FFIHostBuffer {
-  function EmplaceUniformData(uint8* data, uint32 length, uint32 alignment) -> bool
-  function EmplaceStorageBufferData(uint8* data, uint32 length, uint32 alignment) -> bool
-  function EmplaceData(uint8* data, uint32 length, uint32 alignment) -> bool
+  function EmplaceUniformDataNew(uint8* data, uint32 length, uint32 alignment) -> FFIBufferView*
+  function EmplaceStorageBufferDataNew(uint8* data, uint32 length, uint32 alignment) -> FFIBufferView*
+  function EmplaceDataNew(uint8* data, uint32 length, uint32 alignment) -> FFIBufferView*
 }
 
 function HostBufferNew() -> FFIHostBuffer*

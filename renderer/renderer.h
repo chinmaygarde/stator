@@ -161,6 +161,14 @@ class FFIPipelineStencilAttachmentDescriptor final : public objffi::Object {
   StencilAttachmentDescriptor descriptor;
 };
 
+class FFIHostBuffer final : public objffi::Object {
+ public:
+  explicit FFIHostBuffer(std::shared_ptr<HostBuffer> p_buffer)
+      : buffer(std::move(p_buffer)) {}
+
+  std::shared_ptr<HostBuffer> buffer;
+};
+
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);
 
 }  // namespace impeller::stator::renderer

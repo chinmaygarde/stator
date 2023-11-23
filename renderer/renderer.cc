@@ -6,6 +6,7 @@
 
 #include "impeller/base/config.h"
 #include "impeller/base/validation.h"
+#include "impeller/core/platform.h"
 
 namespace impeller::stator::renderer {
 
@@ -1017,6 +1018,48 @@ bool FFIPipelineStencilAttachmentDescriptorSetWriteMask(
   }
   desc->descriptor.write_mask = write_mask;
   return true;
+}
+
+FFIBufferView* FFIHostBufferEmplaceUniformDataNew(FFIHostBuffer* buffer,
+                                                  uint8_t* data,
+                                                  uint32_t length,
+                                                  uint32_t alignment) {
+  return FFIHostBufferEmplaceDataNew(
+      buffer,                                                   //
+      data,                                                     //
+      length,                                                   //
+      std::max<uint32_t>(alignment, DefaultUniformAlignment())  //
+  );
+}
+
+FFIBufferView* FFIHostBufferEmplaceStorageBufferDataNew(FFIHostBuffer* buffer,
+                                                        uint8_t* data,
+                                                        uint32_t length,
+                                                        uint32_t alignment) {
+  return FFIHostBufferEmplaceDataNew(
+      buffer,                                                   //
+      data,                                                     //
+      length,                                                   //
+      std::max<uint32_t>(alignment, DefaultUniformAlignment())  //
+  );
+}
+
+FFIBufferView* FFIHostBufferEmplaceDataNew(FFIHostBuffer* buffer,
+                                           uint8_t* data,
+                                           uint32_t length,
+                                           uint32_t alignment) {
+  if (!buffer || !buffer->buffer) {
+    return nullptr;
+  }
+  auto view = buffer->buffer->Emplace(data, length, alignment);
+  if (!view) {
+    return nullptr;
+  }
+  return objffi::Make<FFIBufferView>(std::move(view)).Leak();
+}
+
+FFIHostBuffer* HostBufferNew() {
+  return objffi::Make<FFIHostBuffer>(HostBuffer::Create()).Leak();
 }
 
 }  // namespace impeller::stator::renderer
