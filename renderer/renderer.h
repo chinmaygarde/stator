@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include "impeller/core/buffer_view.h"
 #include "impeller/renderer/command.h"
+#include "impeller/renderer/pipeline.h"
 #include "impeller/renderer/render_pass.h"
 #include "impeller/renderer/render_target.h"
 #include "impeller/stator/objffi/scoped_object.h"
@@ -100,6 +102,31 @@ class FFIPipelineLibrary final : public objffi::Object {
       : pipeline_library(std::move(library)) {}
 
   std::shared_ptr<impeller::PipelineLibrary> pipeline_library;
+};
+
+class FFIPipeline final : public objffi::Object {
+ public:
+  explicit FFIPipeline(
+      std::shared_ptr<impeller::Pipeline<PipelineDescriptor>> pipeline)
+      : pipeline_(std::move(pipeline)) {}
+
+  std::shared_ptr<impeller::Pipeline<PipelineDescriptor>> pipeline_;
+};
+
+class FFICommandBindings final : public objffi::Object {
+ public:
+  explicit FFICommandBindings(impeller::Bindings bindings)
+      : bindings_(std::move(bindings)) {}
+
+  impeller::Bindings bindings_;
+};
+
+class FFIBufferView final : public objffi::Object {
+ public:
+  explicit FFIBufferView(impeller::BufferView buffer_view)
+      : buffer_view_(std::move(buffer_view)) {}
+
+  impeller::BufferView buffer_view_;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

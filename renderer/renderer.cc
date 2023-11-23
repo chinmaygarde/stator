@@ -331,51 +331,133 @@ bool FFICommandBufferSubmit(FFICommandBuffer* command_buffer) {
 }
 
 bool FFICommandSetPipeline(FFICommand* command, FFIPipeline* pipeline) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.pipeline = pipeline ? pipeline->pipeline_ : nullptr;
+  return true;
 }
 
 bool FFICommandSetVertexBindings(FFICommand* command,
                                  FFICommandBindings* vertex_bindings) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.vertex_bindings =
+      vertex_bindings ? vertex_bindings->bindings_ : Bindings{};
+  return true;
 }
 
 bool FFICommandSetFragmentBindings(FFICommand* command,
                                    FFICommandBindings* fragment_bindings) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.fragment_bindings =
+      fragment_bindings ? fragment_bindings->bindings_ : Bindings{};
+  return true;
 }
 
 bool FFICommandSetIndexBuffer(FFICommand* command,
                               FFIBufferView* index_buffer_view) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.index_buffer =
+      index_buffer_view ? index_buffer_view->buffer_view_ : BufferView{};
+  return true;
 }
 
 bool FFICommandSetVertexCount(FFICommand* command, uint64_t vertex_count) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.vertex_count = vertex_count;
+  return false;
+}
+
+constexpr impeller::IndexType ToIndexType(IndexType type) {
+  switch (type) {
+    case IndexType::Unknown:
+      return impeller::IndexType::kUnknown;
+    case IndexType::Bit16:
+      return impeller::IndexType::k16bit;
+    case IndexType::Bit32:
+      return impeller::IndexType::k32bit;
+    case IndexType::None:
+      return impeller::IndexType::kNone;
+  }
+  return impeller::IndexType::kNone;
 }
 
 bool FFICommandSetIndexType(FFICommand* command, IndexType index_type) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.index_type = ToIndexType(index_type);
+  return true;
 }
 
 bool FFICommandSetStencilReference(FFICommand* command,
                                    uint32_t stencil_reference) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.stencil_reference = stencil_reference;
+  return true;
 }
 
 bool FFICommandSetBaseVertex(FFICommand* command, uint64_t base_vertex) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.base_vertex = base_vertex;
+  return true;
+}
+
+constexpr std::optional<Viewport> ToViewport(FFIViewport* ffi_viewport) {
+  if (!ffi_viewport) {
+    return std::nullopt;
+  }
+  Viewport viewport;
+  viewport.rect =
+      Rect::MakeXYWH(ffi_viewport->origin_x, ffi_viewport->origin_y,
+                     ffi_viewport->size_width, ffi_viewport->size_height);
+  viewport.depth_range = DepthRange{static_cast<Scalar>(ffi_viewport->z_near),
+                                    static_cast<Scalar>(ffi_viewport->z_far)};
+  return viewport;
 }
 
 bool FFICommandSetViewport(FFICommand* command, FFIViewport* viewport) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.viewport = ToViewport(viewport);
+  return true;
+}
+
+constexpr std::optional<IRect> ToIRect(FFIIRect* ffi_rect) {
+  if (!ffi_rect) {
+    return std::nullopt;
+  }
+  return IRect::MakeXYWH(ffi_rect->origin_x, ffi_rect->origin_y,
+                         ffi_rect->size_width, ffi_rect->size_height);
 }
 
 bool FFICommandSetScissor(FFICommand* command, FFIIRect* scissor_rect) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.scissor = ToIRect(scissor_rect);
+  return true;
 }
 
 bool FFICommandSetInstanceCount(FFICommand* command, uint64_t instance_count) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!command) {
+    return false;
+  }
+  command->command.instance_count = instance_count;
+  return true;
 }
 
 FFIViewport* FFIViewportAlloc() {
