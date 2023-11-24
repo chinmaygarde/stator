@@ -1063,72 +1063,163 @@ FFIHostBuffer* HostBufferNew() {
 }
 
 FFIDeviceBufferDescriptor* DeviceBufferDescriptorNew() {
-  IMPELLER_UNIMPLEMENTED;
+  return objffi::Make<FFIDeviceBufferDescriptor>().Leak();
 }
 
-FFIAllocator* FFIContextResourceAllocatorCopy(FFIContext* thiz) {
-  IMPELLER_UNIMPLEMENTED;
+FFIAllocator* FFIContextResourceAllocatorCopy(FFIContext* context) {
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFIAllocator>(
+             context->Get()->GetImpellerContext()->GetResourceAllocator())
+      .Leak();
 }
 
-bool FFITextureDescriptorSetStorageMode(FFITextureDescriptor* thiz,
+constexpr impeller::StorageMode ToStorageMode(StorageMode mode) {
+  switch (mode) {
+    case StorageMode::HostVisible:
+      return impeller::StorageMode::kHostVisible;
+    case StorageMode::DevicePrivate:
+      return impeller::StorageMode::kDevicePrivate;
+    case StorageMode::DeviceTransient:
+      return impeller::StorageMode::kDeviceTransient;
+  }
+  return impeller::StorageMode::kHostVisible;
+}
+
+bool FFITextureDescriptorSetStorageMode(FFITextureDescriptor* desc,
                                         StorageMode mode) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.storage_mode = ToStorageMode(mode);
+  return true;
 }
 
-bool FFITextureDescriptorSetTextureType(FFITextureDescriptor* thiz,
+constexpr impeller::TextureType ToTextureType(TextureType type) {
+  switch (type) {
+    case TextureType::Texture2D:
+      return impeller::TextureType::kTexture2D;
+    case TextureType::TextureCube:
+      return impeller::TextureType::kTextureCube;
+  }
+  return impeller::TextureType::kTexture2D;
+}
+
+bool FFITextureDescriptorSetTextureType(FFITextureDescriptor* desc,
                                         TextureType type) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.type = ToTextureType(type);
+  return true;
 }
 
-bool FFITextureDescriptorSetPixelFormat(FFITextureDescriptor* thiz,
+bool FFITextureDescriptorSetPixelFormat(FFITextureDescriptor* desc,
                                         PixelFormat format) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.format = ToPixelFormat(format);
+  return true;
 }
 
-bool FFITextureDescriptorSetSize(FFITextureDescriptor* thiz,
+bool FFITextureDescriptorSetSize(FFITextureDescriptor* desc,
                                  uint64_t width,
                                  uint64_t height) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.size = ISize::MakeWH(width, height);
+  return true;
 }
 
-bool FFITextureDescriptorSetMipCount(FFITextureDescriptor* thiz,
+bool FFITextureDescriptorSetMipCount(FFITextureDescriptor* desc,
                                      uint32_t mip_count) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.mip_count = mip_count;
+  return true;
 }
 
-bool FFITextureDescriptorSetUsage(FFITextureDescriptor* thiz,
+bool FFITextureDescriptorSetUsage(FFITextureDescriptor* desc,
                                   uint64_t usage_mask) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.usage = usage_mask;
+  return true;
 }
 
-bool FFITextureDescriptorSetSampleCount(FFITextureDescriptor* thiz,
+bool FFITextureDescriptorSetSampleCount(FFITextureDescriptor* desc,
                                         SampleCount sample_count) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.sample_count = ToSampleCount(sample_count);
+  return true;
 }
 
-bool FFITextureDescriptorSetCompressionType(FFITextureDescriptor* thiz,
+constexpr impeller::CompressionType ToCompressionType(CompressionType type) {
+  switch (type) {
+    case CompressionType::Lossless:
+      return impeller::CompressionType::kLossless;
+    case CompressionType::Lossy:
+      return impeller::CompressionType::kLossy;
+  }
+  return impeller::CompressionType::kLossless;
+}
+
+bool FFITextureDescriptorSetCompressionType(FFITextureDescriptor* desc,
                                             CompressionType compression_type) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.compression_type = ToCompressionType(compression_type);
+  return true;
 }
 
-bool FFIDeviceBufferDescriptorSetStorageMode(FFIDeviceBufferDescriptor* thiz,
+bool FFIDeviceBufferDescriptorSetStorageMode(FFIDeviceBufferDescriptor* desc,
                                              StorageMode storage_mode) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.storage_mode = ToStorageMode(storage_mode);
+  return true;
 }
 
-bool FFIDeviceBufferDescriptorSetSize(FFIDeviceBufferDescriptor* thiz,
+bool FFIDeviceBufferDescriptorSetSize(FFIDeviceBufferDescriptor* desc,
                                       uint64_t size) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.size = size;
+  return true;
 }
 
-FFIDeviceBuffer* FFIAllocatorCreateBufferNew(FFIAllocator* thiz,
+FFIDeviceBuffer* FFIAllocatorCreateBufferNew(FFIAllocator* allocator,
                                              FFIDeviceBufferDescriptor* desc) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!allocator || !desc) {
+    return nullptr;
+  }
+  auto buffer = allocator->allocator->CreateBuffer(desc->descriptor);
+  if (!buffer) {
+    return nullptr;
+  }
+  return objffi::Make<FFIDeviceBuffer>(std::move(buffer)).Leak();
 }
 
-FFITexture* FFIAllocatorCreateTextureNew(FFIAllocator* thiz,
+FFITexture* FFIAllocatorCreateTextureNew(FFIAllocator* allocator,
                                          FFITextureDescriptor* desc) {
-  IMPELLER_UNIMPLEMENTED;
+  if (!allocator || !desc) {
+    return nullptr;
+  }
+  auto texture = allocator->allocator->CreateTexture(desc->descriptor);
+  if (!texture || !texture->IsValid()) {
+    return nullptr;
+  }
+  return objffi::Make<FFITexture>(std::move(texture)).Leak();
 }
 
 }  // namespace impeller::stator::renderer

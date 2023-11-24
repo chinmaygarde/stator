@@ -169,6 +169,32 @@ class FFIHostBuffer final : public objffi::Object {
   std::shared_ptr<HostBuffer> buffer;
 };
 
+class FFIAllocator final : public objffi::Object {
+ public:
+  explicit FFIAllocator(std::shared_ptr<Allocator> p_allocator)
+      : allocator(std::move(p_allocator)) {}
+
+  std::shared_ptr<Allocator> allocator;
+};
+
+class FFIDeviceBuffer final : public objffi::Object {
+ public:
+  explicit FFIDeviceBuffer(std::shared_ptr<DeviceBuffer> p_device_buffer)
+      : device_buffer(std::move(p_device_buffer)) {}
+
+  std::shared_ptr<DeviceBuffer> device_buffer;
+};
+
+class FFIDeviceBufferDescriptor final : public objffi::Object {
+ public:
+  impeller::DeviceBufferDescriptor descriptor;
+};
+
+class FFITextureDescriptor final : public objffi::Object {
+ public:
+  impeller::TextureDescriptor descriptor;
+};
+
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);
 
 }  // namespace impeller::stator::renderer
