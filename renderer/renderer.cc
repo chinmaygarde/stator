@@ -1062,4 +1062,73 @@ FFIHostBuffer* HostBufferNew() {
   return objffi::Make<FFIHostBuffer>(HostBuffer::Create()).Leak();
 }
 
+FFIDeviceBufferDescriptor* DeviceBufferDescriptorNew() {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIAllocator* FFIContextResourceAllocatorCopy(FFIContext* thiz) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetStorageMode(FFITextureDescriptor* thiz,
+                                        StorageMode mode) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetTextureType(FFITextureDescriptor* thiz,
+                                        TextureType type) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetPixelFormat(FFITextureDescriptor* thiz,
+                                        PixelFormat format) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetSize(FFITextureDescriptor* thiz,
+                                 uint64_t width,
+                                 uint64_t height) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetMipCount(FFITextureDescriptor* thiz,
+                                     uint32_t mip_count) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetUsage(FFITextureDescriptor* thiz,
+                                  uint64_t usage_mask) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetSampleCount(FFITextureDescriptor* thiz,
+                                        SampleCount sample_count) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFITextureDescriptorSetCompressionType(FFITextureDescriptor* thiz,
+                                            CompressionType compression_type) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFIDeviceBufferDescriptorSetStorageMode(FFIDeviceBufferDescriptor* thiz,
+                                             StorageMode storage_mode) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+bool FFIDeviceBufferDescriptorSetSize(FFIDeviceBufferDescriptor* thiz,
+                                      uint64_t size) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFIDeviceBuffer* FFIAllocatorCreateBufferNew(FFIAllocator* thiz,
+                                             FFIDeviceBufferDescriptor* desc) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
+FFITexture* FFIAllocatorCreateTextureNew(FFIAllocator* thiz,
+                                         FFITextureDescriptor* desc) {
+  IMPELLER_UNIMPLEMENTED;
+}
+
 }  // namespace impeller::stator::renderer

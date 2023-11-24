@@ -141,13 +141,62 @@ enum PolygonMode {
 }
 
 //------------------------------------------------------------------------------
+enum StorageMode {
+  HostVisible,
+  DevicePrivate,
+  DeviceTransient,
+}
+
+//------------------------------------------------------------------------------
+enum TextureType {
+  Texture2D,
+  TextureCube,
+}
+
+//------------------------------------------------------------------------------
+enum CompressionType {
+  Lossless,
+  Lossy,
+}
+
+//------------------------------------------------------------------------------
 opaque FFIContext {
   function SwapchainCopy() -> FFISwapchain*
   function PipelineLibraryCopy() -> FFIPipelineLibrary*
+  function ResourceAllocatorCopy() -> FFIAllocator*
   function CommandBufferNew() -> FFICommandBuffer*
 }
 
 function GetGlobalContext() -> FFIContext*
+
+//------------------------------------------------------------------------------
+opaque FFIAllocator {
+  function CreateBufferNew(FFIDeviceBufferDescriptor* desc) -> FFIDeviceBuffer*
+  function CreateTextureNew(FFITextureDescriptor* desc) -> FFITexture*
+}
+
+//------------------------------------------------------------------------------
+opaque FFIDeviceBufferDescriptor {
+  function SetStorageMode(StorageMode storage_mode) -> bool
+  function SetSize(uint64 size) -> bool
+}
+
+function DeviceBufferDescriptorNew() -> FFIDeviceBufferDescriptor*
+
+//------------------------------------------------------------------------------
+opaque FFITextureDescriptor {
+  function SetStorageMode(StorageMode mode) -> bool
+  function SetTextureType(TextureType type) -> bool
+  function SetPixelFormat(PixelFormat format) -> bool
+  function SetSize(uint64 width, uint64 height) -> bool
+  function SetMipCount(uint32 mip_count) -> bool
+  function SetUsage(uint64 usage_mask) -> bool
+  function SetSampleCount(SampleCount sample_count) -> bool
+  function SetCompressionType(CompressionType compression_type) -> bool
+}
+
+//------------------------------------------------------------------------------
+opaque FFIDeviceBuffer
 
 //------------------------------------------------------------------------------
 opaque FFICommandBuffer {
