@@ -160,10 +160,41 @@ enum CompressionType {
 }
 
 //------------------------------------------------------------------------------
+enum ShaderStage {
+  Unknown,
+  Vertex,
+  Fragment,
+  TessellationControl,
+  TessellationEvaluation,
+  Compute,
+}
+
+//------------------------------------------------------------------------------
+enum MinMagFilter {
+  Nearest,
+  Linear,
+}
+
+//------------------------------------------------------------------------------
+enum MipFilter {
+  Nearest,
+  Linear,
+}
+
+enum SamplerAddressMode {
+  ClampToEdge,
+  Repeat,
+  Mirror,
+  Decal,
+}
+
+//------------------------------------------------------------------------------
 opaque FFIContext {
   function SwapchainCopy() -> FFISwapchain*
-  function PipelineLibraryCopy() -> FFIPipelineLibrary*
   function ResourceAllocatorCopy() -> FFIAllocator*
+  function PipelineLibraryCopy() -> FFIPipelineLibrary*
+  function ShaderLibraryCopy() -> FFIShaderLibrary*
+  function SamplerLibraryCopy() -> FFISamplerLibrary*
   function CommandBufferNew() -> FFICommandBuffer*
 }
 
@@ -197,6 +228,31 @@ opaque FFITextureDescriptor {
 
 //------------------------------------------------------------------------------
 opaque FFIDeviceBuffer
+
+//------------------------------------------------------------------------------
+opaque FFIShaderLibrary {
+  function GetFunctionCopy(ShaderStage stage, uint8* name, uint32 name_len) -> FFIShaderFunction*
+}
+
+//------------------------------------------------------------------------------
+opaque FFISamplerLibrary {
+  function GetSamplerCopy(FFISamplerDescriptor* sampler_descriptor) -> FFISampler*
+}
+
+//------------------------------------------------------------------------------
+opaque FFISampler
+
+//------------------------------------------------------------------------------
+opaque FFISamplerDescriptor {
+  function SetMinFilter(MinMagFilter filter) -> bool
+  function SetMagFilter(MinMagFilter filter) -> bool
+  function SetMipFilter(MipFilter filter) -> bool
+  function SetWidthAddressMode(SamplerAddressMode mode) -> bool
+  function SetHeightAddressMode(SamplerAddressMode mode) -> bool
+  function SetDepthAddressMode(SamplerAddressMode mode) -> bool
+}
+
+function SamplerDescriptorNew() -> FFISamplerDescriptor*
 
 //------------------------------------------------------------------------------
 opaque FFICommandBuffer {

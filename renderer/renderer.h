@@ -10,6 +10,8 @@
 #include "impeller/renderer/pipeline_library.h"
 #include "impeller/renderer/render_pass.h"
 #include "impeller/renderer/render_target.h"
+#include "impeller/renderer/sampler_library.h"
+#include "impeller/renderer/shader_library.h"
 #include "impeller/renderer/vertex_descriptor.h"
 #include "impeller/stator/objffi/scoped_object.h"
 #include "impeller/stator/renderer/context.h"
@@ -133,10 +135,10 @@ class FFIBufferView final : public objffi::Object {
 class FFIShaderFunction final : public objffi::Object {
  public:
   explicit FFIShaderFunction(
-      std::shared_ptr<impeller::ShaderFunction> shader_function)
+      std::shared_ptr<const impeller::ShaderFunction> shader_function)
       : shader_function(std::move(shader_function)) {}
 
-  std::shared_ptr<impeller::ShaderFunction> shader_function;
+  std::shared_ptr<const impeller::ShaderFunction> shader_function;
 };
 
 class FFIVertexDescriptor final : public objffi::Object {
@@ -185,6 +187,30 @@ class FFIDeviceBuffer final : public objffi::Object {
   std::shared_ptr<DeviceBuffer> device_buffer;
 };
 
+class FFIShaderLibrary final : public objffi::Object {
+ public:
+  explicit FFIShaderLibrary(std::shared_ptr<ShaderLibrary> p_shader_library)
+      : shader_library(std::move(p_shader_library)) {}
+
+  std::shared_ptr<ShaderLibrary> shader_library;
+};
+
+class FFISamplerLibrary final : public objffi::Object {
+ public:
+  explicit FFISamplerLibrary(std::shared_ptr<SamplerLibrary> p_sampler_library)
+      : sampler_library(std::move(p_sampler_library)) {}
+
+  std::shared_ptr<SamplerLibrary> sampler_library;
+};
+
+class FFISampler final : public objffi::Object {
+ public:
+  explicit FFISampler(std::shared_ptr<const impeller::Sampler> p_sampler)
+      : sampler(std::move(p_sampler)) {}
+
+  std::shared_ptr<const impeller::Sampler> sampler;
+};
+
 class FFIDeviceBufferDescriptor final : public objffi::Object {
  public:
   impeller::DeviceBufferDescriptor descriptor;
@@ -193,6 +219,11 @@ class FFIDeviceBufferDescriptor final : public objffi::Object {
 class FFITextureDescriptor final : public objffi::Object {
  public:
   impeller::TextureDescriptor descriptor;
+};
+
+class FFISamplerDescriptor final : public objffi::Object {
+ public:
+  impeller::SamplerDescriptor descriptor;
 };
 
 void SetGlobalContext(objffi::ScopedObject<FFIContext> context);

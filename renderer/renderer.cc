@@ -1222,4 +1222,161 @@ FFITexture* FFIAllocatorCreateTextureNew(FFIAllocator* allocator,
   return objffi::Make<FFITexture>(std::move(texture)).Leak();
 }
 
+constexpr impeller::ShaderStage ToShaderStage(ShaderStage stage) {
+  switch (stage) {
+    case ShaderStage::Unknown:
+      return impeller::ShaderStage::kUnknown;
+    case ShaderStage::Vertex:
+      return impeller::ShaderStage::kVertex;
+    case ShaderStage::Fragment:
+      return impeller::ShaderStage::kFragment;
+    case ShaderStage::TessellationControl:
+      return impeller::ShaderStage::kTessellationControl;
+    case ShaderStage::TessellationEvaluation:
+      return impeller::ShaderStage::kTessellationEvaluation;
+    case ShaderStage::Compute:
+      return impeller::ShaderStage::kCompute;
+  }
+  return impeller::ShaderStage::kUnknown;
+}
+
+FFIShaderFunction* FFIShaderLibraryGetFunctionCopy(FFIShaderLibrary* library,
+                                                   ShaderStage stage,
+                                                   uint8_t* name,
+                                                   uint32_t name_len) {
+  if (!library || name == nullptr) {
+    return nullptr;
+  }
+  auto function = library->shader_library->GetFunction(
+      std::string_view{reinterpret_cast<const char*>(name), name_len},
+      ToShaderStage(stage));
+  if (!function) {
+    return nullptr;
+  }
+  return objffi::Make<FFIShaderFunction>(std::move(function)).Leak();
+}
+
+FFISampler* FFISamplerLibraryGetSamplerCopy(FFISamplerLibrary* library,
+                                            FFISamplerDescriptor* desc) {
+  if (!library) {
+    return nullptr;
+  }
+  auto sampler = library->sampler_library->GetSampler(desc->descriptor);
+  if (!sampler) {
+    return nullptr;
+  }
+  return objffi::Make<FFISampler>(std::move(sampler)).Leak();
+}
+
+FFISamplerDescriptor* SamplerDescriptorNew() {
+  return objffi::Make<FFISamplerDescriptor>().Leak();
+}
+
+constexpr impeller::MinMagFilter ToMinMagFilter(MinMagFilter filter) {
+  switch (filter) {
+    case MinMagFilter::Nearest:
+      return impeller::MinMagFilter::kNearest;
+    case MinMagFilter::Linear:
+      return impeller::MinMagFilter::kLinear;
+  }
+  return impeller::MinMagFilter::kNearest;
+}
+
+constexpr impeller::MipFilter ToMipFilter(MipFilter filter) {
+  switch (filter) {
+    case MipFilter::Nearest:
+      return impeller::MipFilter::kNearest;
+    case MipFilter::Linear:
+      return impeller::MipFilter::kLinear;
+  }
+  return impeller::MipFilter::kNearest;
+}
+
+constexpr impeller::SamplerAddressMode ToSamplerAddressMode(
+    SamplerAddressMode mode) {
+  switch (mode) {
+    case SamplerAddressMode::ClampToEdge:
+      return impeller::SamplerAddressMode::kClampToEdge;
+    case SamplerAddressMode::Repeat:
+      return impeller::SamplerAddressMode::kRepeat;
+    case SamplerAddressMode::Mirror:
+      return impeller::SamplerAddressMode::kMirror;
+    case SamplerAddressMode::Decal:
+      return impeller::SamplerAddressMode::kDecal;
+  }
+  return impeller::SamplerAddressMode::kClampToEdge;
+}
+
+bool FFISamplerDescriptorSetMinFilter(FFISamplerDescriptor* desc,
+                                      MinMagFilter filter) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.min_filter = ToMinMagFilter(filter);
+  return true;
+}
+
+bool FFISamplerDescriptorSetMagFilter(FFISamplerDescriptor* desc,
+                                      MinMagFilter filter) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.mag_filter = ToMinMagFilter(filter);
+  return true;
+}
+
+bool FFISamplerDescriptorSetMipFilter(FFISamplerDescriptor* desc,
+                                      MipFilter filter) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.mip_filter = ToMipFilter(filter);
+  return true;
+}
+
+bool FFISamplerDescriptorSetWidthAddressMode(FFISamplerDescriptor* desc,
+                                             SamplerAddressMode mode) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.width_address_mode = ToSamplerAddressMode(mode);
+  return true;
+}
+
+bool FFISamplerDescriptorSetHeightAddressMode(FFISamplerDescriptor* desc,
+                                              SamplerAddressMode mode) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.height_address_mode = ToSamplerAddressMode(mode);
+  return true;
+}
+
+bool FFISamplerDescriptorSetDepthAddressMode(FFISamplerDescriptor* desc,
+                                             SamplerAddressMode mode) {
+  if (!desc) {
+    return false;
+  }
+  desc->descriptor.depth_address_mode = ToSamplerAddressMode(mode);
+  return true;
+}
+
+FFIShaderLibrary* FFIContextShaderLibraryCopy(FFIContext* context) {
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFIShaderLibrary>(
+             context->Get()->GetImpellerContext()->GetShaderLibrary())
+      .Leak();
+}
+
+FFISamplerLibrary* FFIContextSamplerLibraryCopy(FFIContext* context) {
+  if (!context) {
+    return nullptr;
+  }
+  return objffi::Make<FFISamplerLibrary>(
+             context->Get()->GetImpellerContext()->GetSamplerLibrary())
+      .Leak();
+}
+
 }  // namespace impeller::stator::renderer
